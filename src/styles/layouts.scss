@@ -26,6 +26,10 @@
             width: 75%;
             margin: 1rem 0;  
             padding-right: 2rem;
+            
+            //CUSTOM RULE ON DEMAND
+            max-height:none;
+            overflow:hidden;
         }
     }
 }

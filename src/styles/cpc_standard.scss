@@ -126,6 +126,7 @@
       &.scroll-content-end {
         position: relative;
         &::after {
+          pointer-events: none;
           position: absolute;
           z-index: 1;
           content: '';
@@ -143,6 +144,7 @@
       &.scroll-content-start {
         position: relative;
         &::before {
+          pointer-events: none;
           position: absolute;
           content: '';
           z-index: 1;
@@ -318,6 +320,21 @@
     cursor: pointer;
   }
 
+  &__object-legint {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: $third-parties-background;
+    background-color: var(--avacy_third_parties_background);
+  }
+
+  &__object-legint-btn {
+    cursor: pointer;
+    padding: 1.5rem 1rem 0.5rem 1rem;
+    max-width: 220px;
+    text-align: right;
+  }
+
 
   @include media('<desktop') {
     &__row-btn-all {
@@ -400,6 +417,7 @@
     flex: 1;
     font-size: 12px;
     font-size: calc(12px * var(--avacy_font_base_scale));
+    padding-right: 0.5rem;
 
     @include media('>=1280px') {
       font-size: 14px;

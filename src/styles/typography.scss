@@ -92,6 +92,14 @@
         }
     }
 
+    &__object-legint {
+        color: $accent-color;
+        color: var(--avacy_accent_primary);
+        font-weight: 600;
+        font-size: 14px;
+        font-size: calc(14px * var(--avacy_font_base_scale));
+    }
+
     &__category-link {
         font-size: 13px;
         font-size: calc(13px * var(--avacy_font_base_scale));

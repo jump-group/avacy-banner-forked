@@ -30,6 +30,9 @@ export const OIL_LABELS = {
   ATTR_LABEL_THIRD_PARTY_DESCRIPTION: 'label_third_party_description',
   ATTR_LABEL_CUSTOM_THIRD_PARTY_DESCRIPTION: 'label_custom_third_party_description',
 
+  //OBJECT LEGINT label
+  ATTR_LABEL_THIRD_PARTY_OBJECT_LEGINT_BTN: 'label_third_party_object_legint',
+
 
   // CPC labels
   ATTR_LABEL_CPC_SAVE: 'label_cpc_save',

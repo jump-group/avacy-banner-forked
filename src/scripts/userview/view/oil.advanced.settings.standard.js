@@ -1,11 +1,11 @@
 import '../../../styles/cpc_standard.scss';
-import { OIL_LABELS } from '../userview_constants';
-import { forEach } from '../userview_modal';
-import { getLabel, getLabelWithDefault } from '../userview_config';
 import { getCustomPurposes, getCustomVendorListUrl } from '../../core/core_config';
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../../core/core_constants';
 import { setGlobalOilObject } from '../../core/core_utils';
-import { getCustomVendorList, getPurposes, getSpecialPurposes, getFeatures, getSpecialFeatures, getVendorList, getVendorsToDisplay } from '../../core/core_vendor_lists';
+import { getCustomVendorList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay } from '../../core/core_vendor_lists';
+import { getLabel, getLabelWithDefault } from '../userview_config';
+import { OIL_LABELS } from '../userview_constants';
+import { forEach } from '../userview_modal';
 import { BackButton, YesButton } from './components/oil.buttons';
 const CLASS_NAME_FOR_ACTIVE_MENU_SECTION = 'as-oil-cpc__category-link--active';
 
@@ -36,6 +36,9 @@ export function attachCpcHandlers() {
   });
   forEach(document.querySelectorAll('.as-js-btn-deactivate-all'), (domNode) => {
     domNode && domNode.addEventListener('click', deactivateAll, false);
+  });
+  forEach(document.querySelectorAll('.as-js-btn-object-all'), (domNode) => {
+    domNode && domNode.addEventListener('click', objectAllLegint, false);
   });
 }
 
@@ -176,6 +179,9 @@ const buildIabVendorList = () => {
   ${getLabel(OIL_LABELS.ATTR_LABEL_THIRD_PARTY_DESCRIPTION) === OIL_LABELS.ATTR_LABEL_THIRD_PARTY_DESCRIPTION ? '' : `
     <div class="as-oil-cpc__row-thirdPartiesText">${getLabel(OIL_LABELS.ATTR_LABEL_THIRD_PARTY_DESCRIPTION)}</div>
   `}
+  <div class="as-oil-cpc__object-legint">
+    <span class="as-oil-cpc__object-legint-btn as-js-btn-object-all">${getLabel(OIL_LABELS.ATTR_LABEL_THIRD_PARTY_OBJECT_LEGINT_BTN)}</span>
+  </div>
 <div id="as-js-third-parties-list">
   ${buildIabVendorEntries()}
 </div>`
@@ -343,6 +349,13 @@ function activateAll() {
 
 export function deactivateAll() {
   let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider');
+  forEach(elements, (domNode) => {
+    domNode && (domNode.checked = false);
+  });
+}
+
+export function objectAllLegint() {
+  let elements = document.querySelectorAll('.as-js-vendor-legint-slider');
   forEach(elements, (domNode) => {
     domNode && (domNode.checked = false);
   });

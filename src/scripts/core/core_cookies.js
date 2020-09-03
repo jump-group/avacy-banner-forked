@@ -32,7 +32,7 @@ export function setSessionCookie(name, value) {
 export function setDomainCookie(name, value, expires_in_days) {
   // decoded consent data must not be written to the cookie
   delete value.consentData;
-  Cookie.set(name, value, { expires: expires_in_days });
+  Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
 }
 
 export function getOilCookie(cookieConfig) {

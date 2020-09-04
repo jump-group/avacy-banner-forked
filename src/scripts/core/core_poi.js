@@ -90,7 +90,7 @@ export function sendEventToFrame(eventName, origin, payload = {}) {
       // see https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#Syntax
       // MSIE needs Strings in postMessage
       let message = JSON.stringify({ event: eventName, origin: origin, group_name: groupName, payload: payload });
-      iframe.contentWindow.postMessage(message, hubDomain);
+      iframe.contentWindow.postMessage(message, '*');
       // end::subscriber-postMessage[]
     }
   });

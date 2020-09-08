@@ -29,10 +29,14 @@ export function setSessionCookie(name, value) {
   Cookie.set(name, value);
 }
 
-export function setDomainCookie(name, value, expires_in_days) {
+export function setDomainCookie(name, value, expires_in_days, secure) {
   // decoded consent data must not be written to the cookie
   delete value.consentData;
-  Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
+  if (secure) {
+    Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
+  } else {
+    Cookie.set(name, value, { expires: expires_in_days});
+  }
 }
 
 export function getOilCookie(cookieConfig) {

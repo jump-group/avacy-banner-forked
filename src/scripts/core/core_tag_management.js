@@ -1,16 +1,23 @@
 //REVIEW: may have some changes to be made in order to get purposes correctly @tcf2
 import { MANAGED_TAG_IDENTIFIER, MANAGED_TAG_IDENTIFIER_ATTRIBUTE, MANAGED_TAG__ATTRIBUTES } from './core_constants';
 import { getSoiCookie } from './core_cookies';
-import { arrayContainsArray } from './core_utils';
+import { arrayContainsArray, sendEventToHostSite } from './core_utils';
 import { getPurposeIds, getSpecialFeatureIds, getLegintIds } from './core_vendor_lists';
 import { getCustomPurposeIds, gdprApplies } from './core_config';
 
 export function manageDomElementActivation() {
+  if(window.AS_OIL.isInCollection('oil-managed-elements')){
+    return;
+  }
+
   let managedElements = findManagedElements();
   let cookie = getSoiCookie();
   
-  for (let i = 0; i < managedElements.length; i++) {
-    manageElement(managedElements[i], cookie);
+  if(cookie.opt_in){
+    sendEventToHostSite('oil-managed-elements')
+    for (let i = 0; i < managedElements.length; i++) {
+      manageElement(managedElements[i], cookie);
+    }
   }
 }
 

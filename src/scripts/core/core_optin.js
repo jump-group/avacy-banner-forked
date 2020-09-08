@@ -3,6 +3,7 @@ import { getSoiCookie, setSoiCookieWithPoiCookieData } from './core_cookies';
 import { logPreviewInfo } from './core_log';
 import { verifyPowerOptIn } from './core_poi';
 import { getPolicyVersion } from './core_config';
+import { manageDomElementActivation } from './core_tag_management.js';
 /**
  * Log Helper function for checkOptIn
  * @param {*} singleOptIn
@@ -40,7 +41,10 @@ export function checkOptIn() {
         resultOptIn = cookie.power_opt_in;
         if (!soiOptIn) {
           setSoiCookieWithPoiCookieData(powerOptIn)
-            .then(() => resolve([resultOptIn, cookie]))
+            .then(() => {
+              manageDomElementActivation();
+              resolve([resultOptIn, cookie])
+            })
             .catch(error => reject(error));
         }
       }

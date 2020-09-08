@@ -233,6 +233,7 @@ export function removeHubCookie(poiGroup) {
   removeSubscriberCookies();
   if (poiGroup) {
     Cookie.remove(`${poiGroup}_${OIL_DOMAIN_COOKIE_NAME}`);
+    Cookie.remove(`${poiGroup}_${OIL_DOMAIN_COOKIE_NAME}`, { expires: getCookieExpireInDays(), secure: true, sameSite: 'none' });
   }
 }
 
@@ -241,10 +242,26 @@ export function removeHubCookie(poiGroup) {
  * @return boolean
  */
 export function isBrowserCookieEnabled() {
-  Cookie.set('oil_cookie_exp', 'cookiedata');
-  let result = isCookie('oil_cookie_exp');
-  Cookie.remove('oil_cookie_exp');
+  let result;
+
+  if (inIframe()) {
+    Cookie.set('oil_cookie_exp','cookiedata', {secure: true, sameSite: 'none'});
+    result = isCookie('oil_cookie_exp');
+    Cookie.remove('oil_cookie_exp', {secure: true, sameSite: 'none'});
+  } else {
+    Cookie.set('oil_cookie_exp', 'cookiedata');
+    result = isCookie('oil_cookie_exp');
+    Cookie.remove('oil_cookie_exp');
+  }
   return result;
+}
+
+function inIframe() {
+  try {
+      return window.self !== window.top;
+  } catch (e) {
+      return true;
+  }
 }
 
 export function getStandardPurposesWithConsent(privacySettings) {

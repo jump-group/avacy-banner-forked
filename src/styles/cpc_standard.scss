@@ -265,7 +265,7 @@
   
   &__purpose {
     border-top: 1px solid #eaeaea;
-    padding: 20px;
+    padding: 2rem;
   }
   
   &__purpose-container {
@@ -321,20 +321,13 @@
   }
 
   &__object-legint {
+    padding: 2rem 1.5rem 1rem 1.5rem;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     background-color: $third-parties-background;
     background-color: var(--avacy_third_parties_background);
   }
-
-  &__object-legint-btn {
-    cursor: pointer;
-    padding: 1.5rem 1rem 0.5rem 1rem;
-    max-width: 220px;
-    text-align: right;
-  }
-
 
   @include media('<desktop') {
     &__row-btn-all {
@@ -348,8 +341,31 @@
       width: 40%;
       justify-content: flex-end;
     }
+
+    &__object-legint {
+      justify-content: flex-end;
+    }
   }
-  
+}
+
+.LegintRejectPanel {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: $secondary_background_color;
+  background-color: var(--avacy_secondary_background_color);
+  max-width: 350px;
+  width: 95%;
+
+  &__Title {
+    flex: 1;
+  }
+
+  &__Info {
+    cursor: pointer;
+    color: $accent-color;
+    color: var(--avacy_accent_primary);
+  }
 }
 
 
@@ -381,7 +397,7 @@
 }
 
 .Vendor {
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   display: flex;
   flex-wrap: wrap;
 
@@ -402,11 +418,9 @@
 }
 
 .LegintBlock {
-  background-color: $background_color;
-  background-color: var(--avacy_background_color);
-  border: 1px solid var(--avacy_btn_secondary_background);
+  background-color: $secondary_background_color;
+  background-color: var(--avacy_secondary_background_color);
   padding: 1rem 1.5rem;
-  border-radius: 10px;
   margin: 0.7rem 0;
   width: 100%;
 
@@ -449,11 +463,35 @@
   }
 
   &__CheckBox {
-    border: 2px solid var(--avacy_btn_secondary_background);
-    width: 1.3rem;
-    height: 1.3rem;
-    border-radius: 5px;
+    background-color: $slider_background;
+    background-color: var(--avacy_slider_background);
+    border: 2px solid var(--avacy_slider_background);
+    width: 1rem;
+    height: 1rem;
+    border-radius: 3px;
     display: block;
+    cursor: pointer;
+  }
+}
+
+.InfoPanel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem;
+  z-index: 2;
+  
+  &__Wrapper {
+    position: relative;
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
+
+  &__Close {
+    position: absolute;
+    top: 0;
+    right: 0;
     cursor: pointer;
   }
 }

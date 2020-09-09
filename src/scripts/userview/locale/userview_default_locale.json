@@ -33,6 +33,10 @@
     "label_cpc_legal_special_purposes": "Special Purposes",
     "label_cpc_legal_features": "Features",
     "label_cpc_legal_special_features": "Special Features",
-    "label_cpc_save": "Save"
+    "label_cpc_save": "Save",
+    "labl_cpc_legint_rejectbox_text": "Legittimo interesse per i fornitori",
+    "labl_cpc_legint_box_text": "Permetti a questo servizio di trattare i tuoi dati sulla base di un interesse legittimo.",
+    "labl_cpc_infobox_title": "Legittimo interesse",
+    "labl_cpc_infobox_description": "Un \"interesse legittimo\" è un interesse che, in base alla legislazione applicabile, giustifica il trattamento di dati personali.<br>I servizi che decidono di fare affidamento su di un interesse legittimo possono processare i tuoi dati a meno che tu non ti opponga a tale trattamento.<br><p><b>Deselezionando questa casella eserciti il tuo diritto di opposizione.</b></p>"
   }
 }

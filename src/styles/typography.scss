@@ -93,8 +93,6 @@
     }
 
     &__object-legint {
-        color: $accent-color;
-        color: var(--avacy_accent_primary);
         font-weight: 600;
         font-size: 14px;
         font-size: calc(14px * var(--avacy_font_base_scale));
@@ -176,5 +174,50 @@
     &__icon {
         font-size: 18px;
         font-size: calc(18px * var(--avacy_font_base_scale));
+    }
+}
+
+.InfoPanel {
+    &__Close {
+        font-size: 2.5rem;
+        line-height: 0.5;
+        color: $text-color-secondary;
+        color: var(--avacy_text_color_secondary);
+    }
+
+    &__Title {
+        font-size: 18px;
+        font-size: calc(18 * var(--avacy_font_base_scale));
+        font-weight: 600;
+        line-height: 1.2;
+        color: $text-color-secondary;
+        color: var(--avacy_text_color_secondary);
+    }
+
+    &__Content {
+        font-size: 12px;
+        font-size: calc(12px * var(--avacy_font_base_scale));
+        font-weight: 400;
+        line-height: 1.5;
+
+        strong,b {
+            color: $text-color-secondary;
+            color: var(--avacy_text_color_secondary);
+            font-weight: 600;
+        }
+    }
+
+    @include media('>phone') {
+        &__Title{
+            font-size: 22px;
+            font-size: calc(22px * var(--avacy_font_base_scale));
+        }
+    }
+
+    @include media('>=1280px') {
+        &__Content {
+            font-size: 13px;
+            font-size: calc(13px * var(--avacy_font_base_scale));
+        }
     }
 }

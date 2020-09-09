@@ -44,6 +44,10 @@ export const OIL_LABELS = {
   ATTR_LABEL_CPC_PURPOSE_OPTOUT_TEXT: 'label_cpc_purpose_optout_confirm_text',
   ATTR_LABEL_CPC_PURPOSE_OPTOUT_PROCEED: 'label_cpc_purpose_optout_confirm_proceed',
   ATTR_LABEL_CPC_PURPOSE_OPTOUT_CANCEL: 'label_cpc_purpose_optout_confirm_cancel',
+  ATTR_LABEL_CPC_LEGINT_REJECTBOX_TEXT  : 'labl_cpc_legint_rejectbox_text',
+  ATTR_LABEL_CPC_LEGINT_BOX_TEXT  : 'labl_cpc_legint_box_text',
+  ATTR_LABEL_CPC_INFOBOX_TITLE  : 'labl_cpc_infobox_title',
+  ATTR_LABEL_CPC_INFOBOX_DESCRIPTION  : 'labl_cpc_infobox_description',
 
   // CPC LEGAL DESCRIPTION labels
   ATTR_LABEL_CPC_LEGAL_PURPOSE_CONSENT: 'label_cpc_legal_purpose_consent',

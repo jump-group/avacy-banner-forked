@@ -38,7 +38,13 @@ export function attachCpcHandlers() {
     domNode && domNode.addEventListener('click', deactivateAll, false);
   });
   forEach(document.querySelectorAll('.as-js-btn-object-all'), (domNode) => {
-    domNode && domNode.addEventListener('click', objectAllLegint, false);
+    domNode && domNode.addEventListener('change', objectAllLegint, false);
+  });
+  forEach(document.querySelectorAll('.as-js-vendor-legint-slider'), (domNode) => {
+    domNode && domNode.addEventListener('change', legintObjectStatus, false);
+  });
+  forEach(document.querySelectorAll('.js-legint-info'), (domNode) => {
+    domNode && domNode.addEventListener('click', triggerInfoPanel, false);
   });
 }
 
@@ -152,7 +158,7 @@ const PurposeContainerSnippet = ({ id, header, text, legalText, value, key }) =>
 const snippetPurposeLengint = (id, key, value) => {
   return `
     <div class="LegintBlock">
-      <span class="LegintBlock__Description">Permetti a questo servizio di trattare i tuoi dati sulla base di un interesse legittimo.</span>
+      <span class="LegintBlock__Description">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGINT_BOX_TEXT)} <span class="LegintRejectPanel__Info js-legint-info">&#9432;</span></span>
       <label class="LegintBlock__Input">
           <input data-id="${id}" id="as-js-legint-slider-${id}" class="as-js-${key}-legint-slider" type="checkbox" name="oil-cpc-legint-${id}" value="${value}" checked/>
           <span class="LegintBlock__CheckBox"></span>
@@ -180,7 +186,16 @@ const buildIabVendorList = () => {
     <div class="as-oil-cpc__row-thirdPartiesText">${getLabel(OIL_LABELS.ATTR_LABEL_THIRD_PARTY_DESCRIPTION)}</div>
   `}
   <div class="as-oil-cpc__object-legint">
-    <span class="as-oil-cpc__object-legint-btn as-js-btn-object-all">${getLabel(OIL_LABELS.ATTR_LABEL_THIRD_PARTY_OBJECT_LEGINT_BTN)}</span>
+    <div class="LegintRejectPanel">
+      <span class="LegintRejectPanel__Title">
+        ${getLabel(OIL_LABELS.ATTR_LABEL_THIRD_PARTY_OBJECT_LEGINT_BTN)}
+        <span class="LegintRejectPanel__Info js-legint-info">&#9432;</span>
+      </span>
+      <label class="LegintRejectPanel__Switch as-oil-cpc__switch">
+        <input class="as-js-btn-object-all" type="checkbox" name="oil-cpc-object-legint" value="" checked/>
+        <span class="as-oil-cpc__slider"></span>
+      </label>
+    </div>
   </div>
 <div id="as-js-third-parties-list">
   ${buildIabVendorEntries()}
@@ -285,7 +300,7 @@ const snippetLegalDescription = (list, index ,category) => {
 const snippetLengint = (id) => {
   return `
     <div class="LegintBlock">
-      <span class="LegintBlock__Description">Permetti a questo servizio di trattare i tuoi dati sulla base di un interesse legittimo.</span>
+      <span class="LegintBlock__Description">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGINT_BOX_TEXT)} <span class="LegintRejectPanel__Info js-legint-info">&#9432;</span></span>
       <label class="LegintBlock__Input">
         <input data-id="${id}" id="as-js-vendor-legint-slider-${id}" class="as-js-vendor-legint-slider" type="checkbox" name="oil-cpc-purpose" value="" checked/>
         <span class="LegintBlock__CheckBox"></span>
@@ -355,10 +370,42 @@ export function deactivateAll() {
 }
 
 export function objectAllLegint() {
+  let objectSliderStatus = document.querySelector('.as-js-btn-object-all').checked;
   let elements = document.querySelectorAll('.as-js-vendor-legint-slider');
   forEach(elements, (domNode) => {
-    domNode && (domNode.checked = false);
+    domNode && (domNode.checked = objectSliderStatus);
   });
+}
+
+export function legintObjectStatus() {
+  let elements = document.querySelectorAll('.as-js-vendor-legint-slider');
+  document.querySelector('.as-js-btn-object-all').checked = Array.prototype.slice.call(elements).some(x => x.checked);
+}
+
+export function triggerInfoPanel() {
+  let panel = document.querySelector('.InfoPanel');
+  let wrapper = document.querySelector('.as-oil');
+  if (!panel && wrapper) {    
+    let infobox = document.createElement('div');
+    infobox.className = 'InfoPanel as-oil-content-overlay';
+    infobox.innerHTML = `<div class="InfoPanel__Wrapper as-oil-l-wrapper-layout-max-width">
+      <span class="InfoPanel__Close js-close-infobox">&times</span>
+      <h1 class="InfoPanel__Title">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_INFOBOX_TITLE)}</h1>
+      <div class="InfoPanel__Content">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_INFOBOX_DESCRIPTION)}</div>
+      
+    </div>`;
+    wrapper.appendChild(infobox);
+  }
+
+  document.querySelector('.js-close-infobox').addEventListener('click', closeInfobox, false)
+}
+
+export function closeInfobox() {
+  let panel = document.querySelector('.InfoPanel');
+  let wrapper = document.querySelector('.as-oil');
+  if (panel && wrapper) {    
+    wrapper.removeChild(panel);
+  }
 }
 
 function switchLeftMenuClass(element) {

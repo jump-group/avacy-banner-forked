@@ -3,6 +3,7 @@
         "text_color_primary": "#f5f5f5",
         "text_color_secondary": "#262628",
         "background_color": "#262626",
+        "secondary_background_color": "#dedede",
         "accent_primary": "#0099f2",
         "btn_primary_background": "#3f7edf",
         "btn_primary_background_hover": "#1CA5F1",

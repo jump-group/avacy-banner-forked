@@ -390,8 +390,8 @@ export function triggerInfoPanel() {
     infobox.className = 'InfoPanel as-oil-content-overlay';
     infobox.innerHTML = `<div class="InfoPanel__Wrapper as-oil-l-wrapper-layout-max-width">
       <span class="InfoPanel__Close js-close-infobox">&times</span>
-      <h1 class="InfoPanel__Title">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_INFOBOX_TITLE)}</h1>
-      <div class="InfoPanel__Content">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_INFOBOX_DESCRIPTION)}</div>
+      <h1 class="InfoPanel__Title">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGINT_INFOBOX_TITLE)}</h1>
+      <div class="InfoPanel__Content">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGINT_INFOBOX_DESCRIPTION)}</div>
       
     </div>`;
     wrapper.appendChild(infobox);

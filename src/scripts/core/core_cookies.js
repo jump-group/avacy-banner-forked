@@ -230,7 +230,7 @@ export function isVerboseCookieSet() {
 
 export function removeSubscriberCookies() {
   Cookie.remove(OIL_DOMAIN_COOKIE_NAME);
-  Cookie.remove(OIL_DOMAIN_COOKIE_NAME, { expires: expires_in_days, secure: true, sameSite: 'none' });
+  Cookie.remove(OIL_DOMAIN_COOKIE_NAME, { expires: getCookieExpireInDays(), secure: true, sameSite: 'none' });
   
   Cookie.remove(OIL_SESSION_COOKIE_NAME);
 }

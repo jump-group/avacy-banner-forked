@@ -112,7 +112,7 @@ export function setSoiCookieWithPoiCookieData(poiCookieJson) {
         policyVersion: policyVersion
       };
 
-      setDomainCookie(cookieConfig.name, cookie, cookieConfig.expires);
+      setDomainCookie(cookieConfig.name, cookie, cookieConfig.expires, true);
       resolve(cookie);
     }).catch(error => reject(error));
   });
@@ -198,7 +198,7 @@ export function setSoiCookie(privacySettings) {
 
   return new Promise((resolve, reject) => {
     buildSoiCookie(privacySettings).then((cookie) => {
-      setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays());
+      setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays(), true);
       resolve(cookie);
     }).catch(error => reject(error));
   });

@@ -35,7 +35,11 @@ export function setDomainCookie(name, value, expires_in_days, secure) {
   if (secure) {
     Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
   } else {
-    Cookie.set(name, value, { expires: expires_in_days});
+    if (inIframe()) {
+      Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
+    } else {
+      Cookie.set(name, value, { expires: expires_in_days});
+    }
   }
 }
 
@@ -108,7 +112,7 @@ export function setSoiCookieWithPoiCookieData(poiCookieJson) {
         policyVersion: policyVersion
       };
 
-      setDomainCookie(cookieConfig.name, cookie, cookieConfig.expires);
+      setDomainCookie(cookieConfig.name, cookie, cookieConfig.expires, true);
       resolve(cookie);
     }).catch(error => reject(error));
   });
@@ -194,7 +198,7 @@ export function setSoiCookie(privacySettings) {
 
   return new Promise((resolve, reject) => {
     buildSoiCookie(privacySettings).then((cookie) => {
-      setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays());
+      setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays(), true);
       resolve(cookie);
     }).catch(error => reject(error));
   });
@@ -226,6 +230,8 @@ export function isVerboseCookieSet() {
 
 export function removeSubscriberCookies() {
   Cookie.remove(OIL_DOMAIN_COOKIE_NAME);
+  Cookie.remove(OIL_DOMAIN_COOKIE_NAME, { expires: getCookieExpireInDays(), secure: true, sameSite: 'none' });
+  
   Cookie.remove(OIL_SESSION_COOKIE_NAME);
 }
 
@@ -256,7 +262,7 @@ export function isBrowserCookieEnabled() {
   return result;
 }
 
-function inIframe() {
+export function inIframe() {
   try {
       return window.self !== window.top;
   } catch (e) {

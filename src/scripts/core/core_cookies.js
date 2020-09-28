@@ -32,6 +32,8 @@ export function setSessionCookie(name, value) {
 export function setDomainCookie(name, value, expires_in_days, secure) {
   // decoded consent data must not be written to the cookie
   delete value.consentData;
+
+  //SE QUANDO CHIAMO QUESTA FUNZIONE NON PASSO IL PARAMETRO TRUE, LUI ANDRÀ SEMPRE IN ELSE
   if (secure) {
     Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
   } else {

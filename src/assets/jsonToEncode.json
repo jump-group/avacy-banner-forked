@@ -1,0 +1,1741 @@
+{
+    "purpose": {
+        "1": {
+            "consent": false
+        },
+        "2": {
+            "consent": false,
+            "legint": true
+        },
+        "3": {
+            "consent": false,
+            "legint": true
+        },
+        "4": {
+            "consent": false,
+            "legint": true
+        },
+        "5": {
+            "consent": false,
+            "legint": true
+        },
+        "6": {
+            "consent": false,
+            "legint": true
+        },
+        "7": {
+            "consent": false,
+            "legint": true
+        },
+        "8": {
+            "consent": false,
+            "legint": true
+        },
+        "9": {
+            "consent": false,
+            "legint": true
+        },
+        "10": {
+            "consent": false,
+            "legint": true
+        }
+    },
+    "specialFeature": {
+        "1": {
+            "optin": false
+        },
+        "2": {
+            "optin": false
+        }
+    },
+    "vendor": {
+        "1": {
+            "consent": false
+        },
+        "2": {
+            "consent": false,
+            "legint": true
+        },
+        "4": {
+            "consent": false
+        },
+        "6": {
+            "consent": false
+        },
+        "7": {
+            "consent": false
+        },
+        "8": {
+            "consent": false,
+            "legint": true
+        },
+        "10": {
+            "consent": false
+        },
+        "11": {
+            "consent": false,
+            "legint": true
+        },
+        "12": {
+            "consent": false
+        },
+        "13": {
+            "consent": false
+        },
+        "14": {
+            "consent": false,
+            "legint": true
+        },
+        "15": {
+            "consent": false,
+            "legint": true
+        },
+        "16": {
+            "consent": false
+        },
+        "18": {
+            "consent": false
+        },
+        "20": {
+            "consent": false,
+            "legint": true
+        },
+        "21": {
+            "consent": false,
+            "legint": true
+        },
+        "22": {
+            "consent": false
+        },
+        "23": {
+            "consent": false,
+            "legint": true
+        },
+        "24": {
+            "consent": false
+        },
+        "25": {
+            "consent": false,
+            "legint": true
+        },
+        "26": {
+            "consent": false
+        },
+        "28": {
+            "consent": false,
+            "legint": true
+        },
+        "30": {
+            "consent": false,
+            "legint": true
+        },
+        "31": {
+            "consent": false,
+            "legint": true
+        },
+        "32": {
+            "consent": false,
+            "legint": true
+        },
+        "33": {
+            "consent": false,
+            "legint": true
+        },
+        "34": {
+            "consent": false,
+            "legint": true
+        },
+        "36": {
+            "consent": false
+        },
+        "37": {
+            "consent": false
+        },
+        "39": {
+            "consent": false
+        },
+        "40": {
+            "consent": false
+        },
+        "41": {
+            "consent": false
+        },
+        "42": {
+            "consent": false,
+            "legint": true
+        },
+        "44": {
+            "consent": false
+        },
+        "45": {
+            "consent": false
+        },
+        "47": {
+            "consent": false
+        },
+        "49": {
+            "consent": false,
+            "legint": true
+        },
+        "50": {
+            "consent": false
+        },
+        "51": {
+            "consent": false
+        },
+        "52": {
+            "consent": false,
+            "legint": true
+        },
+        "53": {
+            "consent": false
+        },
+        "57": {
+            "consent": false,
+            "legint": true
+        },
+        "58": {
+            "consent": false
+        },
+        "59": {
+            "consent": false
+        },
+        "60": {
+            "consent": false,
+            "legint": true
+        },
+        "61": {
+            "consent": false
+        },
+        "62": {
+            "consent": false,
+            "legint": true
+        },
+        "63": {
+            "consent": false,
+            "legint": true
+        },
+        "65": {
+            "consent": false
+        },
+        "66": {
+            "consent": false
+        },
+        "67": {
+            "consent": false,
+            "legint": true
+        },
+        "68": {
+            "consent": false,
+            "legint": true
+        },
+        "69": {
+            "consent": false
+        },
+        "70": {
+            "consent": false
+        },
+        "71": {
+            "consent": false
+        },
+        "72": {
+            "consent": false
+        },
+        "73": {
+            "consent": false
+        },
+        "76": {
+            "consent": false,
+            "legint": true
+        },
+        "77": {
+            "consent": false
+        },
+        "78": {
+            "consent": false
+        },
+        "79": {
+            "consent": false,
+            "legint": true
+        },
+        "80": {
+            "consent": false
+        },
+        "82": {
+            "consent": false,
+            "legint": true
+        },
+        "83": {
+            "consent": false
+        },
+        "84": {
+            "consent": false
+        },
+        "85": {
+            "consent": false,
+            "legint": true
+        },
+        "86": {
+            "consent": false,
+            "legint": true
+        },
+        "88": {
+            "consent": false,
+            "legint": true
+        },
+        "89": {
+            "consent": false,
+            "legint": true
+        },
+        "90": {
+            "consent": false
+        },
+        "91": {
+            "consent": false
+        },
+        "92": {
+            "consent": false,
+            "legint": true
+        },
+        "93": {
+            "consent": false,
+            "legint": true
+        },
+        "94": {
+            "consent": false
+        },
+        "95": {
+            "consent": false,
+            "legint": true
+        },
+        "97": {
+            "consent": false
+        },
+        "98": {
+            "consent": false,
+            "legint": true
+        },
+        "100": {
+            "consent": false,
+            "legint": true
+        },
+        "101": {
+            "consent": false
+        },
+        "102": {
+            "consent": false,
+            "legint": true
+        },
+        "104": {
+            "consent": false,
+            "legint": true
+        },
+        "108": {
+            "consent": false
+        },
+        "109": {
+            "consent": false,
+            "legint": true
+        },
+        "110": {
+            "consent": false
+        },
+        "111": {
+            "consent": false,
+            "legint": true
+        },
+        "114": {
+            "consent": false
+        },
+        "115": {
+            "consent": false,
+            "legint": true
+        },
+        "119": {
+            "consent": false
+        },
+        "120": {
+            "consent": false
+        },
+        "122": {
+            "consent": false,
+            "legint": true
+        },
+        "124": {
+            "consent": false
+        },
+        "126": {
+            "consent": false
+        },
+        "127": {
+            "consent": false,
+            "legint": true
+        },
+        "128": {
+            "consent": false
+        },
+        "129": {
+            "consent": false
+        },
+        "130": {
+            "consent": false
+        },
+        "131": {
+            "consent": false
+        },
+        "132": {
+            "consent": false,
+            "legint": true
+        },
+        "133": {
+            "consent": false
+        },
+        "134": {
+            "consent": false,
+            "legint": true
+        },
+        "136": {
+            "consent": false,
+            "legint": true
+        },
+        "137": {
+            "consent": false,
+            "legint": true
+        },
+        "138": {
+            "consent": false,
+            "legint": true
+        },
+        "139": {
+            "consent": false
+        },
+        "140": {
+            "consent": false
+        },
+        "141": {
+            "consent": false
+        },
+        "142": {
+            "consent": false,
+            "legint": true
+        },
+        "143": {
+            "consent": false
+        },
+        "144": {
+            "consent": false
+        },
+        "145": {
+            "consent": false,
+            "legint": true
+        },
+        "147": {
+            "consent": false
+        },
+        "149": {
+            "consent": false
+        },
+        "150": {
+            "consent": false,
+            "legint": true
+        },
+        "152": {
+            "consent": false,
+            "legint": true
+        },
+        "153": {
+            "consent": false
+        },
+        "154": {
+            "consent": false,
+            "legint": true
+        },
+        "155": {
+            "consent": false
+        },
+        "157": {
+            "consent": false
+        },
+        "158": {
+            "consent": false
+        },
+        "160": {
+            "consent": false
+        },
+        "161": {
+            "consent": false
+        },
+        "162": {
+            "consent": false
+        },
+        "163": {
+            "consent": false,
+            "legint": true
+        },
+        "164": {
+            "consent": false,
+            "legint": true
+        },
+        "165": {
+            "consent": false,
+            "legint": true
+        },
+        "167": {
+            "consent": false
+        },
+        "168": {
+            "consent": false
+        },
+        "173": {
+            "consent": false
+        },
+        "174": {
+            "consent": false
+        },
+        "177": {
+            "consent": false,
+            "legint": true
+        },
+        "178": {
+            "consent": false
+        },
+        "179": {
+            "consent": false,
+            "legint": true
+        },
+        "183": {
+            "consent": false,
+            "legint": true
+        },
+        "184": {
+            "consent": false
+        },
+        "185": {
+            "consent": false,
+            "legint": true
+        },
+        "190": {
+            "consent": false,
+            "legint": true
+        },
+        "192": {
+            "consent": false
+        },
+        "193": {
+            "consent": false
+        },
+        "194": {
+            "consent": false,
+            "legint": true
+        },
+        "195": {
+            "consent": false,
+            "legint": true
+        },
+        "199": {
+            "consent": false
+        },
+        "200": {
+            "consent": false,
+            "legint": true
+        },
+        "202": {
+            "consent": false,
+            "legint": true
+        },
+        "203": {
+            "consent": false,
+            "legint": true
+        },
+        "205": {
+            "consent": false,
+            "legint": true
+        },
+        "206": {
+            "consent": false
+        },
+        "209": {
+            "consent": false,
+            "legint": true
+        },
+        "210": {
+            "consent": false,
+            "legint": true
+        },
+        "211": {
+            "consent": false
+        },
+        "212": {
+            "consent": false,
+            "legint": true
+        },
+        "213": {
+            "consent": false
+        },
+        "215": {
+            "consent": false,
+            "legint": true
+        },
+        "216": {
+            "consent": false
+        },
+        "217": {
+            "consent": false,
+            "legint": true
+        },
+        "218": {
+            "consent": false,
+            "legint": true
+        },
+        "223": {
+            "consent": false,
+            "legint": true
+        },
+        "224": {
+            "consent": false,
+            "legint": true
+        },
+        "226": {
+            "consent": false,
+            "legint": true
+        },
+        "227": {
+            "consent": false
+        },
+        "228": {
+            "consent": false
+        },
+        "231": {
+            "consent": false,
+            "legint": true
+        },
+        "234": {
+            "consent": false,
+            "legint": true
+        },
+        "235": {
+            "consent": false
+        },
+        "238": {
+            "consent": false,
+            "legint": true
+        },
+        "239": {
+            "consent": false,
+            "legint": true
+        },
+        "240": {
+            "consent": false,
+            "legint": true
+        },
+        "241": {
+            "consent": false
+        },
+        "242": {
+            "consent": false
+        },
+        "243": {
+            "consent": false
+        },
+        "244": {
+            "consent": false
+        },
+        "246": {
+            "consent": false,
+            "legint": true
+        },
+        "248": {
+            "consent": false,
+            "legint": true
+        },
+        "249": {
+            "consent": false
+        },
+        "250": {
+            "consent": false
+        },
+        "251": {
+            "consent": false,
+            "legint": true
+        },
+        "252": {
+            "consent": false,
+            "legint": true
+        },
+        "253": {
+            "consent": false,
+            "legint": true
+        },
+        "254": {
+            "consent": false
+        },
+        "255": {
+            "consent": false,
+            "legint": true
+        },
+        "256": {
+            "consent": false,
+            "legint": true
+        },
+        "259": {
+            "consent": false,
+            "legint": true
+        },
+        "262": {
+            "consent": false
+        },
+        "263": {
+            "consent": false,
+            "legint": true
+        },
+        "264": {
+            "consent": false,
+            "legint": true
+        },
+        "265": {
+            "consent": false,
+            "legint": true
+        },
+        "270": {
+            "consent": false
+        },
+        "272": {
+            "consent": false
+        },
+        "273": {
+            "consent": false,
+            "legint": true
+        },
+        "274": {
+            "consent": false
+        },
+        "275": {
+            "consent": false
+        },
+        "277": {
+            "consent": false,
+            "legint": true
+        },
+        "278": {
+            "consent": false,
+            "legint": true
+        },
+        "279": {
+            "consent": false,
+            "legint": true
+        },
+        "280": {
+            "consent": false,
+            "legint": true
+        },
+        "281": {
+            "consent": false
+        },
+        "282": {
+            "consent": false,
+            "legint": true
+        },
+        "284": {
+            "consent": false,
+            "legint": true
+        },
+        "285": {
+            "consent": false
+        },
+        "289": {
+            "consent": false
+        },
+        "290": {
+            "consent": false
+        },
+        "293": {
+            "consent": false
+        },
+        "294": {
+            "consent": false
+        },
+        "297": {
+            "consent": false,
+            "legint": true
+        },
+        "299": {
+            "consent": false
+        },
+        "301": {
+            "consent": false
+        },
+        "302": {
+            "consent": false
+        },
+        "303": {
+            "consent": false
+        },
+        "304": {
+            "consent": false
+        },
+        "310": {
+            "consent": false,
+            "legint": true
+        },
+        "311": {
+            "consent": false
+        },
+        "312": {
+            "consent": false
+        },
+        "314": {
+            "consent": false
+        },
+        "315": {
+            "consent": false
+        },
+        "316": {
+            "consent": false
+        },
+        "317": {
+            "consent": false
+        },
+        "318": {
+            "consent": false,
+            "legint": true
+        },
+        "319": {
+            "consent": false,
+            "legint": true
+        },
+        "323": {
+            "consent": false,
+            "legint": true
+        },
+        "325": {
+            "consent": false
+        },
+        "328": {
+            "consent": false
+        },
+        "329": {
+            "consent": false
+        },
+        "331": {
+            "consent": false,
+            "legint": true
+        },
+        "333": {
+            "consent": false
+        },
+        "336": {
+            "consent": false,
+            "legint": true
+        },
+        "337": {
+            "consent": false
+        },
+        "343": {
+            "consent": false,
+            "legint": true
+        },
+        "345": {
+            "consent": false
+        },
+        "347": {
+            "consent": false,
+            "legint": true
+        },
+        "350": {
+            "consent": false
+        },
+        "351": {
+            "consent": false
+        },
+        "354": {
+            "consent": false,
+            "legint": true
+        },
+        "358": {
+            "consent": false
+        },
+        "359": {
+            "consent": false
+        },
+        "360": {
+            "consent": false,
+            "legint": true
+        },
+        "361": {
+            "consent": false,
+            "legint": true
+        },
+        "365": {
+            "consent": false,
+            "legint": true
+        },
+        "368": {
+            "consent": false
+        },
+        "371": {
+            "consent": false,
+            "legint": true
+        },
+        "373": {
+            "consent": false,
+            "legint": true
+        },
+        "374": {
+            "consent": false
+        },
+        "375": {
+            "consent": false
+        },
+        "377": {
+            "consent": false,
+            "legint": true
+        },
+        "380": {
+            "consent": false
+        },
+        "381": {
+            "consent": false
+        },
+        "382": {
+            "consent": false,
+            "legint": true
+        },
+        "384": {
+            "consent": false,
+            "legint": true
+        },
+        "385": {
+            "consent": false,
+            "legint": true
+        },
+        "387": {
+            "consent": false
+        },
+        "388": {
+            "consent": false,
+            "legint": true
+        },
+        "394": {
+            "consent": false,
+            "legint": true
+        },
+        "402": {
+            "consent": false
+        },
+        "408": {
+            "consent": false
+        },
+        "409": {
+            "consent": false,
+            "legint": true
+        },
+        "410": {
+            "consent": false
+        },
+        "412": {
+            "consent": false
+        },
+        "413": {
+            "consent": false
+        },
+        "415": {
+            "consent": false
+        },
+        "416": {
+            "consent": false
+        },
+        "418": {
+            "consent": false
+        },
+        "422": {
+            "consent": false
+        },
+        "423": {
+            "consent": false
+        },
+        "424": {
+            "consent": false
+        },
+        "428": {
+            "consent": false,
+            "legint": true
+        },
+        "429": {
+            "consent": false
+        },
+        "431": {
+            "consent": false,
+            "legint": true
+        },
+        "434": {
+            "consent": false,
+            "legint": true
+        },
+        "435": {
+            "consent": false
+        },
+        "436": {
+            "consent": false,
+            "legint": true
+        },
+        "438": {
+            "consent": false
+        },
+        "439": {
+            "consent": false
+        },
+        "440": {
+            "consent": false,
+            "legint": true
+        },
+        "444": {
+            "consent": false,
+            "legint": true
+        },
+        "447": {
+            "consent": false
+        },
+        "448": {
+            "consent": false
+        },
+        "450": {
+            "consent": false
+        },
+        "455": {
+            "consent": false,
+            "legint": true
+        },
+        "466": {
+            "consent": false
+        },
+        "467": {
+            "consent": false,
+            "legint": true
+        },
+        "468": {
+            "consent": false,
+            "legint": true
+        },
+        "475": {
+            "consent": false,
+            "legint": true
+        },
+        "479": {
+            "consent": false
+        },
+        "482": {
+            "consent": false
+        },
+        "484": {
+            "consent": false,
+            "legint": true
+        },
+        "486": {
+            "consent": false
+        },
+        "488": {
+            "consent": false,
+            "legint": true
+        },
+        "490": {
+            "consent": false
+        },
+        "491": {
+            "consent": false
+        },
+        "493": {
+            "consent": false
+        },
+        "495": {
+            "consent": false
+        },
+        "498": {
+            "consent": false,
+            "legint": true
+        },
+        "501": {
+            "consent": false
+        },
+        "502": {
+            "consent": false,
+            "legint": true
+        },
+        "505": {
+            "consent": false
+        },
+        "507": {
+            "consent": false
+        },
+        "508": {
+            "consent": false
+        },
+        "509": {
+            "consent": false
+        },
+        "511": {
+            "consent": false,
+            "legint": true
+        },
+        "512": {
+            "consent": false
+        },
+        "516": {
+            "consent": false
+        },
+        "517": {
+            "consent": false
+        },
+        "521": {
+            "consent": false
+        },
+        "524": {
+            "consent": false
+        },
+        "527": {
+            "consent": false
+        },
+        "528": {
+            "consent": false,
+            "legint": true
+        },
+        "530": {
+            "consent": false
+        },
+        "531": {
+            "consent": false
+        },
+        "535": {
+            "consent": false
+        },
+        "536": {
+            "consent": false
+        },
+        "539": {
+            "consent": false,
+            "legint": true
+        },
+        "543": {
+            "consent": false,
+            "legint": true
+        },
+        "544": {
+            "consent": false,
+            "legint": true
+        },
+        "545": {
+            "consent": false
+        },
+        "546": {
+            "consent": false,
+            "legint": true
+        },
+        "549": {
+            "consent": false
+        },
+        "550": {
+            "consent": false
+        },
+        "553": {
+            "consent": false
+        },
+        "554": {
+            "consent": false,
+            "legint": true
+        },
+        "556": {
+            "consent": false
+        },
+        "559": {
+            "consent": false,
+            "legint": true
+        },
+        "561": {
+            "consent": false
+        },
+        "565": {
+            "consent": false
+        },
+        "568": {
+            "consent": false
+        },
+        "569": {
+            "consent": false
+        },
+        "570": {
+            "consent": false
+        },
+        "571": {
+            "consent": false
+        },
+        "573": {
+            "consent": false,
+            "legint": true
+        },
+        "574": {
+            "consent": false
+        },
+        "577": {
+            "consent": false,
+            "legint": true
+        },
+        "580": {
+            "consent": false,
+            "legint": true
+        },
+        "584": {
+            "consent": false
+        },
+        "587": {
+            "consent": false
+        },
+        "590": {
+            "consent": false,
+            "legint": true
+        },
+        "591": {
+            "consent": false
+        },
+        "593": {
+            "consent": false
+        },
+        "596": {
+            "consent": false,
+            "legint": true
+        },
+        "598": {
+            "consent": false,
+            "legint": true
+        },
+        "599": {
+            "consent": false,
+            "legint": true
+        },
+        "601": {
+            "consent": false
+        },
+        "602": {
+            "consent": false
+        },
+        "606": {
+            "consent": false
+        },
+        "607": {
+            "consent": false
+        },
+        "609": {
+            "consent": false
+        },
+        "610": {
+            "consent": false,
+            "legint": true
+        },
+        "612": {
+            "consent": false
+        },
+        "613": {
+            "consent": false,
+            "legint": true
+        },
+        "614": {
+            "consent": false
+        },
+        "615": {
+            "consent": false
+        },
+        "617": {
+            "consent": false
+        },
+        "618": {
+            "consent": false
+        },
+        "620": {
+            "consent": false,
+            "legint": true
+        },
+        "621": {
+            "consent": false,
+            "legint": true
+        },
+        "624": {
+            "consent": false
+        },
+        "625": {
+            "consent": false
+        },
+        "626": {
+            "consent": false
+        },
+        "628": {
+            "consent": false
+        },
+        "630": {
+            "consent": false,
+            "legint": true
+        },
+        "631": {
+            "consent": false
+        },
+        "638": {
+            "consent": false
+        },
+        "639": {
+            "consent": false
+        },
+        "644": {
+            "consent": false
+        },
+        "645": {
+            "consent": false,
+            "legint": true
+        },
+        "646": {
+            "consent": false
+        },
+        "647": {
+            "consent": false,
+            "legint": true
+        },
+        "648": {
+            "consent": false
+        },
+        "649": {
+            "consent": false,
+            "legint": true
+        },
+        "650": {
+            "consent": false
+        },
+        "652": {
+            "consent": false
+        },
+        "655": {
+            "consent": false
+        },
+        "656": {
+            "consent": false,
+            "legint": true
+        },
+        "657": {
+            "consent": false,
+            "legint": true
+        },
+        "658": {
+            "consent": false
+        },
+        "659": {
+            "consent": false,
+            "legint": true
+        },
+        "662": {
+            "consent": false
+        },
+        "663": {
+            "consent": false
+        },
+        "664": {
+            "consent": false,
+            "legint": true
+        },
+        "665": {
+            "consent": false
+        },
+        "666": {
+            "consent": false,
+            "legint": true
+        },
+        "667": {
+            "consent": false,
+            "legint": true
+        },
+        "668": {
+            "consent": false
+        },
+        "672": {
+            "consent": false
+        },
+        "674": {
+            "consent": false
+        },
+        "675": {
+            "consent": false
+        },
+        "676": {
+            "consent": false
+        },
+        "678": {
+            "consent": false,
+            "legint": true
+        },
+        "681": {
+            "consent": false
+        },
+        "682": {
+            "consent": false,
+            "legint": true
+        },
+        "683": {
+            "consent": false
+        },
+        "684": {
+            "consent": false,
+            "legint": true
+        },
+        "685": {
+            "consent": false
+        },
+        "686": {
+            "consent": false
+        },
+        "687": {
+            "consent": false
+        },
+        "688": {
+            "consent": false,
+            "legint": true
+        },
+        "690": {
+            "consent": false
+        },
+        "691": {
+            "consent": false
+        },
+        "694": {
+            "consent": false,
+            "legint": true
+        },
+        "697": {
+            "consent": false,
+            "legint": true
+        },
+        "699": {
+            "consent": false,
+            "legint": true
+        },
+        "702": {
+            "consent": false
+        },
+        "703": {
+            "consent": false
+        },
+        "706": {
+            "consent": false,
+            "legint": true
+        },
+        "707": {
+            "consent": false
+        },
+        "708": {
+            "consent": false
+        },
+        "709": {
+            "consent": false,
+            "legint": true
+        },
+        "711": {
+            "consent": false
+        },
+        "712": {
+            "consent": false
+        },
+        "713": {
+            "consent": false
+        },
+        "714": {
+            "consent": false,
+            "legint": true
+        },
+        "716": {
+            "consent": false
+        },
+        "719": {
+            "consent": false
+        },
+        "720": {
+            "consent": false,
+            "legint": true
+        },
+        "721": {
+            "consent": false,
+            "legint": true
+        },
+        "722": {
+            "consent": false
+        },
+        "723": {
+            "consent": false
+        },
+        "725": {
+            "consent": false
+        },
+        "727": {
+            "consent": false
+        },
+        "728": {
+            "consent": false,
+            "legint": true
+        },
+        "729": {
+            "consent": false,
+            "legint": true
+        },
+        "730": {
+            "consent": false,
+            "legint": true
+        },
+        "731": {
+            "consent": false
+        },
+        "732": {
+            "consent": false
+        },
+        "733": {
+            "consent": false
+        },
+        "734": {
+            "consent": false
+        },
+        "735": {
+            "consent": false
+        },
+        "736": {
+            "consent": false,
+            "legint": true
+        },
+        "737": {
+            "consent": false
+        },
+        "738": {
+            "consent": false,
+            "legint": true
+        },
+        "739": {
+            "consent": false
+        },
+        "740": {
+            "consent": false,
+            "legint": true
+        },
+        "741": {
+            "consent": false
+        },
+        "742": {
+            "consent": false
+        },
+        "743": {
+            "consent": false
+        },
+        "744": {
+            "consent": false,
+            "legint": true
+        },
+        "745": {
+            "consent": false,
+            "legint": true
+        },
+        "746": {
+            "consent": false,
+            "legint": true
+        },
+        "747": {
+            "consent": false
+        },
+        "748": {
+            "consent": false
+        },
+        "749": {
+            "consent": false,
+            "legint": true
+        },
+        "750": {
+            "consent": false
+        },
+        "751": {
+            "consent": false,
+            "legint": true
+        },
+        "753": {
+            "consent": false
+        },
+        "754": {
+            "consent": false
+        },
+        "755": {
+            "consent": false,
+            "legint": true
+        },
+        "757": {
+            "consent": false
+        },
+        "758": {
+            "consent": false
+        },
+        "759": {
+            "consent": false
+        },
+        "760": {
+            "consent": false
+        },
+        "761": {
+            "consent": false
+        },
+        "762": {
+            "consent": false,
+            "legint": true
+        },
+        "764": {
+            "consent": false
+        },
+        "765": {
+            "consent": false
+        },
+        "766": {
+            "consent": false
+        },
+        "767": {
+            "consent": false
+        },
+        "768": {
+            "consent": false
+        },
+        "769": {
+            "consent": false
+        },
+        "770": {
+            "consent": false,
+            "legint": true
+        },
+        "771": {
+            "consent": false
+        },
+        "772": {
+            "consent": false,
+            "legint": true
+        },
+        "773": {
+            "consent": false
+        },
+        "774": {
+            "consent": false,
+            "legint": true
+        },
+        "775": {
+            "consent": false
+        },
+        "776": {
+            "consent": false
+        },
+        "777": {
+            "consent": false,
+            "legint": true
+        },
+        "778": {
+            "consent": false
+        },
+        "779": {
+            "consent": false
+        },
+        "780": {
+            "consent": false
+        },
+        "781": {
+            "consent": false,
+            "legint": true
+        },
+        "782": {
+            "consent": false
+        },
+        "783": {
+            "consent": false,
+            "legint": true
+        },
+        "784": {
+            "consent": false,
+            "legint": true
+        },
+        "785": {
+            "consent": false
+        },
+        "786": {
+            "consent": false,
+            "legint": true
+        },
+        "787": {
+            "consent": false
+        },
+        "788": {
+            "consent": false
+        },
+        "789": {
+            "consent": false
+        },
+        "790": {
+            "consent": false,
+            "legint": true
+        },
+        "791": {
+            "consent": false
+        },
+        "792": {
+            "consent": false,
+            "legint": true
+        },
+        "793": {
+            "consent": false
+        },
+        "794": {
+            "consent": false
+        },
+        "795": {
+            "consent": false
+        },
+        "796": {
+            "consent": false
+        },
+        "797": {
+            "consent": false
+        },
+        "798": {
+            "consent": false,
+            "legint": true
+        },
+        "799": {
+            "consent": false
+        },
+        "800": {
+            "consent": false
+        },
+        "801": {
+            "consent": false,
+            "legint": true
+        },
+        "802": {
+            "consent": false,
+            "legint": true
+        },
+        "803": {
+            "consent": false,
+            "legint": true
+        },
+        "804": {
+            "consent": false,
+            "legint": true
+        },
+        "805": {
+            "consent": false
+        },
+        "807": {
+            "consent": false,
+            "legint": true
+        },
+        "808": {
+            "consent": false,
+            "legint": true
+        },
+        "809": {
+            "consent": false
+        },
+        "811": {
+            "consent": false
+        }
+    }
+}

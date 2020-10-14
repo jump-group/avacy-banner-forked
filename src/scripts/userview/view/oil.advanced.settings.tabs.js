@@ -45,7 +45,7 @@ export function attachCpcHandlers() {
 const ContentSnippet = () => {
   return `
     <div class="as-oil-tabs-cpc__purpose-description as-oil-center as-oil-margin-top" id="as-oil-cpc-purposes">
-      ${getLabel(OIL_LABELS.ATTR_LABEL_CPC_PURPOSE_DESC)}
+      ${getLabel(OIL_LABELS.ATTR_LABEL_CPC_PURPOSE_TITLE)}
     </div>
     <div class="as-oil-cpc__middle">
       ${buildPurposeEntries(getPurposes().concat(getCustomPurposes()))}
@@ -67,7 +67,7 @@ const ContentSnippet = () => {
     </div>
     <hr>
       <div class="as-oil-l-item">
-        ${YesButton(`as-oil__btn-optin ${JS_CLASS_BUTTON_OPTIN}`)}
+        ${YesButton(`as-oil__btn-optin ${JS_CLASS_BUTTON_OPTIN}`, 'second_layer')}
       </div>
   `;
 };

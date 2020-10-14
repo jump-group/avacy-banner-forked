@@ -1,5 +1,10 @@
 @import "./_settings";
 
+/*
+  $background-color
+  $background-color-dark
+*/
+
 .as-oil-optout-confirm {
   position: absolute;
   width: 100%;
@@ -20,7 +25,7 @@
     text-align: center;
     min-width: 320px;
     max-width: 420px;
-    background-color: $background-color-light;
+    background-color: $background-color;
    
     margin: 0 auto;
     margin-top: 10%;

@@ -1,0 +1,136 @@
+// Mixins
+
+// Removes margins in stacked items,
+// margin-top is set to 0 for first item, margin-bottom is set to 0 for last item
+// <li>Foo</li>
+// <li>Bar</li>
+// <li>Baz</li>
+
+
+/*
+    $btn-primary-text-color
+    $btn-primary
+    $btn-text-grey
+    $btn-background-grey
+*/
+
+
+
+@mixin stack-items-remove-vertical-margins {
+    &:first-of-type {
+    margin-left: 0;
+    }
+
+    &:last-of-type {
+    margin-right: 0;
+    }
+}
+
+@mixin stack-items-remove-horizontal-margins {
+    &:first-of-type {
+    margin-top: 0;
+    }
+
+    &:last-of-type {
+    margin-bottom: 0;
+    }
+}
+
+@mixin clearfix {
+    &:after {
+    content: "";
+    display: table;
+    clear: both;
+    }
+}
+
+@mixin font-smoothing {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin box-model($model: border-box) {
+    &, & * {
+    box-sizing: $model;
+
+    &:before,
+    &:after {
+        box-sizing: $model;
+    }
+    }
+}
+
+// Button Styles
+@mixin oil-loi-btn-poi-soi-shared {
+    @include stack-items-remove-horizontal-margins;
+    @include btn-poi-soi-shared;
+    min-height: 40px;
+    margin: 0.5rem 0;
+}
+
+@mixin btn-shared {
+    min-width: 150px;
+    max-width: 220px;
+    min-height: 42px;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    font-size: 13px;
+    font-size: calc(13px * var(--avacy_font_base_scale));
+    font-weight: 700;
+    font-family: $font-family;
+    font-family: var(--avacy_font_family);
+    border: none;
+    border-radius: 7px;
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+    
+    @include media('<=phone') {
+        padding: 0;
+    }
+
+    @include media('>phone') {
+        font-size: 14px;
+        font-size: calc(14px * var(--avacy_font_base_scale));
+    }
+    
+
+}
+
+@mixin btn-blue {
+    @include btn-shared;
+
+    color: $btn-primary-text-color;
+    color: var(--avacy_btn_primary_text_color);
+    background-color: $btn-primary;
+    background-color: var(--avacy_btn_primary_background);
+
+    &:hover {
+        background-color: $btn-primary;
+        background-color: var(--avacy_btn_primary_background_hover);
+    }
+}
+
+@mixin btn-grey {
+    @include btn-shared;
+
+    color: $btn-text-grey;
+    color: var(--avacy_btn_secondary_text_color);
+    background-color: $btn-background-grey;
+    background-color: var(--avacy_btn_secondary_background);
+
+    &:hover {
+        background-color: $btn-background-grey;
+        background-color: var(--avacy_btn_secondary_background_hover);
+    }
+}
+
+// TABS CPC
+@mixin space-out($min, $max) {
+    @for $i from $min through $max {
+    &:first-child:nth-last-child(#{$i}),
+    &:first-child:nth-last-child(#{$i}) ~ & {
+        width: 1 / $i * 100%;
+    }
+    }
+}

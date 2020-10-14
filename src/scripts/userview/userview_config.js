@@ -1,5 +1,6 @@
 import { OIL_CONFIG, OIL_CONFIG_CPC_TYPES } from '../core/core_constants.js';
 import { getConfigValue, getLocale } from '../core/core_config.js';
+import DEFAULT_VISUAL from './visual/userview_default_visual_configuration';
 
 // tag::config-timeout[]
 const defaultTimeoutInSeconds = 60;
@@ -20,7 +21,33 @@ export function getTimeOutValue() {
 }
 
 export function getTheme() {
-  return getConfigValue(OIL_CONFIG.ATTR_THEME, 'light');
+  let visual_config = getVisualConfig();
+  let visual_default_config = getDefaultVisualConfig();
+  if (visual_config.theme !== undefined) {
+    return visual_config.theme; 
+  }
+
+  return visual_default_config.theme; 
+}
+
+export function getBannerPosition() {
+  let visual_config = getVisualConfig();
+  let visual_default_config = getDefaultVisualConfig();
+  if (visual_config.banner_position !== undefined) {
+    return visual_config.banner_position; 
+  }
+
+  return visual_default_config.banner_position; 
+}
+
+export function getBannerAnimation() {
+  let visual_config = getVisualConfig();
+  let visual_default_config = getDefaultVisualConfig();
+  if (visual_config.banner_animation !== undefined) {
+    return visual_config.banner_animation; 
+  }
+
+  return visual_default_config.banner_animation; 
 }
 
 export function getCpcType() {
@@ -29,6 +56,14 @@ export function getCpcType() {
 
 export function getLabel(labelName) {
   return getLabelWithDefault(labelName, labelName);
+}
+
+export function getVisualConfig() {
+  return getConfigValue(OIL_CONFIG.ATTR_VISUAL_CONFIGURATION, DEFAULT_VISUAL)
+}
+
+export function getDefaultVisualConfig() {
+  return getConfigValue(undefined, DEFAULT_VISUAL)
 }
 /**
  * Returns the label or the given default value if it could not be found in configuration.
@@ -43,6 +78,7 @@ export function getLabel(labelName) {
  */
 export function getLabelWithDefault(labelName, defaultLabel) {
   let defaultLocale = getLocale();
+
   return getConfigValue(labelName, (defaultLocale && defaultLocale.texts && defaultLocale.texts[labelName]) ? defaultLocale.texts[labelName] : defaultLabel);
 }
 

@@ -1,3 +1,5 @@
+//NOTE: no changes to be made @tcf2
+
 import { logInfo } from './core_log';
 import { OIL_GLOBAL_OBJECT_NAME } from './core_constants';
 import { getLocale } from './core_config';
@@ -183,13 +185,6 @@ export function getGlobalOilObject(name) {
 export function getLocaleVariantVersion() {
   let locale = getLocale();
   return (locale && locale.version) ? locale.version : 0;
-}
-
-/**
- * Gets the command collection from window object.
- */
-export function getCommandCollection() {
-  return window.__cmp ? window.__cmp.commandCollection : undefined;
 }
 
 /**

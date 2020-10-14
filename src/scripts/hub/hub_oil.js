@@ -28,7 +28,7 @@ export function initOilHub(locationString) {
       logError('Redirect mode without payload!');
     }
 
-    exports.redirectBack();
+    exports.redirectBack(locationString);
   } else {
     if (!initComplete) {
       removeMessageListener(handlerFunction);
@@ -98,7 +98,15 @@ function parseJson(data) {
   }
 }
 
-export function redirectBack() {
+export function redirectBack(locationString) {
   // To make it visible: setTimeout(function(){ window.location.replace(document.referrer); }, 2000);
-  window.location.replace(document.referrer);
+  let referrer;
+
+  if (getStringParam(locationString, 'backto')) {
+    referrer = getStringParam(locationString, 'backto');
+  } else {
+    referrer = document.referrer;
+  }
+
+  window.location.replace(referrer);
 }

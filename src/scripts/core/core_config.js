@@ -1,4 +1,4 @@
-import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION } from './core_constants';
+import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFAULT_VERSION } from './core_constants';
 import { logError, logInfo } from './core_log.js';
 import { getGlobalOilObject, isObject, OilVersion, setGlobalOilObject } from './core_utils';
 
@@ -101,6 +101,10 @@ export function getConfigVersion() {
   return getConfigValue(OIL_CONFIG.ATTR_CONFIG_VERSION, OIL_CONFIG_DEFAULT_VERSION);
 }
 
+export function getPolicyVersion() {
+  return getConfigValue(OIL_CONFIG.ATTR_POLICY_VERSION, OIL_POLICY_DEFAULT_VERSION);
+}
+
 export function isPreviewMode() {
   return getConfigValue(OIL_CONFIG.ATTR_PREVIEW_MODE, false);
 }
@@ -141,8 +145,8 @@ export function getLocaleUrl() {
   return getConfigValue(OIL_CONFIG.ATTR_LOCALE_URL, undefined);
 }
 
-export function getIabVendorListUrl() {
-  return getConfigValue(OIL_CONFIG.ATTR_IAB_VENDOR_LIST_URL, 'https://vendorlist.consensu.org/vendorlist.json');
+export function getIabVendorListDomain() {
+  return getConfigValue(OIL_CONFIG.ATTR_IAB_VENDOR_LIST_URL, 'https://cdn.jumpgroup.it/assets/'); //TODO: add our domain vendor list
 }
 
 export function getIabVendorBlacklist() {
@@ -170,7 +174,7 @@ export function getPoiGroupName() {
 }
 
 export function getCookieExpireInDays() {
-  return getConfigValue(OIL_CONFIG.ATTR_COOKIE_EXPIRES_IN_DAYS, 31);
+  return getConfigValue(OIL_CONFIG.ATTR_COOKIE_EXPIRES_IN_DAYS, 365);
 }
 
 export function getLocaleVariantName() {
@@ -194,6 +198,10 @@ export function getLanguageFromLocale(localeVariantName = 'en') {
   return localeVariantName.substring(0, 2);
 }
 
+export function getLanguageFromConfigObject() {
+    return getConfigValue(OIL_CONFIG.ATTR_LANGUAGE, 'en')
+}
+
 /**
  * Get the hub iFrame URL with protocol prefix for the current location
  * @returns {string, null} complete iframe orgin
@@ -204,7 +212,7 @@ export function getHubLocation() {
 
 export function getPoiListDirectory() {
   let hubOrigin = getHubOrigin();
-  return endsWith(hubOrigin,'/') ? hubOrigin.replace(/\/$/, '/poi-lists') : hubOrigin + '/poi-lists';
+  return endsWith(hubOrigin, '/') ? hubOrigin.replace(/\/$/, '/poi-lists') : hubOrigin + '/poi-lists';
 }
 
 function endsWith(str, suffix) {
@@ -223,7 +231,7 @@ export function getCustomPurposes() {
 }
 
 export function getCustomPurposeIds() {
-  return getCustomPurposes().map(({id}) => id);
+  return getCustomPurposes().map(({ id }) => id);
 }
 
 /**
@@ -240,6 +248,12 @@ export function getDefaultToOptin() {
 }
 
 export function getLocale() {
+  if (getConfigValue(OIL_CONFIG.ATTR_LANGUAGES_LIST, undefined)) {
+    let lang = getLanguageFromConfigObject();
+    let languages_list = getConfigValue(OIL_CONFIG.ATTR_LANGUAGES_LIST, undefined);
+    setConfigValue(OIL_CONFIG.ATTR_LOCALE, languages_list[lang]);
+  }
+
   return getConfigValue(OIL_CONFIG.ATTR_LOCALE, undefined);
 }
 

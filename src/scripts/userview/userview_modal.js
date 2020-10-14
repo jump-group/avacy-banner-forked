@@ -1,6 +1,6 @@
 import '../../styles/modal.scss';
 import { getGlobalOilObject, isObject, sendEventToHostSite } from '../core/core_utils';
-import { removeSubscriberCookies } from '../core/core_cookies';
+import { removeSubscriberCookies, getSoiCookie } from '../core/core_cookies';
 import {
   EVENT_NAME_ADVANCED_SETTINGS,
   EVENT_NAME_AS_PRIVACY_SELECTED,
@@ -24,14 +24,17 @@ import { oilNoCookiesTemplate } from './view/oil.no.cookies';
 import * as AdvancedSettingsStandard from './view/oil.advanced.settings.standard';
 import * as AdvancedSettingsTabs from './view/oil.advanced.settings.tabs';
 import { logError, logInfo } from '../core/core_log';
-import { getCpcType, getTheme, getTimeOutValue, isOptoutConfirmRequired, isPersistMinimumTracking } from './userview_config';
+import { getCpcType, getTheme, getTimeOutValue, isOptoutConfirmRequired, isPersistMinimumTracking, getBannerPosition, getBannerAnimation } from './userview_config';
 import { gdprApplies, getAdvancedSettingsPurposesDefault, isInfoBannerOnly, isPoiActive } from '../core/core_config';
 import { applyPrivacySettings, getPrivacySettings, getSoiConsentData } from './userview_privacy';
 import { activateOptoutConfirm } from './userview_optout_confirm';
-import { getPurposeIds, loadVendorListAndCustomVendorList } from '../core/core_vendor_lists';
+import { getPurposeIds, loadVendorListAndCustomVendorList} from '../core/core_vendor_lists';
+
 import { manageDomElementActivation } from '../core/core_tag_management';
 import { sendConsentInformationToCustomVendors } from '../core/core_custom_vendors';
-
+import { getAllPreferences } from '../core/core_consents';
+import { getVisualConfig, getDefaultVisualConfig } from '../userview/userview_config';
+import { updateTcfApi } from '../core/core_tcf_api';
 // Initialize our Oil wrapper and save it ...
 
 export const oilWrapper = defineOilWrapper;
@@ -70,8 +73,9 @@ export function renderOil(props) {
   }
 }
 
-export function oilShowPreferenceCenter() {
+export function oilShowPreferenceCenter(mode) {
   // We need the PowerGroupUi-Stuff for the CPC
+
   import('../poi-list/poi-info.js');
 
   // We need to make sure the vendor list is loaded before showing the cpc
@@ -82,10 +86,11 @@ export function oilShowPreferenceCenter() {
         poi_group_list.getGroupList().then(() => {
           let wrapper = document.querySelector('.as-oil');
           let entryNode = document.querySelector('#oil-preference-center');
-          if (wrapper) {
+          if (wrapper || mode === 'absolute') {
             renderOil({ advancedSettings: true });
           } else if (entryNode) {
             entryNode.innerHTML = findAdvancedSettingsInlineTemplate();
+            setWrapperStyles(entryNode);
             addOilHandlers(getOilDOMNodes());
           } else {
             logError('No wrapper for the CPC with the id #oil-preference-center was found.');
@@ -94,8 +99,9 @@ export function oilShowPreferenceCenter() {
           let consentData = getSoiConsentData();
           let currentPrivacySettings;
           if (consentData) {
-            currentPrivacySettings = consentData.getPurposesAllowed();
+            currentPrivacySettings = getAllPreferences(consentData);
           } else {
+            //TODO: getAdvancedSettingsPurposesDefault() @tc2
             currentPrivacySettings = getAdvancedSettingsPurposesDefault() ? getPurposeIds() : [];
           }
           applyPrivacySettings(currentPrivacySettings);
@@ -130,6 +136,10 @@ function onOptInComplete() {
   }
   sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after user\'s opt-in finished!'));
   manageDomElementActivation();
+  updateTcfApi(getSoiCookie(), false);
+  if (document.querySelector('#oil-preference-center')) {
+    document.querySelector('#oil-preference-center').innerHTML = '';
+  }
 }
 
 function shouldRenderOilLayer(props) {
@@ -143,7 +153,7 @@ function startTimeOut() {
     hasRunningTimeout = setTimeout(function () {
       removeOilWrapperFromDOM();
       sendEventToHostSite(EVENT_NAME_TIMEOUT);
-      if(isInfoBannerOnly()) {
+      if (isInfoBannerOnly()) {
         handleOptIn();
       }
       hasRunningTimeout = undefined;
@@ -159,7 +169,7 @@ function findAdvancedSettingsTemplate() {
     case OIL_CONFIG_CPC_TYPES.CPC_TYPE_TABS:
       return AdvancedSettingsTabs.oilAdvancedSettingsTemplate();
     default:
-      logError(`Found unknown CPC type '${ cpcType }'! Falling back to CPC type '${ OIL_CONFIG_CPC_TYPES.CPC_TYPE_STANDARD }'!`);
+      logError(`Found unknown CPC type '${cpcType}'! Falling back to CPC type '${OIL_CONFIG_CPC_TYPES.CPC_TYPE_STANDARD}'!`);
       return AdvancedSettingsStandard.oilAdvancedSettingsTemplate();
   }
 }
@@ -172,7 +182,7 @@ function findAdvancedSettingsInlineTemplate() {
     case OIL_CONFIG_CPC_TYPES.CPC_TYPE_TABS:
       return AdvancedSettingsTabs.oilAdvancedSettingsInlineTemplate();
     default:
-      logError(`Found unknown CPC type '${ cpcType }'! Falling back to CPC type '${ OIL_CONFIG_CPC_TYPES.CPC_TYPE_STANDARD }'!`);
+      logError(`Found unknown CPC type '${cpcType}'! Falling back to CPC type '${OIL_CONFIG_CPC_TYPES.CPC_TYPE_STANDARD}'!`);
       return AdvancedSettingsStandard.oilAdvancedSettingsInlineTemplate();
   }
 }
@@ -191,7 +201,7 @@ function attachCpcEventHandlers() {
       AdvancedSettingsTabs.attachCpcHandlers();
       break;
     default:
-      logError(`Found unknown CPC type '${ cpcType }'! Falling back to CPC type '${ OIL_CONFIG_CPC_TYPES.CPC_TYPE_STANDARD }'!`);
+      logError(`Found unknown CPC type '${cpcType}'! Falling back to CPC type '${OIL_CONFIG_CPC_TYPES.CPC_TYPE_STANDARD}'!`);
       AdvancedSettingsStandard.attachCpcHandlers();
       break;
   }
@@ -224,7 +234,7 @@ function oilShowThirdPartyList() {
 function defineOilWrapper() {
   let oilWrapper = document.createElement('div');
   // Set some attributes as CSS classes and attributes for testing
-  oilWrapper.setAttribute('class', `as-oil ${ getTheme() }`);
+  oilWrapper.setAttribute('class', `as-oil ${getBannerPosition()} ${getBannerAnimation()}`);
   oilWrapper.setAttribute('data-qa', 'oil-Layer');
   return oilWrapper;
 }
@@ -236,7 +246,86 @@ function defineOilWrapper() {
 function renderOilContentToWrapper(content) {
   let wrapper = oilWrapper();
   wrapper.innerHTML = content;
+  setWrapperStyles(wrapper);
   injectOilWrapperInDOM(wrapper);
+}
+
+function setWrapperStyles(wrapper) {
+  setColorVariables(wrapper);
+  setFontBaseSize(wrapper);
+  setFontFamily(wrapper);
+  setTabsBlur(wrapper);
+  setContentBlur(wrapper);
+}
+
+function setTabsBlur(wrapper) {
+  let scrollable = wrapper.querySelector('.as-oil-cpc__left');
+  let scrollableWrapper = wrapper.querySelector('.as-oil-cpc__left-wrapper');
+  if (scrollableWrapper) { 
+    scrollableWrapper.addEventListener('scroll', e => {
+      if (e.target.scrollLeft > 0) {
+        scrollable.classList.remove('scroll-tabs-end');
+        scrollable.classList.add('scroll-tabs-start');
+      } else {
+        scrollable.classList.add('scroll-tabs-end');
+        scrollable.classList.remove('scroll-tabs-start');
+      }
+    });
+  }
+}
+
+function setContentBlur(wrapper) {
+  let scrollable = wrapper.querySelector('.as-oil-cpc__middle');
+  let scrollableWrapper = wrapper.querySelector('.as-oil-cpc__middle-wrapper');
+  if (scrollableWrapper) { 
+    scrollableWrapper.addEventListener('scroll', e => {
+      if (e.target.scrollTop > 0) {
+        scrollable.classList.add('scroll-content-start');
+        scrollable.classList.add('scroll-content-end');
+        if (e.target.scrollTop === e.target.scrollHeight - e.target.offsetHeight - 1) {
+          scrollable.classList.remove('scroll-content-end');
+        }
+      } else {
+        scrollable.classList.add('scroll-content-end');
+        scrollable.classList.remove('scroll-content-start');
+      }
+    });
+  }
+}
+
+function setColorVariables(wrapper) {
+  let default_colors = getDefaultVisualConfig().colors;
+  let config_colors = getVisualConfig().colors;
+
+  Object.entries(default_colors).forEach(([key, value]) => {
+    if (config_colors[key] !== undefined) {
+      wrapper.style.setProperty(`--avacy_${key}`,config_colors[key])
+    } else {
+      wrapper.style.setProperty(`--avacy_${key}`,value)
+    }
+  });
+}
+
+function setFontBaseSize(wrapper) {
+  let default_font_base_scale= getDefaultVisualConfig().font_base_scale;
+  let font_base_scale = getVisualConfig().font_base_scale;
+
+  if (font_base_scale !== undefined) {
+    wrapper.style.setProperty('--avacy_font_base_scale',font_base_scale)
+  } else {
+    wrapper.style.setProperty('--avacy_font_base_scale',default_font_base_scale)
+  }
+}
+
+function setFontFamily(wrapper) {
+  let default_font_family = getDefaultVisualConfig().font_family;
+  let font_family = getVisualConfig().font_family;
+
+  if (font_family !== undefined) {
+    wrapper.style.setProperty('--avacy_font_family',font_family)
+  } else {
+    wrapper.style.setProperty('--avacy_font_family',default_font_family)
+  }
 }
 
 function removeOilWrapperFromDOM() {
@@ -265,12 +354,12 @@ function injectOilWrapperInDOM(wrapper) {
 function getOilDOMNodes() {
   return {
     oilWrapper: document.querySelectorAll('.as-oil'),
-    btnOptIn: document.querySelectorAll(`.${ JS_CLASS_BUTTON_OPTIN }`),
+    btnOptIn: document.querySelectorAll(`.${JS_CLASS_BUTTON_OPTIN}`),
     btnPoiOptIn: document.querySelectorAll('.as-js-optin-poi'),
     companyList: document.querySelectorAll('.as-js-companyList'),
     thirdPartyList: document.querySelectorAll('.as-js-thirdPartyList'),
-    btnAdvancedSettings: document.querySelectorAll(`.${ JS_CLASS_BUTTON_ADVANCED_SETTINGS }`),
-    btnBack: document.querySelectorAll(`.${ JS_CLASS_BUTTON_OILBACK }`)
+    btnAdvancedSettings: document.querySelectorAll(`.${JS_CLASS_BUTTON_ADVANCED_SETTINGS}`),
+    btnBack: document.querySelectorAll(`.${JS_CLASS_BUTTON_OILBACK}`)
   };
 }
 
@@ -303,7 +392,7 @@ function handleThirdPartyList() {
 }
 
 function animateOptInButton() {
-  let optInButton = document.querySelector(`.${ JS_CLASS_BUTTON_OPTIN }`);
+  let optInButton = document.querySelector(`.${JS_CLASS_BUTTON_OPTIN}`);
   if (optInButton) {
     optInButton.className += ' as-oil__btn-optin-clicked';
     window.setTimeout(() => {

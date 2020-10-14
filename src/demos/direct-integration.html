@@ -1,48 +1,88 @@
 <!DOCTYPE html>
-<html lang="de" class="no-js">
+<html lang="en" class="no-js">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>OIL - Aktuelles</title>
+  <title>Avacy - Privacy Solution</title>
   <style>
     body {
       margin: 0;
     }
 
+    .cpc-button {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 30px 0;
+      box-sizing: border-box;
+    }
+
     .has-big-bad-background {
-      position: absolute;
+      /* position: absolute;
       left: 0;
-      top: 0;
+      top: 0; */
       width: 100%;
       height: 2400px;
-      background: url('../assets/images/background-large.png') top center no-repeat;
+      background: url('../assets/images/bi-uk.png') top center no-repeat;
     }
   </style>
-  <script>
-    !function(e){var n={};function t(o){if(n[o])return n[o].exports;var r=n[o]={i:o,l:!1,exports:{}};return e[o].call(r.exports,r,r.exports,t),r.l=!0,r.exports}t.m=e,t.c=n,t.d=function(e,n,o){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:o})},t.r=function(e){Object.defineProperty(e,"__esModule",{value:!0})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,n){return Object.prototype.hasOwnProperty.call(e,n)},t.p="/",t(t.s=115)}({115:function(e,n,t){"use strict";!function(e,n){e.__cmp||(e.__cmp=function(){function t(e){if(e){var t=!0,r=n.querySelector('script[type="application/configuration"]#oil-configuration');if(null!==r&&r.text)try{var a=JSON.parse(r.text);a&&a.hasOwnProperty("gdpr_applies_globally")&&(t=a.gdpr_applies_globally)}catch(e){}e({gdprAppliesGlobally:t,cmpLoaded:o()},!0)}}function o(){return!(!e.AS_OIL||!e.AS_OIL.commandCollectionExecutor)}var r=[],a=function(n,a,c){if("ping"===n)t(c);else{var i={command:n,parameter:a,callback:c};r.push(i),o()&&e.AS_OIL.commandCollectionExecutor(i)}};return a.commandCollection=r,a.receiveMessage=function(n){var a=n&&n.data&&n.data.__cmpCall;if(a)if("ping"===a.command)t(function(e,t){var o={__cmpReturn:{returnValue:e,success:t,callId:a.callId}};n.source.postMessage(o,n.origin)});else{var c={callId:a.callId,command:a.command,parameter:a.parameter,event:n};r.push(c),o()&&e.AS_OIL.commandCollectionExecutor(c)}},function(n){(e.attachEvent||e.addEventListener)("message",function(e){n.receiveMessage(e)},!1)}(a),function e(){if(!(n.getElementsByName("__cmpLocator").length>0))if(n.body){var t=n.createElement("iframe");t.style.display="none",t.name="__cmpLocator",n.body.appendChild(t)}else setTimeout(e,5)}(),a}())}(window,document)}});
-  </script>
+
   <script id="oil-configuration" type="application/configuration">
-        {
-          "config_version": 1,
-          "poi_activate_poi": true,
-          "poi_group_name": "axelSpringerSe_01",
-          "poi_hub_origin": "/",
-          "poi_hub_path": "demos/complete-integration-mypass.html",
-          "timeout": -1,
-          "locale": {
-            "localeId": "deDE_01",
-            "version": "1",
-            "texts": {
-              "label_intro": "The website uses cookies, web beacons, JavaScript and similar technologies. I agree that <a href=\"javascript:void(0)\" class=\"as-oil__intro-txt--link as-js-companyList\">companies belonging to Axel Springer SE</a> and <a href=\"javascript:void(0)\" class=\"as-oil__intro-txt--link as-js-thirdPartyList\">trusted partners</a> generate pseudonymous user profiles for adapting the website to the user, for market research and for advertising. The generated data can also be shared with third parties while the user profiles cannot be combined with personal data. Detailed information, also on the right to withdraw consent, can be found in the website's privacy policy."
-            }
+    {
+      "config_version": 1,
+      "advanced_settings": true,
+      "iabVendorListUrl": "https://cdn.jumpgroup.it/assets/",
+      "timeout": -1,
+      "languages": {
+        "it": {
+          "localeId": "it",
+          "version": 1,
+          "texts": {
+            "label_button_yes": "Accept",
+            "label_intro": "IT We and selected partners, use cookies or similar technologies as specified in the <a href='https://it.wikipedia.org/wiki/Cookie' target='_blank'>cookie policy</a>.<br>With respect to advertising, we and selected <a href=\"javascript:void(0)\" class=\"as-oil__intro-txt--link as-js-thirdPartyList\">third partners</a>, may use precise geolocation data and actively scan device characteristics for identification in order to store and/or access information on a device and process personal data (e.g. browsing data, IP addresses, usage data or unique identifiers) for the following purposes: personalised ads and content, ad and content measurement, and audience insights; develop and improve products.<br>You can freely give, deny, or withdraw your consent without incurring major limitations. Where, instead, the processing of your data is based on legitimate interest, you have the right to object to such processing. Learn more and exercise your rights at any time by accessing the <a href='#' onclick='AS_OIL.showPreferenceCenter();'>advertising preferences panel</a>. There is a button, in top-center of the page, to show the panel once the consent is given. Consider that your choices made here will be applied locally.",
+            "label_cpc_heading": "Privacy settings:",
+            "label_cpc_text": "Please select a privacy setting",
+            "label_cpc_activate_all": "Accept all",
+            "label_cpc_deactivate_all": "Reject all",
+            "label_third_party": "IAB 3rd Parties",
+            "label_cpc_purpose_title": "Purposes",
+            "label_cpc_special_purpose_title": "Special Purposes",
+            "label_cpc_feature_title": "Feature",
+            "label_cpc_special_feature_title": "Special Features"
+          }
+        },
+        "fr": {
+          "localeId": "fr",
+          "version": 1,
+          "texts": {
+            "label_button_yes": "Accept",
+            "label_intro": "FR We and selected partners, use cookies or similar technologies as specified in the <a href='https://it.wikipedia.org/wiki/Cookie' target='_blank'>cookie policy</a>.<br>With respect to advertising, we and selected <a href=\"javascript:void(0)\" class=\"as-oil__intro-txt--link as-js-thirdPartyList\">third partners</a>, may use precise geolocation data and actively scan device characteristics for identification in order to store and/or access information on a device and process personal data (e.g. browsing data, IP addresses, usage data or unique identifiers) for the following purposes: personalised ads and content, ad and content measurement, and audience insights; develop and improve products.<br>You can freely give, deny, or withdraw your consent without incurring major limitations. Where, instead, the processing of your data is based on legitimate interest, you have the right to object to such processing. Learn more and exercise your rights at any time by accessing the <a href='#' onclick='AS_OIL.showPreferenceCenter();'>advertising preferences panel</a>. There is a button, in top-center of the page, to show the panel once the consent is given. Consider that your choices made here will be applied locally.",
+            "label_cpc_heading": "Privacy settings:",
+            "label_cpc_text": "Please select a privacy setting",
+            "label_cpc_activate_all": "Accept all",
+            "label_cpc_deactivate_all": "Reject all",
+            "label_third_party": "IAB 3rd Parties",
+            "label_cpc_purpose_title": "Purposes",
+            "label_cpc_special_purpose_title": "Special Purposes",
+            "label_cpc_feature_title": "Feature",
+            "label_cpc_special_feature_title": "Special Features"
           }
         }
+      },
+      "language": "it"
+    }
   </script>
 </head>
 
 <body>
-<div class="has-big-bad-background"></div>
+  <div class="cpc-button">
+    <button data-qa="show-pref-button" onclick="AS_OIL.showPreferenceCenter('absolute');">Show Preferences Panel</button>
+    <div id="oil-preference-center"></div>
+  </div>
+  <div class="has-big-bad-background"></div>
 </body>
 </html>
-

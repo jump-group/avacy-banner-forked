@@ -22,7 +22,6 @@
     }
 
     if (event && event.data && (eventDataContains('oil_optin_done') || eventDataContains('oil_has_optedin'))) {
-      console.log('pass to parent', event.data);
       parent.postMessage({
         type: 'consent-response',
         action: 'accept'

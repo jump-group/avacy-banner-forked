@@ -1,7 +1,9 @@
+//NOTE: no changes to be made @tcf2
 import { getSoiCookie, setSoiCookieWithPoiCookieData } from './core_cookies';
 import { logPreviewInfo } from './core_log';
 import { verifyPowerOptIn } from './core_poi';
-
+import { getPolicyVersion } from './core_config';
+import { manageDomElementActivation } from './core_tag_management.js';
 /**
  * Log Helper function for checkOptIn
  * @param {*} singleOptIn
@@ -23,21 +25,30 @@ function logPreviewOptInInfo(singleOptIn, powerOptIn) {
  */
 export function checkOptIn() {
   return new Promise((resolve, reject) => {
-    let soiOptIn = getSoiCookie().opt_in;
+    let cookie = getSoiCookie();
+    let soiOptIn = cookie.opt_in;
     let resultOptIn = soiOptIn;
+
+    if (cookie.policyVersion !== getPolicyVersion()) {
+      resultOptIn = false;
+    }
 
     // Verify Power Opt In (will return immediately if not activated), it will overwrite the SOI result only if its positive
     verifyPowerOptIn().then((powerOptIn) => {
       logPreviewOptInInfo(soiOptIn, powerOptIn.power_opt_in);
       if (powerOptIn.power_opt_in) {
-        resultOptIn = powerOptIn.power_opt_in;
+        cookie = powerOptIn;
+        resultOptIn = cookie.power_opt_in;
         if (!soiOptIn) {
           setSoiCookieWithPoiCookieData(powerOptIn)
-            .then(() => resolve(resultOptIn))
+            .then(() => {
+              manageDomElementActivation();
+              resolve([resultOptIn, cookie])
+            })
             .catch(error => reject(error));
         }
       }
-      resolve(resultOptIn);
+      resolve([resultOptIn, cookie]);
     });
   });
 }

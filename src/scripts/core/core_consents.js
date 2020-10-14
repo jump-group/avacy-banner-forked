@@ -1,75 +1,66 @@
-import {getSoiCookie} from './core_cookies';
-import {getCustomPurposeIds, gdprApplies} from './core_config';
-import {getLimitedVendorIds, getPurposeIds} from './core_vendor_lists';
-import {OIL_SPEC} from './core_constants';
+//function to get purposes from TCModel
+export function getPurposesAllowed(TCModel) {
+  return getLegalBasisPreferences(TCModel, 'purpose');
+}
 
-export function getVendorConsentData(vendorIds) {
-  let cookie = getSoiCookie();
+export function getVendorsAllowed(TCModel) {
+  return getLegalBasisPreferences(TCModel, 'vendor');
+}
 
-  if (cookie && cookie.consentData) {
-    return {
-      metadata: cookie.consentData.getMetadataString(),
-      gdprApplies: gdprApplies(),
-      hasGlobalScope: false,
-      purposeConsents: buildPurposeConsents(cookie.consentData.getPurposesAllowed(), getPurposeIds()),
-      vendorConsents: buildVendorConsents(cookie, vendorIds)
-    };
+export function getSpecialFeaturesAllowed(TCModel) {
+  return getOptinsPreferences(TCModel, 'specialFeature');
+}
+
+export function getAllPreferences(TCModel) {
+  return {
+    purpose: getPurposesAllowed(TCModel),
+    vendor: getVendorsAllowed(TCModel),
+    specialFeature: getSpecialFeaturesAllowed(TCModel)
   }
 }
 
-export function getConsentDataString(consentStringVersion) {
-  let cookie = getSoiCookie();
+function getLegalBasisPreferences(TCModel, category) {
 
-  if (cookie && cookie.consentData) {
-    const consentString = buildConsentString(cookie, consentStringVersion);
+  let consentMethod = category + 'Consents';
+  let legintMethod = category + 'LegitimateInterests';
 
-    if (consentString) {
-      return {
-        gdprApplies: gdprApplies(),
-        hasGlobalScope: false,
-        consentData: consentString
-      };
+  let categoryLegalBasis = {};
+
+  TCModel[consentMethod].forEach((checked, id) => {
+    if (checked) {
+      if (!categoryLegalBasis[id]) {
+        categoryLegalBasis[id] = {}
+      }
+      categoryLegalBasis[id].consent = true;
     }
-  }
+  });
+
+  TCModel[legintMethod].forEach((checked, id) => {
+    if (checked) {
+      if (!categoryLegalBasis[id]) {
+        categoryLegalBasis[id] = {}
+      }
+      categoryLegalBasis[id].legint = true;
+    }
+  });
+  return categoryLegalBasis;
 }
 
-export function getPublisherConsentData(purposeIds) {
-  let cookie = getSoiCookie();
 
-  if (cookie && cookie.consentData && cookie.customPurposes) {
-    return {
-      metadata: cookie.consentData.getMetadataString(),
-      gdprApplies: gdprApplies(),
-      hasGlobalScope: false,
-      standardPurposeConsents: buildPurposeConsents(cookie.consentData.getPurposesAllowed(), getPurposeIds(), purposeIds),
-      customPurposeConsents: buildPurposeConsents(cookie.customPurposes, getCustomPurposeIds(), purposeIds)
-    };
-  }
-}
+function getOptinsPreferences(TCModel, category) {
 
-function buildPurposeConsents(allowedPurposeIds, allPurposeIds, requestedPurposeIds) {
-  let purposeIds = (requestedPurposeIds && requestedPurposeIds.length) ? requestedPurposeIds : allPurposeIds;
+  let consentMethod = category + 'Optins';
 
-  return purposeIds
-    .filter(purposeId => allPurposeIds.indexOf(purposeId) !== -1)
-    .reduce((map, purposeId) => {
-      map[purposeId] = allowedPurposeIds.indexOf(purposeId) !== -1;
-      return map
-    }, {});
-}
+  let categoryOptins = {};
 
-function buildVendorConsents(cookie, requestedVendorIds) {
-  let vendorIds = (requestedVendorIds && requestedVendorIds.length) ? requestedVendorIds : getLimitedVendorIds();
-  let allowedVendors = cookie.consentData.getVendorsAllowed();
+  TCModel[consentMethod].forEach((checked, id) => {
+    if (checked) {
+      if (!categoryOptins[id]) {
+        categoryOptins[id] = {}
+      }
+      categoryOptins[id].optin = true;
+    }
+  });
 
-  return vendorIds
-    .reduce((map, vendorId) => {
-      map[vendorId] = allowedVendors.indexOf(vendorId) !== -1;
-      return map
-    }, {});
-}
-
-function buildConsentString(cookie, consentStringVersionString) {
-  let consentStringVersion = consentStringVersionString ? parseInt(consentStringVersionString, 10) : OIL_SPEC.LATEST_CONSENT_STRING_VERSION;
-  return (!isNaN(consentStringVersion) && consentStringVersion <= cookie.consentData.getVersion()) ? cookie.consentString : null;
+  return categoryOptins;
 }

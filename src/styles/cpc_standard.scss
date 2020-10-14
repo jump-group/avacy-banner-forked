@@ -1,200 +1,497 @@
+/*
+  $background-color-dark
+  $text-color-primary
+  $text-color-primary-dark
+  $btn-primary
+  $slider-size
+  $slider-background-circle
+  $cpc-background-dark
+*/
+
 @import "./_cpc_global";
 
 .as-oil-cpc-wrapper {
+  font-family: $font-family;
+  font-family: var(--avacy_font_family);
 
   button {
     cursor: pointer;
   }
 
-  .as-oil-l-buttons-light {
+  .as-oil {
+    &__heading,
+    &__intro-txt {
+      display: block;
+      width: 100%;
+      order: 1;
+    }
+  }
+
+  .as-oil-l-item {
+    justify-content: flex-end;
+    padding: 0.2rem;
+  }
+
+  #as-js-third-parties-list,
+  #as-oil-custom-third-parties-list {
+    background-color: $third-parties-background;
+    background-color: var(--avacy_third_parties_background);
+  }
+
+  @include media('>desktop') {
+    .as-oil{ 
+      &__intro-txt {
+        width: 60%;
+      }
+    }
+  }
+}
+
+.as-oil-cpc {
+  &__content {
+    order: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  &__left {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    width: 100%;
+
+    @include media('<phone') {
+      &.scroll-tabs-end {
+        position: relative;
+        &::after {
+          position: absolute;
+          content: '';
+          right: 0;
+          top: 0;
+          height: 100%;
+          width: 2rem;
+          background: $background_color;
+          background: -moz-linear-gradient(270deg, $background_color 0%, transparentize($background_color, 1) 100%);
+          background: -webkit-linear-gradient(270deg, $background_color 0%, transparentize($background_color, 1) 100%);
+          background: linear-gradient(270deg, $background_color 0%, transparentize($background_color, 1) 100%);
+        }
+      }
+
+      &.scroll-tabs-start {
+        position: relative;
+        &::after {
+          position: absolute;
+          content: '';
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 2rem;
+          background: $background_color;
+          background: -moz-linear-gradient(90deg, $background_color 0%, transparentize($background_color, 1) 100%);
+          background: -webkit-linear-gradient(90deg, $background_color 0%, transparentize($background_color, 1) 100%);
+          background: linear-gradient(90deg, $background_color 0%, transparentize($background_color, 1) 100%);
+        }
+      }
+    }
+    @include media('>desktop') {
+      align-items: flex-start;
+      width: auto;
+    }
+  }
+
+  &__left-wrapper {
+    display: flex;
+    align-items: center;
+    overflow-x: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    @include media('>desktop') {
+      flex-direction: column;
+      align-items: flex-start;
+      width: auto;
+    }
+  }
+
+  &__middle {
+    display: flex;
+    max-height: 300px; /* The Fallback */
+    height: 30vh;
+    width: 100%;
+
+    @include media('<phone') {
+      &.scroll-content-end {
+        position: relative;
+        &::after {
+          pointer-events: none;
+          position: absolute;
+          z-index: 1;
+          content: '';
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 2rem;
+          background: $background_color;
+          background: -moz-linear-gradient(0, $background_color 0%, transparentize($background_color, 1) 100%);
+          background: -webkit-linear-gradient(0, $background_color 0%, transparentize($background_color, 1) 100%);
+          background: linear-gradient(0, $background_color 0%, transparentize($background_color, 1) 100%);
+        }
+      }
+
+      &.scroll-content-start {
+        position: relative;
+        &::before {
+          pointer-events: none;
+          position: absolute;
+          content: '';
+          z-index: 1;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 2rem;
+          background: $background_color;
+          background: -moz-linear-gradient(180deg, $background_color 0%, transparentize($background_color, 1) 100%);
+          background: -webkit-linear-gradient(180deg, $background_color 0%, transparentize($background_color, 1) 100%);
+          background: linear-gradient(180deg, $background_color 0%, transparentize($background_color, 1) 100%);
+        }
+      }
+    }
+
     @include media('>phone') {
-      float: right;
+      padding: 0 1.5rem 1.5rem 1.5rem;
+      max-height: 300px; /* The Fallback */
+      height: 40vh;
     }
-
-    @include media('<=phone') {
-      padding: 8px;
+    @include media('>tablet') {
+      flex: 1;
     }
   }
 
-  .as-oil-l-buttons-dark {
+  &__middle-wrapper {
+    height: 100%;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include media('>tablet') {
+      flex: 1;
+      padding-right: 0.5rem;
+
+      &::-webkit-scrollbar {
+          display: block;
+          width: 0.5rem;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+          border-radius: 0.3rem;
+          background: var(--avacy_third_parties_background);
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+          background: var(--avacy_accent_primary);
+          border-radius: 0.3rem;
+      }
+
+      /* Handle on hover */
+      &::-webkit-scrollbar-thumb:hover {
+          background: var(--avacy_accent_primary);
+      }
+    }
+  }
+
+  
+  &__right {
+    width: 100%;
+    display: flex;
+    
     @include media('>phone') {
-      float: right;
-    }
-
-    @include media('<=phone') {
-      background: $background-color-dark;
-      padding: 8px;
+      justify-content: flex-end;
+      padding-top: 1rem;
+      margin-top: 1rem;
+      border-top: 1px solid lightgray;
     }
   }
+  
+  &__row-btn-all {
+    width: 100%;
+    order: 1;
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
 
-  .as-oil__heading,
-  .as-oil__intro-txt {
-    margin-left: 200px;
-    display: block;
-    max-width: 100%;
-
-    @include media('<=929px') {
-      margin-left: 0;
-      margin-right: 20px;
-      text-align: center;
-    }
-  }
-}
-
-.as-oil-cpc__content {
-  display: flex;
-  @include media('<=phone') {
-    display: block;
-  }
-}
-
-.as-oil-cpc__left {
-  flex: 0 0 200px;
-  max-width: 200px;
-  display: inline-block;
-  text-align: right;
-  text-transform: uppercase;
-  font-size: 1.1rem;
-  margin-bottom: -25px;
-  border-right: 1px solid #ccc;
-
-  @include media('<=849px') {
-    display: none;
-  }
-
-  @include media('<=929px') {
-    flex: 0;
-  }
-
-  &:first-child {
-    padding-top: 40px;
-  }
-
-  a {
-    text-decoration: none;
-  }
-}
-
-.as-oil-cpc__right {
-  flex: 0 0 200px;
-  display: inline-block;
-  align-self: flex-end;
-
-  @include media('<=phone') {
-    flex: 0;
-    display: block;
-  }
-
-}
-
-.as-oil-cpc__row-btn-all {
-  text-align: right;
-  span {
-    @include media('<=phone') {
-      display: inline-block;
+    span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       width: 49%;
+      margin: 0.2rem;
       text-align: center;
       padding: .7rem 1rem;
     }
   }
-}
+  
+  &__row-title {
+    margin: 0 0.5rem 1.2rem 0.5rem;
 
-.as-oil-cpc__row-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 20px 8px;
-}
-
-.as-oil-cpc__category-link {
-  padding: 6px 12px;
-  display: block;
-  border-right: 2px solid rgba(255, 255, 255, 0);
-}
-
-.as-oil-cpc__category-link--active {
-  border-right: 2px solid #3f7ddf;
-}
-
-.as-oil-cpc__purpose {
-  border: 1px solid #eaeaea;
-  border-radius: 5px;
-  padding: 20px;
-  margin: 16px 0;
-}
-
-.as-oil-cpc__purpose-container {
-  position: relative;
-}
-
-.as-oil-cpc__purpose-header {
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 0 75px 30px 0;
-}
-
-.as-oil-cpc__purpose-text {
-  font-size: 0.9rem;
-  color: lighten($text-color-primary-light, 30%);
-}
-
-.dark {
-  .as-oil-cpc__purpose-text {
-    color: darken($text-color-primary-dark, 30%);
+    &#as-oil-cpc-third-parties,
+    &#as-oil-cpc-custom-third-parties {
+      padding: 1rem 1rem 0 1rem;
+      margin: 0;
+      background-color: $third-parties-background;
+      background-color: var(--avacy_third_parties_background);
+    }
   }
-}
 
-.light {
-  .as-oil-cpc__left {
-    a {
-      color: $text-color-primary-light;
+  &__row-thirdPartiesText,
+  &__row-customThirdPartiesText {
+    background-color: $third-parties-background;
+    background-color: var(--avacy_third_parties_background);
+    padding: 1rem 1rem 0px;
+    margin: 0;
+  }
+  
+  &__category-link {
+    padding: 6px 8px;
+    display: block;
+  }
+  
+  
+  &__purpose {
+    border-top: 1px solid #eaeaea;
+    padding: 2rem;
+  }
+  
+  &__purpose-container {
+    position: relative;
+    display: flex;
+  }
+  
+  &__purpose-header {
+    margin: 0 10px 0 0;
+  }
+
+  &__purpose-text,
+  &__purpose-legal-text {
+    margin-top: 10px;
+  }
+  
+  &__switch {
+    width: $slider-size * 2;
+    height: $slider-size;
+    position: relative;
+  
+    input {
+      display: none;
+  
+      &:checked ~ .as-oil-cpc__slider {
+        background-color: $accent-primary;
+        background-color: var(--avacy_accent_primary);
+      }
+  
+      &:focus ~ .as-oil-cpc__slider {
+        box-shadow: 0 0 1px $accent-primary;
+        box-shadow: 0 0 1px var(--avacy_accent_primary);
+      }
+  
+      &:checked ~ .as-oil-cpc__slider:before {
+        transform: translateX($slider-size);
+      }
+    }
+  }
+
+  &__purpose-legal-text {
+    padding-left: 1rem;
+    border-left: 3px solid var(--avacy_third_parties_background);
+    margin-top: 0;
+    margin-left: 0.2rem;
+  }
+
+  &__purpose-more {
+    font-weight: bold;
+    font-size: 14px;
+    font-size: calc(14px * var(--avacy_font_base_scale));
+    cursor: pointer;
+  }
+
+  &__object-legint {
+    padding: 2rem 1.5rem 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $third-parties-background;
+    background-color: var(--avacy_third_parties_background);
+  }
+
+  @include media('<desktop') {
+    &__row-btn-all {
+      justify-content: center;
+    }
+  }
+
+  @include media('>desktop') {
+    &__row-btn-all {
+      margin-top: 0;
+      width: 40%;
+      justify-content: flex-end;
+    }
+
+    &__object-legint {
+      justify-content: flex-end;
     }
   }
 }
 
-.as-oil-cpc__switch {
+.LegintRejectPanel {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: $secondary_background_color;
+  background-color: var(--avacy_secondary_background_color);
+  max-width: 350px;
+  width: 95%;
+
+  &__Title {
+    flex: 1;
+  }
+
+  &__Info {
+    cursor: pointer;
+    color: $accent-color;
+    color: var(--avacy_accent_primary);
+  }
+}
+
+
+.Purpose,
+.Vendor {
+  &__Container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__Heading {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__Switches {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    @include media('>=1280px') {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+
+}
+
+.Vendor {
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+
+  &__Heading {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .as-oil-third-party-name {
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+      font-size: calc(13px * var(--avacy_font_base_scale));
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+.LegintBlock {
+  background-color: $secondary_background_color;
+  background-color: var(--avacy_secondary_background_color);
+  padding: 1rem 1.5rem;
+  margin: 0.7rem 0;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  &__Description {
+    flex: 1;
+    font-size: 12px;
+    font-size: calc(12px * var(--avacy_font_base_scale));
+    padding-right: 0.5rem;
+
+    @include media('>=1280px') {
+      font-size: 14px;
+      font-size: calc(14px * var(--avacy_font_base_scale));
+    }
+  }
+
+  &__Input {
+    input {
+      display: none;
+
+      &:checked ~ .LegintBlock__CheckBox {
+        border: 2px solid var(--avacy_accent_primary);
+        position: relative;
+        background-color: var(--avacy_accent_primary);
+
+        &::after {
+          position: absolute;
+          content: '';
+          width: 100%;
+          height: 100%;
+          background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0'%3F%3E%3Csvg xmlns='http://www.w3.org/2000/svg' id='Capa_1' enable-background='new 0 0 515.556 515.556' height='512px' viewBox='0 0 515.556 515.556' width='512px' class=''%3E%3Cg%3E%3Cpath d='m0 274.226 176.549 176.886 339.007-338.672-48.67-47.997-290.337 290-128.553-128.552z' data-original='%23000000' class='active-path' data-old_color='%23000000' fill='%23FFFFFF'/%3E%3C/g%3E%3C/svg%3E%0A");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: 70%;
+        }
+      }
+    }
+  }
+
+  &__CheckBox {
+    background-color: $slider_background;
+    background-color: var(--avacy_slider_background);
+    border: 2px solid var(--avacy_slider_background);
+    width: 1rem;
+    height: 1rem;
+    border-radius: 3px;
+    display: block;
+    cursor: pointer;
+  }
+}
+
+.InfoPanel {
   position: absolute;
-  display: inline-block;
-  width: 50px;
-  height: 26px;
-  right: 0;
-  top: 0;
-  float: right;
-
-  input {
-    display: none;
-
-    & + .as-oil-cpc__status:after {
-      content: "Off";
-    }
-
-    &:checked ~ .as-oil-cpc__slider {
-      background-color: $btn-primary;
-    }
-
-    &:checked ~ .as-oil-cpc__status:after {
-      content: "On";
-    }
-
-    &:focus ~ .as-oil-cpc__slider {
-      box-shadow: 0 0 1px $btn-primary;
-    }
-
-    &:checked ~ .as-oil-cpc__slider:before {
-      transform: translateX($slider-size);
-      background-color: darken($slider-background-circle, 30%);
-    }
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem;
+  z-index: 2;
+  
+  &__Wrapper {
+    position: relative;
+    flex-wrap: nowrap;
+    flex-direction: column;
   }
-}
 
-//dark theme adjustments
-.as-oil {
-  &.dark {
-    .as-oil-cpc__left a,
-    .as-oil-back-button__text {
-      color: $text-color-primary-dark !important;
-    }
-    .as-oil-cpc__purpose {
-      background-color: $cpc-background-dark;
-    }
+  &__Close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
   }
 }

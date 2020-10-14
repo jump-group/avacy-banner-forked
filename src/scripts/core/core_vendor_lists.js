@@ -1,26 +1,31 @@
-import { getCustomVendorListUrl, getIabVendorBlacklist, getIabVendorListUrl, getIabVendorWhitelist, getShowLimitedVendors } from './core_config';
+//REVIEW: changes in todo comments @tcf2
+import { getCustomVendorListUrl, getIabVendorBlacklist, getIabVendorListDomain, getIabVendorWhitelist, getShowLimitedVendors, getLanguageFromConfigObject } from './core_config';
 import { logError, logInfo } from './core_log';
 import { fetchJsonData } from './core_utils';
+import { GVL } from '@iabtcf/core';
 
 export const DEFAULT_VENDOR_LIST = {
-  vendorListVersion: 36,
-  maxVendorId: 380,
-  lastUpdated: '2018-05-30T16:00:15Z',
-  purposeIds: [1, 2, 3, 4, 5]
+  vendorListVersion: 36, //TODO: @tcf2 @tc2soi
+  maxVendorId: 747, //TODO @tcf2 @tc2soi
+  lastUpdated: '2018-05-30T16:00:15Z', //TODO @tcf2 @tc2soi
+  purposeIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], //TODO @tcf2 @tc2soi
+  legintIds: [2, 3, 4, 5, 6, 7, 8 , 9, 10],
+  specialFeaturesIds: [1, 2]
 };
 
 export const DEFAULT_CUSTOM_VENDOR_LIST = {
-  'vendorListVersion': -1,
+  'vendorListVersion': -1, //TODO @tcf2 @tc2soi
   'isDefault': true,
   'vendors': []
 };
 
-export let cachedVendorList;
-export let cachedCustomVendorList;
+export let cachedVendorList = null;
+export let cachedCustomVendorList = null;
 export let pendingVendorListPromise = null;
+let cachedGVL = null;
 
 export function loadVendorListAndCustomVendorList() {
-
+  //TODO @tcf2 load from API @tc2soi
   if (cachedVendorList && cachedCustomVendorList) {
     return new Promise(resolve => {
       resolve();
@@ -29,10 +34,8 @@ export function loadVendorListAndCustomVendorList() {
     return pendingVendorListPromise;
   } else {
     pendingVendorListPromise = new Promise(function (resolve) {
-      let iabVendorListUrl = getIabVendorListUrl();
-      fetchJsonData(iabVendorListUrl)
+      getGlobalVendorListPromise()
         .then(response => {
-          sortVendors(response);
           cachedVendorList = response;
           loadCustomVendorList().then(() => {
             pendingVendorListPromise = null;
@@ -40,13 +43,14 @@ export function loadVendorListAndCustomVendorList() {
           });
         })
         .catch(error => {
-          logError(`OIL getVendorList failed and returned error: ${ error }. Falling back to default vendor list!`);
+          logError(`OIL getVendorList failed and returned error: ${error}. Falling back to default vendor list!`);
           loadCustomVendorList().then(() => {
             pendingVendorListPromise = null;
             resolve();
           });
         });
     });
+
     return pendingVendorListPromise;
   }
 
@@ -66,23 +70,72 @@ function loadCustomVendorList() {
         })
         .catch(error => {
           cachedCustomVendorList = DEFAULT_CUSTOM_VENDOR_LIST;
-          logError(`OIL getCustomVendorList failed and returned error: ${ error }. Falling back to default custom vendor list!`);
+          logError(`OIL getCustomVendorList failed and returned error: ${error}. Falling back to default custom vendor list!`);
           resolve();
         });
     }
   });
 }
 
+function getGlobalVendorList() {
+  //TODO: Per ora ho commentato il seguente if, ma è da rivedere;
+  // if (cachedGVL) {
+  //   return cachedGVL;
+  // }
+  
+  GVL.baseUrl = getIabVendorListDomain();
+
+  cachedGVL = new GVL();
+  return cachedGVL;
+}
+
+function getGlobalVendorListPromise() {
+
+  let iabGvl = getGlobalVendorList();
+
+  let newLang = getLanguageFromConfigObject();
+  return iabGvl.changeLanguage(newLang).then(() => {
+    return iabGvl;
+  });
+
+}
+
 export function getPurposes() {
+  //REVIEW: need changes? @tcf2
   return cachedVendorList ? cachedVendorList.purposes : expandIdsToObjects(DEFAULT_VENDOR_LIST.purposeIds);
 }
 
+export function getSpecialPurposes() {
+  return cachedVendorList ? cachedVendorList.specialPurposes : null;
+}
+
+export function getFeatures() {
+  return cachedVendorList ? cachedVendorList.features : null;
+}
+
+export function getLegitimateInterest() {
+  return expandIdsToObjects(DEFAULT_VENDOR_LIST.legintIds);
+}
+
+export function getSpecialFeatures() {
+  return cachedVendorList ? cachedVendorList.specialFeatures : expandIdsToObjects(DEFAULT_VENDOR_LIST.specialFeaturesIds);
+}
+
 export function getPurposeIds() {
-  return getPurposes().map(({ id }) => id);
+  return Object.entries(getPurposes()).map(([index, value]) => value.id);
+}
+
+export function getLegintIds() {
+  return Object.entries(getLegitimateInterest()).map(([index, value]) => value.id);
+}
+
+export function getSpecialFeatureIds() {
+  return Object.entries(getSpecialFeatures()).map(([index, value]) => value.id);
 }
 
 export function getVendors() {
-  return cachedVendorList ? cachedVendorList.vendors : expandIdsToObjects(buildDefaultVendorIdList());
+  //REVIEW: need changes? @tcf2a
+  return cachedVendorList ? Object.values(cachedVendorList.vendors) : expandIdsToObjects(buildDefaultVendorIdList());
 }
 
 export function getVendorIds() {
@@ -90,17 +143,13 @@ export function getVendorIds() {
 }
 
 export function getVendorList() {
+  //REVIEW: need changes? @tcf2a
   if (cachedVendorList) {
     return cachedVendorList;
   }
-  return {
-    vendorListVersion: DEFAULT_VENDOR_LIST.vendorListVersion,
-    lastUpdated: DEFAULT_VENDOR_LIST.lastUpdated,
-    vendors: expandIdsToObjects(buildDefaultVendorIdList()),
-    purposes: expandIdsToObjects(DEFAULT_VENDOR_LIST.purposeIds),
-    features: [],
-    isDefault: true
-  };
+  
+  return getGlobalVendorList();
+
 }
 
 export function getCustomVendorList() {
@@ -136,6 +185,7 @@ export function getLimitedVendors() {
 }
 
 export function getLimitedVendorIds() {
+  //REVIEW: need changes? @tcf2a
   let limited;
   if (!cachedVendorList) {
     limited = buildDefaultVendorIdList();
@@ -162,10 +212,6 @@ function buildDefaultVendorIdList() {
     }
     return b;
   })(DEFAULT_VENDOR_LIST.maxVendorId, []);
-}
-
-function sortVendors(vendorList) {
-  vendorList.vendors = vendorList.vendors.sort((leftVendor, rightVendor) => leftVendor.id - rightVendor.id);
 }
 
 /**

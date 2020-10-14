@@ -1,0 +1,88 @@
+.as-oil {
+    @include box-model;
+    @include font-smoothing;
+    position: fixed;
+    z-index: $z-index-max;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    &__intro-txt {
+        display: inline-block;
+        width: 100%;
+        margin: 0.5rem 0;
+        max-height: 30vh;
+        padding-right: 0.6rem;
+        overflow-y: scroll;
+    }
+
+    &__heading {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    @include media('>desktop') {
+        &__intro-txt {
+            width: 75%;
+            margin: 1rem 0;  
+            padding-right: 2rem;
+            
+            //CUSTOM RULE ON DEMAND
+            max-height:none;
+            overflow:hidden;
+        }
+    }
+}
+
+// Wraps all our Oil content, eg. text and buttons
+.as-oil-content-overlay {
+    @include clearfix;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+
+    @include media('>phone') {
+        padding: 2rem 2rem;
+    }
+}
+
+
+// Layout Stuff
+.as-oil-l-row {
+    @include media('<=phone') {
+        // display: block;
+        width: 100%;
+    }
+}
+
+.as-oil-l-row--fixed-width,
+.as-oil-l-wrapper-layout-max-width {
+    max-width: $layout-max-width;
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.as-oil-l-item {
+    float: right; // Fallback for non flexbox capable browsers
+    clear: both; // Fallback for non flexbox capable browsers
+    text-align: right;
+
+    width: 100%;
+    padding: 0.2rem 0.5em;
+
+    @supports (display: flex) {
+        float: none;
+    }
+
+    @include media('>=tablet') {
+        width: auto;
+    }
+
+    @include media('>=desktop') {
+        width: 100%;
+    }
+}

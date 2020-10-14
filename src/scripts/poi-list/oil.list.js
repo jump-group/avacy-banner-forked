@@ -1,4 +1,4 @@
-import { getLabel, getTheme } from '../userview/userview_config';
+import { getLabel } from '../userview/userview_config';
 import { OIL_LABELS } from '../userview/userview_constants';
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../core/core_constants';
 import './poi.group.scss';
@@ -41,8 +41,10 @@ export const listSnippet = (list) => {
   if (!list) {
     list = [];
   }
+
   let listWrapped = list.map((element) => {
     if (typeof element === 'object') {
+
       return `<div class="as-oil-third-party-list-element">
                 <span onclick='${OIL_GLOBAL_OBJECT_NAME}._toggleViewElements(this)'>
                     <svg class='as-oil-icon-plus' width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
@@ -54,8 +56,7 @@ export const listSnippet = (list) => {
                     <span class='as-oil-third-party-name'>${element.name}</span>
                 </span>
                 <div class='as-oil-third-party-toggle-part' style='display: none;'>
-                <p class='as-oil-third-party-description' >${element.description}</p>
-                  <div class='as-oil-third-party-link'>${element.link}</div>
+                  <p class='as-oil-third-party-link'>${element.policyUrl}</p>
                 </div>
               </div>`;
     } else {
@@ -66,25 +67,45 @@ export const listSnippet = (list) => {
 };
 
 function toggleViewElements(element) {
-  let iconMinus = element.children[0];
-  let iconPlus = element.children[1];
-  let descriptionPart = element.nextElementSibling;
+  let item = element.parentElement;
+  let minus = item.querySelector('.as-oil-icon-minus');
+  let plus = item.querySelector('.as-oil-icon-plus');
+  let descriptionPart = item.querySelector('.as-oil-third-party-toggle-part');
 
   const styleDisplayInlineBlock = 'display: inline-block; animation: fadein 0.5s';
   const styleDisplayNone = 'display: none';
 
   if (descriptionPart.style.display === 'none') {
     descriptionPart.setAttribute('style', 'display: block; animation: fadein 0.5s');
-    iconPlus.setAttribute('style', styleDisplayInlineBlock);
-    iconMinus.setAttribute('style', styleDisplayNone);
+    plus.setAttribute('style', styleDisplayNone);
+    minus.setAttribute('style', styleDisplayInlineBlock);
   } else {
     descriptionPart.setAttribute('style', styleDisplayNone);
-    iconPlus.setAttribute('style', styleDisplayNone);
-    iconMinus.setAttribute('style', styleDisplayInlineBlock);
+    minus.setAttribute('style', styleDisplayNone);
+    plus.setAttribute('style', styleDisplayInlineBlock);
   }
 }
 
 setGlobalOilObject('_toggleViewElements', toggleViewElements);
+
+function toggleMoreText(element) {
+  let item = element.parentElement;
+  let legalText = item.querySelector('.as-oil-cpc__purpose-legal-text');
+  let moreBtn = item.querySelector('.as-oil-cpc__purpose-more')
+
+  const styleDisplayInlineBlock = 'display: block; animation: fadein 0.5s';
+  const styleDisplayNone = 'display: none';
+
+  if (legalText.style.display === 'none') {
+    legalText.setAttribute('style', styleDisplayInlineBlock);
+    moreBtn.innerText = getLabel(OIL_LABELS.ATTR_LABEL_CPC_READ_LESS);
+  } else {
+    legalText.setAttribute('style', styleDisplayNone);
+    moreBtn.innerText = getLabel(OIL_LABELS.ATTR_LABEL_CPC_READ_MORE);
+  }
+}
+
+setGlobalOilObject('_toggleMoreText', toggleMoreText);
 
 function attachCssToHtmlAndDocument() {
   if (window.matchMedia && window.matchMedia('(max-width: 600px)').matches) {
@@ -138,10 +159,14 @@ function removeCssFromHtmlAndDocument() {
 }
 
 function oilListTemplate(list, heading, text) {
+  if (typeof(list) === 'object') {
+    list = Object.values(list)
+  }
   attachCssToHtmlAndDocument();
   return `<div class="as-oil-fixed">
     <div class="as-oil-content-overlay as-oil-poi-group-list-wrapper" data-qa="oil-poi-list">
         <div class="as-oil-l-wrapper-layout-max-width">
+            ${BackButton()}
             <div class="as-oil__heading">
                 ${heading}
             </div>
@@ -149,11 +174,10 @@ function oilListTemplate(list, heading, text) {
                 ${text} 
             </p>
             ${listSnippet(list)}
-            ${BackButton()}
         </div>
-        <div class="as-oil-l-row as-oil-l-buttons-${getTheme()}">
+        <div class="as-oil-l-row as-oil-l-buttons">
             <div class="as-oil-l-item">
-              ${YesButton(`as-oil__btn-optin ${JS_CLASS_BUTTON_OPTIN}`)}
+              ${YesButton(`as-oil__btn-optin ${JS_CLASS_BUTTON_OPTIN}`, 'first_layer')}
             </div>
         </div>
     </div>

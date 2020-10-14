@@ -3,13 +3,12 @@ import { handleOptOut } from './core_optout';
 import { logError, logInfo, logPreviewInfo } from './core_log';
 import { checkOptIn } from './core_optin';
 import { getSoiCookie, isBrowserCookieEnabled, isPreviewCookieSet, removePreviewCookie, removeVerboseCookie, setPreviewCookie, setVerboseCookie } from './core_cookies';
-import { doSetTealiumVariables } from './core_tealium_loading_rules';
-import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies } from './core_config';
-import { EVENT_NAME_HAS_OPTED_IN, EVENT_NAME_NO_COOKIES_ALLOWED } from './core_constants';
-import { executeCommandCollection } from './core_command_collection';
+import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies, gdprApplies } from './core_config';
+import { EVENT_NAME_HAS_OPTED_IN, EVENT_NAME_NO_COOKIES_ALLOWED, OIL_GLOBAL_OBJECT_NAME } from './core_constants';
+import { updateTcfApi } from './core_tcf_api';
 import { manageDomElementActivation } from './core_tag_management';
 import { sendConsentInformationToCustomVendors } from './core_custom_vendors';
-
+import { getPurposes, clearVendorListCache } from './core_vendor_lists';
 /**
  * Initialize Oil on Host Site
  * This functions gets called directly after Oil has loaded
@@ -20,11 +19,11 @@ export function initOilLayer() {
   if (isPreviewMode() && !isPreviewCookieSet()) {
     logPreviewInfo('Preview mode ON and OIL layer remains hidden. Run AS_OIL.previewModeOn() and reload to display the layer.');
   }
+
+  window.PAPYRI = window.AS_OIL;
   registerDomElementActivationManager();
 
   attachUtilityFunctionsToWindowObject();
-
-  doSetTealiumVariables();
 
   /**
    * We show OIL depending on the following conditions:
@@ -38,7 +37,7 @@ export function initOilLayer() {
       logInfo('This browser doesn\'t allow cookies.');
       import('../userview/locale/userview_oil.js')
         .then(userview_modal => {
-          userview_modal.locale(uv_m => uv_m.renderOil({noCookie: true}));
+          userview_modal.locale(uv_m => uv_m.renderOil({ noCookie: true }));
         })
         .catch((e) => {
           logError('Locale could not be loaded.', e);
@@ -50,14 +49,16 @@ export function initOilLayer() {
     /**
      * We read our cookie and get an opt-in value, true or false
      */
-    checkOptIn().then((optin) => {
+    checkOptIn().then((result) => {
+      let optin = result[0];
+      let cookieData = result[1];
+
       if (optin) {
         /**
          * User has opted in
          */
         sendEventToHostSite(EVENT_NAME_HAS_OPTED_IN);
-        executeCommandCollection();
-        attachCommandCollectionFunctionToWindowObject();
+        updateTcfApi(cookieData, false);
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start with found opt-in finished!'));
       } else {
         /**
@@ -65,8 +66,10 @@ export function initOilLayer() {
          */
         import('../userview/locale/userview_oil.js')
           .then(userview_modal => {
-            userview_modal.locale(uv_m => uv_m.renderOil({optIn: false}));
-            attachCommandCollectionFunctionToWindowObject();
+            userview_modal.locale(uv_m => uv_m.renderOil({ optIn: false }));
+            if (gdprApplies()) {
+              updateTcfApi(cookieData, true);
+            }
           })
           .catch((e) => {
             logError('Locale could not be loaded.', e);
@@ -84,10 +87,6 @@ function registerDomElementActivationManager() {
 function onDomContentLoaded() {
   document.removeEventListener('DOMContentLoaded', onDomContentLoaded);
   manageDomElementActivation();
-}
-
-function attachCommandCollectionFunctionToWindowObject() {
-  setGlobalOilObject('commandCollectionExecutor', executeCommandCollection);
 }
 
 /**
@@ -135,13 +134,22 @@ function attachUtilityFunctionsToWindowObject() {
     return 'OIL reloaded';
   });
 
+  setGlobalOilObject('changeLanguage', (lang) => {
+    clearVendorListCache();
+    if (window[OIL_GLOBAL_OBJECT_NAME].CONFIG.language !== lang) {
+      window[OIL_GLOBAL_OBJECT_NAME].CONFIG.language = lang;
+    }
+    initOilLayer();
+    return 'OIL language Changed';
+  });
+
   setGlobalOilObject('status', () => {
     return getSoiCookie();
   });
 
-  setGlobalOilObject('showPreferenceCenter', () => {
+  setGlobalOilObject('showPreferenceCenter', (mode = 'inline') => {
     loadLocale(userview_modal => {
-      userview_modal.oilShowPreferenceCenter();
+      userview_modal.oilShowPreferenceCenter(mode);
     });
   });
 
@@ -167,11 +175,99 @@ function attachUtilityFunctionsToWindowObject() {
     handleOptOut();
   });
 
+  setGlobalOilObject('getPurposeConsents', () => {
+    return new Promise((resolve, reject) => {
+      window.__tcfapi('getTCData', 2, (tcData, success) => {
+        if(success) {
+          let consentsList = {}
+          let count = 1;
+          for (let [key, value] of Object.entries(getPurposes())) {
+            if (tcData.purpose.consents[count] === true) {
+              consentsList[count] = true;
+            } else {
+              consentsList[count] = false;
+            }
+            count = count + 1;
+          }
+          resolve(consentsList)
+        } else {
+          reject(false)
+        }
+      });
+    });
+  });
+
+  setGlobalOilObject('getLegIntConsents', () => {
+    return new Promise((resolve, reject) => {
+      window.__tcfapi('getTCData', 2, (tcData, success) => {
+        if(success) {
+          let legintList = {}
+          for (let [key, value] of Object.entries(getPurposes())) {
+            if (tcData.purpose.legitimateInterests[key] === true) {
+              legintList[key] = true;
+            } else {
+              legintList[key] = false;
+            }
+          }
+          resolve(legintList)
+        } else {
+          reject(false)
+        }
+      });
+    });
+  });
+
+  setGlobalOilObject('hasConsents', (purposes = [], legint = []) => {
+    return new Promise((resolve, reject) => {
+      if (Array.isArray(purposes) && purposes.length > 0 && Array.isArray(legint)) {
+          let consentsResult = window.AS_OIL.getPurposeConsents().then(value => {
+            return purposes.every(item => value[item] === true)
+          })
+
+          let legIntsResult = window.AS_OIL.getLegIntConsents().then(value => {
+            return legint.every(item => value[item] === true)
+          })
+
+          Promise.all([consentsResult, legIntsResult]).then(result => {
+            resolve(result.every(value => value === true));
+          })
+
+      } else {
+          reject(false);
+      }
+    });
+  });
+
+  setGlobalOilObject('getLegalText', (legalText = 'cookie') => {
+    return new Promise((resolve, reject) => {
+      //TODO: Check if config object exist
+      if (legalText && window.AS_OIL.CONFIG.locale[legalText + '_policy']) {
+          resolve({
+              text: window.AS_OIL.CONFIG.locale[`${legalText}_policy`],
+              version: window.AS_OIL.CONFIG.locale[`${legalText}_policy_version`]
+          });
+      } else {
+          reject(`Cannot find legal text ${legalText}_policy`);
+      }
+  });
+  });
+
   setGlobalOilObject('applyGDPR', () => {
     setGdprApplies(true);
     initOilLayer();
     return 'GDPR applied';
   });
+
+  setGlobalOilObject('isInCollection', (event_name = 'oil_shown') => {
+    let count = 0;
+    let collection = window.AS_OIL.eventCollection;
+    if (collection) {
+      collection.forEach(element => {
+        if (element.name === event_name) {
+          count = count + 1;
+        }
+      });
+    }
+    return count;
+  })
 }
-
-

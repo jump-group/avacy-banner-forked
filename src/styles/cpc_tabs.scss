@@ -1,4 +1,12 @@
+/*
+  $btn-primary
+  $btn-primary-text-color
+  $btn-text-grey
+  $btn-background-grey
+*/
+
 @import "./_cpc_global";
+@import "./mixins/mixins";
 
 .as-oil-tabs-cpc__headline {
   display: block;
@@ -167,15 +175,16 @@
 
     &:checked ~ {
       .as-oil-cpc__slider {
-        background-color: $btn-primary;
+        background-color: $accent-primary;
+        background-color: var(--avacy_accent_primary);
       }
     }
     &:focus ~ .as-oil-cpc__slider {
-      box-shadow: 0 0 1px $btn-primary;
+      box-shadow: 0 0 1px $accent-primary;
+      box-shadow: 0 0 1px var(--avacy_accent_primary);
     }
     &:checked ~ .as-oil-cpc__slider::before {
-      background-color: darken(#767676, 30%);
-      transform: translateX(20px);
+      transform: translateX($slider-size);
     }
   }
 }

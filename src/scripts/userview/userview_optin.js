@@ -5,6 +5,7 @@ import { sendEventToHostSite } from '../core/core_utils.js';
 import {
   EVENT_NAME_OPT_IN,
   OIL_PAYLOAD_CONFIG_VERSION,
+  OIL_PAYLOAD_POLICY_VERSION,
   OIL_PAYLOAD_CUSTOM_PURPOSES,
   OIL_PAYLOAD_CUSTOM_VENDORLIST_VERSION,
   OIL_PAYLOAD_LOCALE_VARIANT_NAME,
@@ -15,6 +16,7 @@ import {
 } from '../core/core_constants';
 import { setSoiCookie } from '../core/core_cookies';
 import { isAmpModeActivated, isInfoBannerOnly, isPoiActive } from '../core/core_config';
+import { updateTcfApi } from '../core/core_tcf_api';
 
 /**
  * Oil optIn power
@@ -39,7 +41,8 @@ export function oilPowerOptIn(privacySettings) {
         [OIL_PAYLOAD_LOCALE_VARIANT_VERSION]: cookie.localeVariantVersion,
         [OIL_PAYLOAD_CUSTOM_VENDORLIST_VERSION]: cookie.customVendorListVersion,
         [OIL_PAYLOAD_CUSTOM_PURPOSES]: cookie.customPurposes,
-        [OIL_PAYLOAD_CONFIG_VERSION]: cookie.configVersion
+        [OIL_PAYLOAD_CONFIG_VERSION]: cookie.configVersion,
+        [OIL_PAYLOAD_POLICY_VERSION]: cookie.policyVersion
       };
 
       if (isPoiActive()) {
@@ -75,8 +78,11 @@ export function oilOptIn(privacySettings = PRIVACY_FULL_TRACKING) {
     return Promise.resolve(true);
   }
   return new Promise((resolve, reject) => {
-    setSoiCookie(privacySettings).then(() => {
+    setSoiCookie(privacySettings).then((cookieData) => {
+
+      updateTcfApi(cookieData, false);
       sendEventToHostSite(EVENT_NAME_OPT_IN);
+
       resolve(true);
     }).catch((error) => reject(error));
   });

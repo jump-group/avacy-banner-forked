@@ -23,6 +23,20 @@
     "label_thirdparty_list_heading": "Your consent for third party software",
     "label_thirdparty_list_text": "Here is a list of third party software.",
     "label_nocookie_head": "In order to be able to provide our services in the best possible way, cookies must be activated in your browser.",
-    "label_nocookie_text": "Please activate cookies in the properties of your browsers. So you can do it in <a href=\"https://support.google.com/chrome/answer/95647?co=GENIE.Platform%3DDesktop&amp;hl=en-GB\" class=\"as-oil__intro-txt--link\" target=\"_blank\">Google Chrome</a> or <a href=\"https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer\" class=\"as-oil__intro-txt--link\" target=\"_blank\">Firefox</a>.\"."
+    "label_nocookie_text": "Please activate cookies in the properties of your browsers. So you can do it in <a href=\"https://support.google.com/chrome/answer/95647?co=GENIE.Platform%3DDesktop&amp;hl=en-GB\" class=\"as-oil__intro-txt--link\" target=\"_blank\">Google Chrome</a> or <a href=\"https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer\" class=\"as-oil__intro-txt--link\" target=\"_blank\">Firefox</a>.\".",
+    "label_cpc_purpose_title": "Purposes",
+    "label_cpc_special_purpose_title": "Special Purposes",
+    "label_cpc_feature_title": "Feature",
+    "label_cpc_special_feature_title": "Special Features",
+    "label_cpc_legal_purpose_consent": "Purposes (Consent)",
+    "label_cpc_legal_purpose_leg_int": "Purposes (Legitimate Interest)",
+    "label_cpc_legal_special_purposes": "Special Purposes",
+    "label_cpc_legal_features": "Features",
+    "label_cpc_legal_special_features": "Special Features",
+    "label_cpc_save": "Save",
+    "label_cpc_legint_rejectbox_text": "Legittimo interesse per i fornitori",
+    "label_cpc_legint_box_text": "Permetti a questo servizio di trattare i tuoi dati sulla base di un interesse legittimo.",
+    "label_cpc_legint_infobox_title": "Legittimo interesse",
+    "label_cpc_legint_infobox_description": "Un \"interesse legittimo\" è un interesse che, in base alla legislazione applicabile, giustifica il trattamento di dati personali.<br>I servizi che decidono di fare affidamento su di un interesse legittimo possono processare i tuoi dati a meno che tu non ti opponga a tale trattamento.<br><p><b>Deselezionando questa casella eserciti il tuo diritto di opposizione.</b></p>"
   }
 }

@@ -1,7 +1,9 @@
-import {OIL_CONFIG} from './core_constants.js';
-import {getHubLocation, getHubOrigin, getPoiGroupName, isPoiActive} from './core_config.js';
-import {getOrigin, registerMessageListener, removeMessageListener} from './core_utils.js';
-import {logError, logInfo} from './core_log.js';
+//REVIEW: changes may be done for POI @tcf2
+
+import { OIL_CONFIG } from './core_constants.js';
+import { getHubLocation, getHubOrigin, getPoiGroupName, isPoiActive } from './core_config.js';
+import { getOrigin, registerMessageListener, removeMessageListener } from './core_utils.js';
+import { logError, logInfo } from './core_log.js';
 
 
 // Timeout after which promises should return
@@ -49,10 +51,10 @@ export function init() {
         let iframe = addFrame(hubLocation);
         if (iframe && !iframe.onload) {
           // Listen to message from child window after iFrame load
-          iframe.onload = () => resolve({iframe: iframe});
+          iframe.onload = () => resolve({ iframe: iframe });
         } else {
           // if already loaded directly invoke
-          resolve({iframe: iframe});
+          resolve({ iframe: iframe });
         }
       } else {
         logError(`Config for ${OIL_CONFIG.ATTR_HUB_ORIGIN} and ${OIL_CONFIG.ATTR_HUB_PATH} isnt set. No POI possible.`);
@@ -87,7 +89,7 @@ export function sendEventToFrame(eventName, origin, payload = {}) {
       // tag::subscriber-postMessage[]
       // see https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#Syntax
       // MSIE needs Strings in postMessage
-      let message = JSON.stringify({event: eventName, origin: origin, group_name: groupName, payload: payload});
+      let message = JSON.stringify({ event: eventName, origin: origin, group_name: groupName, payload: payload });
       iframe.contentWindow.postMessage(message, hubDomain);
       // end::subscriber-postMessage[]
     }
@@ -149,7 +151,7 @@ function readConfigFromFrame(origin) {
 export function verifyPowerOptIn() {
   return new Promise((resolve) => {
     if (!isPoiActive()) {
-      resolve({power_opt_in: false});
+      resolve({ power_opt_in: false });
     } else {
       init().then((result) => {
         let iframe = result.iframe;
@@ -158,7 +160,7 @@ export function verifyPowerOptIn() {
             // Listen to message from child window after iFrame load
             iframe.onload = () => readConfigFromFrame(getOrigin()).then((data) => {
               if (!data) {
-                resolve({power_opt_in: false});
+                resolve({ power_opt_in: false });
               }
               resolve(data);
             });
@@ -166,14 +168,14 @@ export function verifyPowerOptIn() {
             // if already loaded directly invoke
             readConfigFromFrame(getOrigin()).then((data) => {
               if (!data) {
-                resolve({power_opt_in: false});
+                resolve({ power_opt_in: false });
               }
               resolve(data);
             });
           }
         } else {
           logInfo('Could not initialize POI. Fallback to POI false.');
-          resolve({power_opt_in: false});
+          resolve({ power_opt_in: false });
         }
       });
     }

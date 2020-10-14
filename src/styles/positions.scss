@@ -1,0 +1,142 @@
+  //BANNER POSITION
+  .as-oil{
+    $margin-from-border: 32px;
+    $box-max-width: 1280px;
+    bottom: auto;
+    top: auto;
+    left: auto;
+    right: auto;
+  
+    .as-oil-content-overlay {
+        bottom: auto;
+        top: auto;
+        left: auto;
+        right: auto;
+    }
+  
+    &.PositionBottom {
+        bottom: 0;
+        left: 0;
+  
+        &.SlideIn {
+            animation: slide-from-bottom 0.7s;
+            animation-fill-mode: forwards;
+            left: 0;
+        }
+  
+        &.FadeIn {
+            animation: fade-in 0.7s;
+            animation-fill-mode: forwards;
+        }
+  
+        .as-oil-content-overlay {
+            bottom: 0;
+            left: 0;
+        }
+    }
+  
+    &.PositionTop {
+        top: 0;
+        left: 0;
+  
+        &.SlideIn {
+            animation: slide-from-top 0.7s;
+            animation-fill-mode: forwards;
+            left: 0;
+        }
+  
+        &.FadeIn {
+            animation: fade-in 0.7s;
+            animation-fill-mode: forwards;
+        }
+  
+        .as-oil-content-overlay {
+            top: 0;
+            left: 0;
+        }
+    }
+  
+    &.PositionCenterTop {
+        left: 0;
+        top: 0;
+  
+        &.SlideIn {
+            animation: slide-from-top 0.7s;
+            animation-fill-mode: forwards;
+            left: 0;
+        }
+  
+        &.FadeIn {
+            animation: fade-in 0.7s;
+            animation-fill-mode: forwards;
+        }
+  
+        .as-oil-content-overlay {
+            top: $margin-from-border;
+            left: 50%;
+            transform: translate(-50%, 0);
+            max-width: $box-max-width;
+            box-shadow: 0 4px 10px 0 rgba(0,0,0,.2);
+        }
+    }
+  
+    &.PositionCenter {
+        .as-oil-content-overlay {
+            max-width: $box-max-width;
+            box-shadow: 0 4px 10px 0 rgba(0,0,0,.2);
+        }
+        left: 50%;
+        top: 50%;
+  
+        &.FadeIn {
+            animation: fade-in 0.7s;
+            animation-fill-mode: forwards;
+        }
+  
+        .as-oil-content-overlay {
+            bottom: 50%;
+            left: 0;
+            transform: translate(-50%, 50%);
+        }
+    }
+  
+    &.PositionCenterBottom {
+        left: 0;
+        bottom: 0;
+  
+        &.SlideIn {
+            animation: slide-from-bottom 0.7s;
+            animation-fill-mode: forwards;
+            left: 0;
+        }
+  
+        &.FadeIn {
+            animation: fade-in 0.7s;
+            animation-fill-mode: forwards;
+        }
+  
+        .as-oil-content-overlay {
+            bottom: $margin-from-border;
+            left: 50%;
+            transform: translate(-50%, 0);
+            max-width: $box-max-width;
+            box-shadow: 0 4px 10px 0 rgba(0,0,0,.2);
+        }
+    }
+    
+  }
+  
+  @keyframes slide-from-bottom {
+    from {bottom: -300px;}
+    to {bottom: 0;}
+  }
+  
+  @keyframes slide-from-top {
+    from {top: -300px;}
+    to {top: 0;}
+  }
+  
+  @keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }

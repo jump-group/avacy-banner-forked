@@ -39,23 +39,29 @@ export function activatePowerOptInWithRedirect(payload) {
     return;
   }
 
-  let payloadString = JSON.stringify(payload),
-    payloadUriParam = encodeURIComponent(payloadString);
+  let payloadString = JSON.stringify(payload);
+  let  payloadUriParam = encodeURIComponent(payloadString);
 
-  let hubLocation = getHubLocation(),
-    groupName = getPoiGroupName();
+  let hubLocation = getHubLocation();
+  let groupName = getPoiGroupName();
+  let paramsString = '';
+
   if (hubLocation) {
-    let targetLocation = hubLocation + '?' + POI_FALLBACK_NAME + '=1';
+    paramsString = POI_FALLBACK_NAME + '=1';
 
     if (groupName) {
-      targetLocation = targetLocation + '&' + POI_FALLBACK_GROUP_NAME + '=' + groupName;
+      paramsString = paramsString + '&' + POI_FALLBACK_GROUP_NAME + '=' + groupName;
     }
 
     if (payload) {
-      targetLocation = targetLocation + '&' + POI_PAYLOAD + '=' + payloadUriParam;
+      paramsString = paramsString + '&' + POI_PAYLOAD + '=' + payloadUriParam;
     }
 
-    exports.redirectToLocation(targetLocation);
+    paramsString = paramsString +'&backto=' + window.location.href;
+
+    let encodedString = encodeURIComponent(paramsString)
+
+    exports.redirectToLocation(hubLocation +'?' + encodedString);
   }
 }
 

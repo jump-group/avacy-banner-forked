@@ -1,21 +1,51 @@
-import { MANAGED_TAG_IDENTIFIER, MANAGED_TAG_IDENTIFIER_ATTRIBUTE, MANAGED_TAG_PURPOSES_ATTRIBUTE } from './core_constants';
+//REVIEW: may have some changes to be made in order to get purposes correctly @tcf2
+import { MANAGED_TAG_IDENTIFIER, MANAGED_TAG_IDENTIFIER_ATTRIBUTE, MANAGED_TAG__ATTRIBUTES } from './core_constants';
 import { getSoiCookie } from './core_cookies';
-import { arrayContainsArray } from './core_utils';
-import { getPurposeIds } from './core_vendor_lists';
-import { getCustomPurposeIds } from './core_config';
+import { arrayContainsArray, sendEventToHostSite } from './core_utils';
+import { getPurposeIds, getSpecialFeatureIds, getLegintIds } from './core_vendor_lists';
+import { getCustomPurposeIds, gdprApplies } from './core_config';
 
 export function manageDomElementActivation() {
+  if(window.AS_OIL.isInCollection('oil-managed-elements')){
+    return;
+  }
+
   let managedElements = findManagedElements();
   let cookie = getSoiCookie();
-
-  for (let i = 0; i < managedElements.length; i++) {
-    manageElement(managedElements[i], cookie);
+  
+  if(cookie.opt_in){
+    sendEventToHostSite('oil-managed-elements')
+    for (let i = 0; i < managedElements.length; i++) {
+      manageElement(managedElements[i], cookie);
+    }
   }
 }
 
 function getNecessaryPurposes(element) {
-  let purposesString = element.getAttribute(MANAGED_TAG_PURPOSES_ATTRIBUTE);
+  let purposesString = element.getAttribute(MANAGED_TAG__ATTRIBUTES.PURPOSES_ATTRIBUTE);
   return purposesString ? purposesString.split(/,\s*/) : getPurposeIds().concat(getCustomPurposeIds());
+}
+
+function getNecessaryLegint(element) {
+  let dataLegint = element.hasAttribute(MANAGED_TAG__ATTRIBUTES.LEGINT_ATTRIBUTE);
+
+  if (dataLegint) {
+    let legintString = element.getAttribute(MANAGED_TAG__ATTRIBUTES.LEGINT_ATTRIBUTE);
+    return legintString.length ? legintString.split(/,\s*/) : getLegintIds();
+  }
+
+  return [];
+}
+
+function getNecessarySpecialFeature(element) {
+  let dataSpecialFeaturesString = element.hasAttribute(MANAGED_TAG__ATTRIBUTES.SPECIAL_FEATURES_ATTRIBUTE);
+
+  if (dataSpecialFeaturesString) {
+    let specialFeaturesString = element.getAttribute(MANAGED_TAG__ATTRIBUTES.SPECIAL_FEATURES_ATTRIBUTE);
+    return specialFeaturesString.length ? specialFeaturesString.split(/,\s*/) : getSpecialFeatureIds();
+  }
+
+  return [];
 }
 
 function findManagedElements() {
@@ -65,7 +95,6 @@ function manageScriptElement(element, cookie) {
 
 function manageNonScriptElement(element, cookie) {
   let managedAttributes = ['href', 'src', 'title', 'display'];
-
   if (hasConsent(element, cookie)) {
     for (let i = 0; i < managedAttributes.length; i++) {
       manageElementWithConsent(element, managedAttributes[i]);
@@ -97,12 +126,37 @@ function manageElementWithoutConsent(element, managedAttribute) {
 }
 
 function hasConsent(element, cookie) {
+  if(gdprApplies() === false) {
+    return true;
+  }
+
   if (cookie.opt_in) {
     let necessaryPurposes = getNecessaryPurposes(element);
-    let allowedPurposes = cookie.consentData.getPurposesAllowed();
+    let necessaryLegint = getNecessaryLegint(element);
+    let necessarySpecialFeatures = getNecessarySpecialFeature(element);
+
+    let allowedPurposes = [];
+    cookie.consentData.purposeConsents.set_.forEach(element => {
+      allowedPurposes.push(element)
+    });
+
+    let allowedLegint = [];
+    cookie.consentData.purposeLegitimateInterests.set_.forEach(element => {
+      allowedLegint.push(element)
+    });
+
+    let allowedSpecialFeature = [];
+    cookie.consentData.specialFeatureOptins.set_.forEach(element => {
+      allowedSpecialFeature.push(element)
+    });
+
     allowedPurposes = allowedPurposes ? allowedPurposes.concat(cookie.customPurposes) : cookie.customPurposes;
 
-    return arrayContainsArray(allowedPurposes, necessaryPurposes);
+    let purposesResult = arrayContainsArray(allowedPurposes, necessaryPurposes);
+    let legintResult = arrayContainsArray(allowedLegint, necessaryLegint);
+    let specialFeaturesResult = arrayContainsArray(allowedSpecialFeature, necessarySpecialFeatures);
+
+    return purposesResult && legintResult && specialFeaturesResult;
   } else {
     return false;
   }

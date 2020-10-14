@@ -1,0 +1,80 @@
+.as-oil {
+    &__btn-optin {
+        @include btn-blue;
+        transition: opacity 0.8s ease 0s;
+
+        &-clicked {
+            opacity: 0.3;
+        }
+
+        @include media('<=phone') {
+            width: auto;
+            padding: 0;
+        }
+
+        @include media('>desktop') {
+            // min-width: 220px;
+        }
+    }
+
+    &__btn-blue {
+        @include btn-blue;
+    }
+
+    &__btn-grey {
+        @include btn-grey;
+
+        @include media('>desktop') {
+            // min-width: 220px;
+        }
+    }
+}
+
+.as-oil-l-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    & > * {
+        display: flex;
+        justify-content: center;
+    }
+
+    @include media('<desktop') {
+        margin-top: 1rem;
+        border-top: 1px solid lightgray;
+        padding-top: 1rem;
+    }
+
+    @include media('>desktop') {
+        // We are vertically aligning this btn by using margins, which is a bit dirty
+        width: 25%;
+        flex-direction: column;
+        margin-top: 1rem;
+        align-items: flex-end;
+    }
+}
+
+.as-oil-back-button {
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    order: 0;
+    padding: 0;
+    margin-bottom: 1rem;
+
+    &__icon {
+        max-height: 1rem;
+        max-width: 1rem;
+    }
+
+    &__text {
+        margin-left: 1rem;
+    }
+
+    display: flex;
+    align-items: center;
+}
+

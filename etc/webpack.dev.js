@@ -107,7 +107,7 @@ let config = webpackMerge(commonConfig, {
         'HMR': METADATA.HMR
       }
     }),
-    new OpenBrowserPlugin({url: 'http://localhost:3000/webpack-dev-server/'})
+    new OpenBrowserPlugin({url: 'http://localhost:80/webpack-dev-server/'})
   ],
 
   /**

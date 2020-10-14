@@ -1,6 +1,7 @@
-import {isDev} from './core_utils.js';
-import {isVerboseCookieSet, isPreviewCookieSet} from './core_cookies.js'
-import {isPreviewMode} from './core_config.js'
+//NOTE: no changes to be made @tcf2
+import { isDev } from './core_utils.js';
+import { isVerboseCookieSet, isPreviewCookieSet } from './core_cookies.js'
+import { isPreviewMode } from './core_config.js'
 
 const prefix = 'OIL: ';
 

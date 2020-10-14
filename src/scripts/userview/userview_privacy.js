@@ -1,11 +1,12 @@
-import {getSoiCookie} from '../core/core_cookies';
-import {PRIVACY_FULL_TRACKING} from '../core/core_constants';
-import {logInfo} from '../core/core_log';
-import {forEach} from './userview_modal';
-import {getPurposes} from '../core/core_vendor_lists';
+import { getSoiCookie } from '../core/core_cookies';
+import { PRIVACY_FULL_TRACKING } from '../core/core_constants';
+import { logInfo } from '../core/core_log';
+import { forEach } from './userview_modal';
+import { getPurposes, getSpecialFeatures, getVendorIds } from '../core/core_vendor_lists';
 
 export function getSoiConsentData() {
   let soiCookie = getSoiCookie();
+
   return soiCookie.opt_in ? soiCookie.consentData : undefined;
 }
 
@@ -19,13 +20,72 @@ export function getSoiConsentData() {
  *  "{}": if there are multiple checkboxes
  */
 export function getPrivacySettings() {
-  if (document.querySelector('.as-js-purpose-slider')) {
-    let result = {};
-    forEach(document.querySelectorAll('.as-js-purpose-slider'), (element) => {
+  //TODO: prendere i dati corretti dal pannello 
+  if (document.querySelector('.as-oil-cpc-wrapper')) {
+    let purpose = {};
+    let specialFeature = {}
+    let vendor = {}
+
+    const purposeSliders = document.querySelectorAll('.as-js-purpose-slider');
+    purposeSliders && forEach(purposeSliders, (element) => {
       let element_id = element.dataset ? element.dataset.id : element.getAttribute('data-id');
-      result[element_id] = element.checked;
+      if (purpose[element_id] !== undefined) {
+        purpose[element_id].consent = element.checked;
+      } else {
+        purpose[element_id] = {};
+        purpose[element_id].consent = element.checked;
+      }
     }, this);
-    return result;
+
+    const purposeLegintSliders = document.querySelectorAll('.as-js-purpose-legint-slider');
+    purposeLegintSliders && forEach(purposeLegintSliders, (element) => {
+      let element_id = element.dataset ? element.dataset.id : element.getAttribute('data-id');
+      if (purpose[element_id] !== undefined) {
+        purpose[element_id].legint = element.checked;
+      } else {
+        purpose[element_id] = {};
+        purpose[element_id].legint = element.checked;
+      }
+    }, this);
+
+    const specialFeatureSliders = document.querySelectorAll('.as-js-specialFeature-slider');
+    specialFeatureSliders && forEach(specialFeatureSliders, (element) => {
+      let element_id = element.dataset ? element.dataset.id : element.getAttribute('data-id');
+      if (specialFeature[element_id] !== undefined) {
+        specialFeature[element_id].optin = element.checked;
+      } else {
+        specialFeature[element_id] = {};
+        specialFeature[element_id].optin = element.checked;
+      }
+    }, this);
+
+    const vendorSliders = document.querySelectorAll('.as-js-vendor-slider');
+    vendorSliders && forEach(vendorSliders, (element) => {
+      let element_id = element.dataset ? element.dataset.id : element.getAttribute('data-id');
+      if (vendor[element_id] !== undefined) {
+        vendor[element_id].consent = element.checked;
+      } else {
+        vendor[element_id] = {};
+        vendor[element_id].consent = element.checked;
+      }
+    }, this);
+
+    const vendorLegintSliders = document.querySelectorAll('.as-js-vendor-legint-slider');
+    vendorLegintSliders && forEach(vendorLegintSliders, (element) => {
+      let element_id = element.dataset ? element.dataset.id : element.getAttribute('data-id');
+      if (vendor[element_id] !== undefined) {
+        vendor[element_id].legint = element.checked;
+      } else {
+        vendor[element_id] = {};
+        vendor[element_id].legint = element.checked;
+      }
+    }, this);
+
+    return {
+      purpose: purpose,
+      specialFeature: specialFeature,
+      vendor: vendor
+    };
   }
   return PRIVACY_FULL_TRACKING;
 }
@@ -33,19 +93,46 @@ export function getPrivacySettings() {
 export function applyPrivacySettings(allowedPurposes) {
   logInfo('Apply privacy settings from cookie', allowedPurposes);
 
-  for (let i = 1; i <= getPurposes().length; i++) {
-    document.querySelector(`#as-js-purpose-slider-${i}`).checked = (allowedPurposes.indexOf(i) !== -1);
+  if (allowedPurposes.length === 0) {
+    return;
   }
 
-  if (allowedPurposes === 1) {
-    forEach(document.querySelectorAll('.as-js-purpose-slider'), (domNode) => {
-      domNode && (domNode.checked = true);
-    });
-  }
+  applyPurposesSettings(allowedPurposes.purpose);
+  applySpecialFeaturesSettings(allowedPurposes.specialFeature);
+  applyVendorsSettings(allowedPurposes.vendor);
+}
 
-  if (allowedPurposes === 0) {
-    forEach(document.querySelectorAll('.as-js-purpose-slider'), (domNode) => {
-      domNode && (domNode.checked = false);
-    });
+function applyPurposesSettings(purposes) {
+  for (let i = 1; i <= Object.keys(getPurposes()).length; i++) {
+    if (purposes[i]) {
+      document.querySelector(`#as-js-purpose-slider-${i}`) && (document.querySelector(`#as-js-purpose-slider-${i}`).checked = purposes[i].consent);
+      document.querySelector(`#as-js-legint-slider-${i}`) && (document.querySelector(`#as-js-legint-slider-${i}`).checked = purposes[i].legint);
+    } else {
+      document.querySelector(`#as-js-purpose-slider-${i}`) && (document.querySelector(`#as-js-purpose-slider-${i}`).checked = false);
+      document.querySelector(`#as-js-legint-slider-${i}`) && (document.querySelector(`#as-js-legint-slider-${i}`).checked = false);
+    }
   }
 }
+
+function applySpecialFeaturesSettings(specialFeatures) {
+  for (let i = 1; i <= Object.keys(getSpecialFeatures()).length; i++) {
+    if (specialFeatures[i]) {
+      (document.querySelector(`#as-js-specialFeature-slider-${i}`).checked = specialFeatures[i].optin);
+    } else {
+      (document.querySelector(`#as-js-specialFeature-slider-${i}`).checked = false);
+    }
+  }
+}
+
+function applyVendorsSettings(vendors) {
+  getVendorIds().forEach(id => {
+    if (vendors[id]) {
+      document.querySelector(`#as-js-vendor-legint-slider-${id}`) && (document.querySelector(`#as-js-vendor-legint-slider-${id}`).checked = vendors[id].legint);
+      document.querySelector(`#as-js-vendor-slider-${id}`) && (document.querySelector(`#as-js-vendor-slider-${id}`).checked = vendors[id].consent);
+    } else {
+      document.querySelector(`#as-js-vendor-legint-slider-${id}`) && (document.querySelector(`#as-js-vendor-legint-slider-${id}`).checked = false);
+      document.querySelector(`#as-js-vendor-slider-${id}`) && (document.querySelector(`#as-js-vendor-slider-${id}`).checked = false);
+    }
+  });
+}
+

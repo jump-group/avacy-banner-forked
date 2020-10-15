@@ -1,6 +1,10 @@
+require('browser-env')();
 import { NowRequest, NowResponse } from '@now/node';
-import { getDefaultTCModel } from '../src/scripts/core/core_cookies'
-
+import { TCModel, TCString, GVL } from '@iabtcf/core';
+import { CmpApi } from '@iabtcf/cmpapi';
+import { updateTCModel } from './../src/scripts/core/core_cookies';
+import { OIL_SPEC } from './../src/scripts/core/core_constants';
+import fetch from 'node-fetch';
 
 export default async function (req: NowRequest, res: NowResponse) {
     const { method, body } = req;
@@ -15,13 +19,58 @@ export default async function (req: NowRequest, res: NowResponse) {
     }
 };
 
-export const encode = async (body: object) => {
-    console.log(getDefaultTCModel());
+export const encode = async (body) => {
+    const tcModel = await getTCModel();
+    let privacySettings = JSON.parse(body);
+    let consentData = updateTCModel(privacySettings, tcModel);
+    let tcString = TCString.encode(consentData);
+
+    const cmpApi = new CmpApi(consentData.cmpId, consentData.cmpVersion, consentData.isServiceSpecific);
+    cmpApi.update(tcString, false);
+
+    let tcData;
+    //@ts-ignore
+    window.__tcfapi('getInAppTCData', 2, (appTCData, success) => {
+        tcData=appTCData;
+    });
 
     return {
         status: 200,
-        json:  {
-            "1": "encode"
+        json: {
+            IABTCF_CmpSdkVersion: tcData.cmpVersion,
+            IABTCF_PolicyVersion: tcData.tcfPolicyVersion,
+            IABTCF_gdprApplies: tcData.gdprApplies,
+            IABTCF_PublisherCC: tcData.publisherCC,
+            IABTCF_PurposeOneTreatment: tcData.purposeOneTreatment,
+            IABTCF_UseNonStandardStacks: tcData.useNonStandardStacks,
+            IABTCF_TCString: tcData.tcString,
+            IABTCF_VendorConsents: tcData.vendor.consents,
+            IABTCF_VendorLegitimateInterests: tcData.vendor.legitimateInterests,
+            IABTCF_PurposeConsents: tcData.purpose.consents,
+            IABTCF_PurposeLegitimateInterests: tcData.purpose.legitimateInterests,
+            IABTCF_SpecialFeaturesOptIns: tcData.specialFeatureOptins
         }
     };
+}
+
+const getTCModel = async () => {
+    let gvlJson = await fetch('https://vendorlist.consensu.org/v2/vendor-list.json', {
+        method: 'GET'
+    })
+    .then(res => {
+        return res.json()
+    }).then(r => r);
+
+    let gvl = new GVL(gvlJson);
+
+    let consentData = new TCModel(gvl);
+    consentData.cmpId = OIL_SPEC.CMP_ID;
+    consentData.publisherCountryCode = 'IT';
+    consentData.cmpVersion = OIL_SPEC.CMP_VERSION;
+    consentData.isServiceSpecific = true;
+    consentData.purposeOneTreatment = true;
+    consentData.supportOOB = false;
+    consentData.consentScreen = 1;
+
+    return consentData
 }

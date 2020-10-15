@@ -37,6 +37,7 @@ export const encode = async (body) => {
     return {
         status: 200,
         json: {
+            IABTCF_CmpSdkID: tcData.cmpId,
             IABTCF_CmpSdkVersion: tcData.cmpVersion,
             IABTCF_PolicyVersion: tcData.tcfPolicyVersion,
             IABTCF_gdprApplies: tcData.gdprApplies,

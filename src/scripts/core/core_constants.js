@@ -41,7 +41,9 @@ export const OIL_CONFIG = {
   ATTR_SUPPRESS_COOKIES: 'suppress_cookies',
   ATTR_LANGUAGE: 'language',
   ATTR_LANGUAGES_LIST: 'languages',
-  ATTR_VISUAL_CONFIGURATION: 'visual_configuration'
+  ATTR_VISUAL_CONFIGURATION: 'visual_configuration',
+  ATTR_ADDITIONAL_CONSENT_LIST_URL: 'additionalConsentUrl',
+  ATTR_ATP_WHITELIST: 'atpWhitelist'
 };
 
 export const OIL_CONFIG_CPC_TYPES = {

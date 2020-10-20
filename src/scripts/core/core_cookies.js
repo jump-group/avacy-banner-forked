@@ -10,7 +10,8 @@ import {
   getDefaultToOptin,
   isInfoBannerOnly,
   getLanguageFromLocale,
-  getLocaleVariantName
+  getLocaleVariantName,
+  getIabVendorWhitelist
 } from './core_config';
 import { getLocaleVariantVersion } from './core_utils';
 import { OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFAULT_VERSION, OIL_SPEC } from './core_constants';
@@ -160,7 +161,17 @@ export function updateTCModel(privacySettings, tcModel) {
     tcModel.updated();
     return tcModel;
   }
-  tcModel.setAll();
+
+  if (getIabVendorWhitelist()) {
+    tcModel.setAllPurposeConsents();
+    tcModel.setAllPurposeLegitimateInterests();
+    tcModel.setAllSpecialFeatureOptins();
+    tcModel.vendorConsents.set(getIabVendorWhitelist());
+    tcModel.vendorLegitimateInterests.set(getIabVendorWhitelist());
+  } else {
+    tcModel.setAll();
+  }
+
   tcModel.consentScreen = 1;
   tcModel.updated();
   return tcModel;

@@ -12,7 +12,8 @@ import {
   OIL_PAYLOAD_LOCALE_VARIANT_VERSION,
   OIL_PAYLOAD_PRIVACY,
   OIL_PAYLOAD_VERSION,
-  PRIVACY_FULL_TRACKING
+  PRIVACY_FULL_TRACKING,
+  OIL_PAYLOAD_ADDITIONAL_CONSENT_STRING
 } from '../core/core_constants';
 import { setSoiCookie } from '../core/core_cookies';
 import { isAmpModeActivated, isInfoBannerOnly, isPoiActive } from '../core/core_config';
@@ -33,6 +34,7 @@ export function oilPowerOptIn(privacySettings) {
     let soiCookiePromise;
     // Update Oil cookie (site - SOI)
     soiCookiePromise = setSoiCookie(privacySettings);
+
     soiCookiePromise.then((cookie) => {
       let payload = {
         [OIL_PAYLOAD_PRIVACY]: !isInfoBannerOnly() ? cookie.consentString : '',
@@ -42,7 +44,8 @@ export function oilPowerOptIn(privacySettings) {
         [OIL_PAYLOAD_CUSTOM_VENDORLIST_VERSION]: cookie.customVendorListVersion,
         [OIL_PAYLOAD_CUSTOM_PURPOSES]: cookie.customPurposes,
         [OIL_PAYLOAD_CONFIG_VERSION]: cookie.configVersion,
-        [OIL_PAYLOAD_POLICY_VERSION]: cookie.policyVersion
+        [OIL_PAYLOAD_POLICY_VERSION]: cookie.policyVersion,
+        [OIL_PAYLOAD_ADDITIONAL_CONSENT_STRING]: cookie.addtlConsent
       };
 
       if (isPoiActive()) {
@@ -80,7 +83,7 @@ export function oilOptIn(privacySettings = PRIVACY_FULL_TRACKING) {
   return new Promise((resolve, reject) => {
     setSoiCookie(privacySettings).then((cookieData) => {
 
-      updateTcfApi(cookieData, false);
+      updateTcfApi(cookieData, false, cookieData.addtlConsent);
       sendEventToHostSite(EVENT_NAME_OPT_IN);
 
       resolve(true);

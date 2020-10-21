@@ -6,6 +6,8 @@ export const OIL_SPEC = {
   LATEST_CONSENT_STRING_VERSION: 2
 };
 
+export const ADDITIONAL_CONSENT_VERSION = '1~';
+
 
 export const OIL_CONFIG = {
   ATTR_CONFIG_VERSION: 'config_version',
@@ -92,6 +94,7 @@ export const OIL_PAYLOAD_CUSTOM_PURPOSES = 'cp';
 export const OIL_PAYLOAD_CUSTOM_VENDORLIST_VERSION = 'cvl';
 export const OIL_PAYLOAD_CONFIG_VERSION = 'cv';
 export const OIL_PAYLOAD_POLICY_VERSION = 'pv';
+export const OIL_PAYLOAD_ADDITIONAL_CONSENT_STRING = 'atp';
 
 // Identify privacy page link, eg. for tracking
 export const DATAQA_PRIVACY_PAGE = 'oil-PrivacyPage';

@@ -8,7 +8,9 @@ import {
   OIL_PAYLOAD_LOCALE_VARIANT_VERSION,
   OIL_PAYLOAD_PRIVACY,
   OIL_PAYLOAD_VERSION,
-  OIL_SPEC
+  OIL_SPEC,
+  OIL_PAYLOAD_ADDITIONAL_CONSENT_STRING,
+  ADDITIONAL_CONSENT_VERSION
 } from '../core/core_constants';
 import { logError, logInfo } from '../core/core_log';
 import { getConfigVersion, getPolicyVersion, getCookieExpireInDays, getLanguageFromLocale } from '../core/core_config';
@@ -31,6 +33,7 @@ export function getPoiCookie(groupName = '') {
 export function setPoiCookie(groupName, payload) {
   // If we send OLD DATA to a NEW HUB, we got a problem - in this case we do not want to store the POI-Cookie --> new data = consent string, old = privacy object
   let consentStringAsPrivacy = getConsentStringFromPayload(payload);
+  console.log('payload', payload);
   if (payload && (typeof (consentStringAsPrivacy) === 'string')) {
     let cookie = {
       power_opt_in: true,
@@ -41,9 +44,10 @@ export function setPoiCookie(groupName, payload) {
       customVendorListVersion: getCustomVendorlistVersionFromPayload(payload),
       consentString: consentStringAsPrivacy,
       configVersion: getConfigVersionFromPayload(payload),
-      policyVersion: getPolicyVersionFromPayload(payload)
+      policyVersion: getPolicyVersionFromPayload(payload),
+      addtlConsent: getAdditionalConsentFromPayload(payload)
     };
-    setDomainCookie(getOilHubCookieName(groupName), cookie, getCookieExpireInDays(), true);
+    setDomainCookie(getOilHubCookieName(groupName), cookie, getCookieExpireInDays(), false);
   } else {
     logError('Oil Hub received old or empty payload! No POI cookie stored.')
   }
@@ -57,6 +61,7 @@ function transformOutdatedOilCookie(cookieConfig) {
   cookie.version = cookieJson.version;
   cookie.configVersion = OIL_CONFIG_DEFAULT_VERSION;
   cookie.policyVersion = OIL_POLICY_DEFAULT_VERSION;
+  cookie.addtlConsent = ADDITIONAL_CONSENT_VERSION;
   cookie.localeVariantName = cookieJson.localeVariantName;
   cookie.localeVariantVersion = cookieJson.localeVariantVersion;
   cookie.customPurposes = []; // we do not know custom purposes config in the hub, but old cookies does not encode them
@@ -95,9 +100,10 @@ function getHubDomainCookieConfig(groupName) {
       consentData: consentData,
       consentString: '', // consent string is not computed because global vendor list is not loaded in hub
       configVersion: getConfigVersion(),
-      policyVersion: getPolicyVersion()
+      policyVersion: getPolicyVersion(),
+      addtlConsent: consentData.addtlConsent
     },
-    outdated_cookie_content_keys: ['power_opt_in', 'timestamp', 'version', 'localeVariantName', 'localeVariantVersion', 'privacy']
+    outdated_cookie_content_keys: ['power_opt_in', 'timestamp', 'version', 'localeVariantName', 'localeVariantVersion', 'privacy', 'addtlConsent']
   };
 }
 
@@ -111,6 +117,10 @@ function getConfigVersionFromPayload(payload) {
 
 function getPolicyVersionFromPayload(payload) {
   return getPayloadPropertyOrDefault(payload, OIL_PAYLOAD_POLICY_VERSION, OIL_POLICY_DEFAULT_VERSION);
+}
+
+function getAdditionalConsentFromPayload(payload) {
+  return getPayloadPropertyOrDefault(payload, OIL_PAYLOAD_ADDITIONAL_CONSENT_STRING, ADDITIONAL_CONSENT_VERSION);
 }
 
 function getCustomPurposesFromPayload(payload) {

@@ -1,5 +1,5 @@
 import '../../../styles/cpc_standard.scss';
-import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl, getAtpWhitelist } from '../../core/core_config'
+import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl } from '../../core/core_config'
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../../core/core_constants';
 import { setGlobalOilObject } from '../../core/core_utils';
 import { getCustomVendorList, getAdditionalConsentList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay } from '../../core/core_vendor_lists';
@@ -285,25 +285,13 @@ const buildCustomVendorEntries = () => {
 const buildAdditionalConsentEntries = () => {
   let additionalConsentList = getAdditionalConsentList();
   if (additionalConsentList) {
-    let additionalConsent = additionalConsentList.providers;
-    let atpWhitelist = []
-
-    if (getAtpWhitelist() && getAtpWhitelist().length > 0) {      
-      getAtpWhitelist().forEach(element => {
-        if (additionalConsent[element] !== undefined ) {
-          atpWhitelist[element] = additionalConsent[element];
-        }
-      });
-      additionalConsent = atpWhitelist;
+    if (typeof (additionalConsentList) === 'object') {
+      additionalConsentList = Object.values(additionalConsentList)
     }
-
-    if (typeof (additionalConsent) === 'object') {
-      additionalConsent = Object.values(additionalConsent)
-    }
-    additionalConsent = additionalConsent.map((element) => {
+    additionalConsentList = additionalConsentList.map((element) => {
       return buildAdditionalConsentListEntry(element);
     });
-    return `<div class="as-oil-poi-group-list">${additionalConsent.join('')}</div>`;
+    return `<div class="as-oil-poi-group-list">${additionalConsentList.join('')}</div>`;
   } else {
     return 'Missing custom vendor list! Maybe vendor list retrieval has failed! Please contact web administrator!';
   }
@@ -441,14 +429,14 @@ const formatPurposeId = (id) => {
 };
 
 function activateAll() {
-  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider');
+  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider, .as-js-additional-consent-slider');
   forEach(elements, (domNode) => {
     domNode && (domNode.checked = true);
   });
 }
 
 export function deactivateAll() {
-  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider');
+  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider, .as-js-additional-consent-slider');
   forEach(elements, (domNode) => {
     domNode && (domNode.checked = false);
   });

@@ -4,7 +4,7 @@ import { logError, logInfo, logPreviewInfo } from './core_log';
 import { checkOptIn } from './core_optin';
 import { getSoiCookie, isBrowserCookieEnabled, isPreviewCookieSet, removePreviewCookie, removeVerboseCookie, setPreviewCookie, setVerboseCookie } from './core_cookies';
 import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies, gdprApplies } from './core_config';
-import { EVENT_NAME_HAS_OPTED_IN, EVENT_NAME_NO_COOKIES_ALLOWED, OIL_GLOBAL_OBJECT_NAME } from './core_constants';
+import { EVENT_NAME_HAS_OPTED_IN, EVENT_NAME_NO_COOKIES_ALLOWED, OIL_GLOBAL_OBJECT_NAME, ADDITIONAL_CONSENT_VERSION } from './core_constants';
 import { updateTcfApi } from './core_tcf_api';
 import { manageDomElementActivation } from './core_tag_management';
 import { sendConsentInformationToCustomVendors } from './core_custom_vendors';
@@ -58,7 +58,7 @@ export function initOilLayer() {
          * User has opted in
          */
         sendEventToHostSite(EVENT_NAME_HAS_OPTED_IN);
-        updateTcfApi(cookieData, false);
+        updateTcfApi(cookieData, false, cookieData.addtlConsent);
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start with found opt-in finished!'));
       } else {
         /**
@@ -68,7 +68,7 @@ export function initOilLayer() {
           .then(userview_modal => {
             userview_modal.locale(uv_m => uv_m.renderOil({ optIn: false }));
             if (gdprApplies()) {
-              updateTcfApi(cookieData, true);
+              updateTcfApi(cookieData, true, ADDITIONAL_CONSENT_VERSION);
             }
           })
           .catch((e) => {

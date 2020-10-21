@@ -136,7 +136,7 @@ function onOptInComplete() {
   }
   sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after user\'s opt-in finished!'));
   manageDomElementActivation();
-  updateTcfApi(getSoiCookie(), false);
+  updateTcfApi(getSoiCookie(), false, getSoiCookie().addtlConsent);
   if (document.querySelector('#oil-preference-center')) {
     document.querySelector('#oil-preference-center').innerHTML = '';
   }

@@ -43,9 +43,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@iabtcf/cmpapi": "1.0.1-3",
-    "@iabtcf/core": "1.0.1-3",
-    "@iabtcf/stub": "1.0.1-3",
+    "@iabtcf/cmpapi": "1.1.4",
+    "@iabtcf/core": "1.1.4",
+    "@iabtcf/stub": "1.1.4",
     "browser-env": "^3.3.0",
     "consent-string": "1.4.2",
     "js-cookie": "2.1.4"

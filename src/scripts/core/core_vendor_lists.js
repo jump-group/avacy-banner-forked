@@ -1,5 +1,5 @@
 //REVIEW: changes in todo comments @tcf2
-import { getCustomVendorListUrl, getAdditionalConsentListUrl, getIabVendorBlacklist, getIabVendorListDomain, getIabVendorWhitelist, getShowLimitedVendors, getLanguageFromConfigObject } from './core_config';
+import { getCustomVendorListUrl, getAdditionalConsentListUrl, getIabVendorBlacklist, getIabVendorListDomain, getIabVendorWhitelist, getShowLimitedVendors, getLanguageFromConfigObject, getAtpWhitelist } from './core_config';
 import { logError, logInfo } from './core_log';
 import { fetchJsonData } from './core_utils';
 import { GVL } from '@iabtcf/core';
@@ -183,7 +183,31 @@ export function getCustomVendorList() {
 }
 
 export function getAdditionalConsentList() {
-  return cachedAdditionalConsent ? cachedAdditionalConsent : DEFAULT_ADDITIONAL_CONSENT_LIST;
+  let wholeAdditionalConsent = cachedAdditionalConsent ? cachedAdditionalConsent : DEFAULT_ADDITIONAL_CONSENT_LIST;
+  let additionalConsentList = wholeAdditionalConsent.providers;
+  let atpWhitelist = [];
+  if (getAtpWhitelist() && getAtpWhitelist().length > 0) {      
+    getAtpWhitelist().forEach(element => {
+      if (additionalConsentList[element] !== undefined ) {
+        atpWhitelist[element] = additionalConsentList[element];
+      }
+    });
+    return atpWhitelist;
+  }
+  return additionalConsentList;
+}
+
+export function getAllAdditionalConsentString() {
+  let additionalConsentList = getAdditionalConsentList();
+
+  if (typeof (additionalConsentList) === 'object') {
+    additionalConsentList = Object.values(additionalConsentList)
+  }
+
+  return additionalConsentList.map(element => {
+    return element.id;
+  }).join('.')
+
 }
 
 export function getCustomVendorListVersion() {

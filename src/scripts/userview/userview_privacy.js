@@ -1,5 +1,5 @@
 import { getSoiCookie } from '../core/core_cookies';
-import { PRIVACY_FULL_TRACKING } from '../core/core_constants';
+import { PRIVACY_FULL_TRACKING, ADDITIONAL_CONSENT_VERSION } from '../core/core_constants';
 import { logInfo } from '../core/core_log';
 import { forEach } from './userview_modal';
 import { getPurposes, getSpecialFeatures, getVendorIds } from '../core/core_vendor_lists';
@@ -25,6 +25,7 @@ export function getPrivacySettings() {
     let purpose = {};
     let specialFeature = {}
     let vendor = {}
+    let addtlConsent = [];
 
     const purposeSliders = document.querySelectorAll('.as-js-purpose-slider');
     purposeSliders && forEach(purposeSliders, (element) => {
@@ -81,10 +82,21 @@ export function getPrivacySettings() {
       }
     }, this);
 
+    const addtlConsentSliders = document.querySelectorAll('.as-js-additional-consent-slider');
+    addtlConsentSliders && forEach(addtlConsentSliders, (element) => {
+      let element_id = element.dataset ? element.dataset.id : element.getAttribute('data-id');
+      if (element.checked) {
+        addtlConsent.push(element_id);
+      }
+    }, this);
+
+    let addtlConsentString = ADDITIONAL_CONSENT_VERSION+addtlConsent.join('.');
+
     return {
       purpose: purpose,
       specialFeature: specialFeature,
-      vendor: vendor
+      vendor: vendor,
+      addtlConsent: addtlConsentString
     };
   }
   return PRIVACY_FULL_TRACKING;

@@ -15,7 +15,7 @@ import {
 } from './core_config';
 import { getLocaleVariantVersion } from './core_utils';
 import { ADDITIONAL_CONSENT_VERSION, OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFAULT_VERSION, OIL_SPEC } from './core_constants';
-import { getCustomVendorListVersion, getLimitedVendorIds, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentString, getAdditionalConsentList } from './core_vendor_lists';
+import { getCustomVendorListVersion, getLimitedVendorIds, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders, getAdditionalConsentList } from './core_vendor_lists';
 import { OilVersion } from './core_utils';
 import { TCModel, TCString } from '@iabtcf/core';
 
@@ -167,7 +167,7 @@ export function updateTCModel(privacySettings, tcModel) {
     tcModel.updated();
     return tcModel;
   }
-  tcModel.addtlConsent = ADDITIONAL_CONSENT_VERSION+getAllAdditionalConsentString();
+  tcModel.addtlConsent = ADDITIONAL_CONSENT_VERSION+getAllAdditionalConsentProviders();
   if (getIabVendorWhitelist()) {
     tcModel.setAllPurposeConsents();
     tcModel.setAllPurposeLegitimateInterests();
@@ -311,7 +311,7 @@ export function getCustomPurposesWithConsent(privacySettings, allCustomPurposes)
 }
 
 export function getAdditionalConsentWithSettings(privacySettings) {
-  return privacySettings !== 1 ? privacySettings.addtlConsent : ADDITIONAL_CONSENT_VERSION+getAllAdditionalConsentString();
+  return privacySettings !== 1 ? privacySettings.addtlConsent : ADDITIONAL_CONSENT_VERSION+getAllAdditionalConsentProviders();
 }
 
 function getAllowedStandardPurposesDefault() {

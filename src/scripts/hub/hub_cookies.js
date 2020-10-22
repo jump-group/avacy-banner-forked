@@ -33,7 +33,6 @@ export function getPoiCookie(groupName = '') {
 export function setPoiCookie(groupName, payload) {
   // If we send OLD DATA to a NEW HUB, we got a problem - in this case we do not want to store the POI-Cookie --> new data = consent string, old = privacy object
   let consentStringAsPrivacy = getConsentStringFromPayload(payload);
-  console.log('payload', payload);
   if (payload && (typeof (consentStringAsPrivacy) === 'string')) {
     let cookie = {
       power_opt_in: true,

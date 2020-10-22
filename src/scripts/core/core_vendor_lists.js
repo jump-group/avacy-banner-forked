@@ -197,7 +197,7 @@ export function getAdditionalConsentList() {
   return additionalConsentList;
 }
 
-export function getAllAdditionalConsentString() {
+export function getAllAdditionalConsentProviders() {
   let additionalConsentList = getAdditionalConsentList();
 
   if (typeof (additionalConsentList) === 'object') {

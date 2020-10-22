@@ -2,6 +2,7 @@ import '../../styles/modal.scss';
 import { getGlobalOilObject, isObject, sendEventToHostSite } from '../core/core_utils';
 import { removeSubscriberCookies, getSoiCookie } from '../core/core_cookies';
 import {
+  ADDITIONAL_CONSENT_VERSION,
   EVENT_NAME_ADVANCED_SETTINGS,
   EVENT_NAME_AS_PRIVACY_SELECTED,
   EVENT_NAME_BACK_TO_MAIN,
@@ -24,9 +25,9 @@ import { oilNoCookiesTemplate } from './view/oil.no.cookies';
 import * as AdvancedSettingsStandard from './view/oil.advanced.settings.standard';
 import * as AdvancedSettingsTabs from './view/oil.advanced.settings.tabs';
 import { logError, logInfo } from '../core/core_log';
-import { getCpcType, getTheme, getTimeOutValue, isOptoutConfirmRequired, isPersistMinimumTracking, getBannerPosition, getBannerAnimation } from './userview_config';
+import { getCpcType, getTimeOutValue, isOptoutConfirmRequired, isPersistMinimumTracking, getBannerPosition, getBannerAnimation } from './userview_config';
 import { gdprApplies, getAdvancedSettingsPurposesDefault, isInfoBannerOnly, isPoiActive } from '../core/core_config';
-import { applyPrivacySettings, getPrivacySettings, getSoiConsentData } from './userview_privacy';
+import { applyPrivacySettings, getPrivacySettings, applyAdditionalConsent } from './userview_privacy';
 import { activateOptoutConfirm } from './userview_optout_confirm';
 import { getPurposeIds, loadVendorListAndCustomVendorList} from '../core/core_vendor_lists';
 
@@ -96,15 +97,25 @@ export function oilShowPreferenceCenter(mode) {
             logError('No wrapper for the CPC with the id #oil-preference-center was found.');
             return;
           }
-          let consentData = getSoiConsentData();
-          let currentPrivacySettings;
-          if (consentData) {
-            currentPrivacySettings = getAllPreferences(consentData);
+          let soiCookie = getSoiCookie();
+          let consentData = soiCookie.opt_in ? soiCookie.consentData : undefined;
+          let addtlConsent = soiCookie.opt_in ? soiCookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
+
+          let currentPrivacySettings = {};
+          if (soiCookie && addtlConsent) {
+            currentPrivacySettings = {
+              privacySettings: getAllPreferences(consentData),
+              addtlConsent: addtlConsent
+            };
           } else {
             //TODO: getAdvancedSettingsPurposesDefault() @tc2
-            currentPrivacySettings = getAdvancedSettingsPurposesDefault() ? getPurposeIds() : [];
+            currentPrivacySettings = {
+              privacySettings: getAdvancedSettingsPurposesDefault() ? getPurposeIds() : [],
+              addtlConsent: ADDITIONAL_CONSENT_VERSION
+            };
           }
-          applyPrivacySettings(currentPrivacySettings);
+          applyPrivacySettings(currentPrivacySettings.privacySettings);
+          applyAdditionalConsent(currentPrivacySettings.addtlConsent);
         });
       });
     })

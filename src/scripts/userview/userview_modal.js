@@ -101,21 +101,13 @@ export function oilShowPreferenceCenter(mode) {
           let consentData = soiCookie.opt_in ? soiCookie.consentData : undefined;
           let addtlConsent = soiCookie.opt_in ? soiCookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
 
-          let currentPrivacySettings = {};
-          if (soiCookie && addtlConsent) {
-            currentPrivacySettings = {
-              privacySettings: getAllPreferences(consentData),
-              addtlConsent: addtlConsent
-            };
+          let currentPrivacySettings;
+          if (consentData && addtlConsent) {
+            currentPrivacySettings = getAllPreferences(consentData, addtlConsent);
           } else {
-            //TODO: getAdvancedSettingsPurposesDefault() @tc2
-            currentPrivacySettings = {
-              privacySettings: getAdvancedSettingsPurposesDefault() ? getPurposeIds() : [],
-              addtlConsent: ADDITIONAL_CONSENT_VERSION
-            };
+            currentPrivacySettings = [];
           }
-          applyPrivacySettings(currentPrivacySettings.privacySettings);
-          applyAdditionalConsent(currentPrivacySettings.addtlConsent);
+          applyPrivacySettings(currentPrivacySettings);
         });
       });
     })

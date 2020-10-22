@@ -25,7 +25,14 @@ export const encode = async (body) => {
     let consentData = updateTCModel(privacySettings, tcModel);
     let tcString = TCString.encode(consentData);
 
-    const cmpApi = new CmpApi(consentData.cmpId, consentData.cmpVersion, consentData.isServiceSpecific);
+    const cmpApi = new CmpApi(consentData.cmpId, consentData.cmpVersion, consentData.isServiceSpecific, {
+        'getInAppTCData': (next, appTCData, success) => {
+            // tcData will be constructed via the TC string and can be added to here
+            appTCData.addtlConsent = consentData.addtlConsent;
+            // pass data along
+            next(appTCData, success);
+        }
+    });
     cmpApi.update(tcString, false);
 
     let tcData;
@@ -49,7 +56,8 @@ export const encode = async (body) => {
             IABTCF_VendorLegitimateInterests: tcData.vendor.legitimateInterests,
             IABTCF_PurposeConsents: tcData.purpose.consents,
             IABTCF_PurposeLegitimateInterests: tcData.purpose.legitimateInterests,
-            IABTCF_SpecialFeaturesOptIns: tcData.specialFeatureOptins
+            IABTCF_SpecialFeaturesOptIns: tcData.specialFeatureOptins,
+            IABTCF_AddtlConsent: tcData.addtlConsent,
         }
     };
 }

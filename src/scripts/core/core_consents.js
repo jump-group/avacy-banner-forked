@@ -11,8 +11,9 @@ export function getSpecialFeaturesAllowed(TCModel) {
   return getOptinsPreferences(TCModel, 'specialFeature');
 }
 
-export function getAllPreferences(TCModel) {
+export function getAllPreferences(TCModel, addtlConsent) {
   return {
+    addtlConsent: addtlConsent,
     purpose: getPurposesAllowed(TCModel),
     vendor: getVendorsAllowed(TCModel),
     specialFeature: getSpecialFeaturesAllowed(TCModel)

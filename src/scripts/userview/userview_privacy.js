@@ -105,22 +105,17 @@ export function getPrivacySettings() {
 export function applyPrivacySettings(privacySettings) {
   logInfo('Apply privacy settings from cookie', privacySettings);
 
-  if (privacySettings.length === 0) {
+  if (privacySettings.length === 0 || privacySettings === undefined) {
     return;
   }
 
   applyPurposesSettings(privacySettings.purpose);
   applySpecialFeaturesSettings(privacySettings.specialFeature);
   applyVendorsSettings(privacySettings.vendor);
+  applyAdditionalConsent(privacySettings.addtlConsent);
 }
 
-export function applyAdditionalConsent(addtlConsentString) {
-  logInfo('Apply Additional Consent from cookie', addtlConsentString);
-
-  if (addtlConsentString === ADDITIONAL_CONSENT_VERSION) {
-    return;
-  }
-
+function applyAdditionalConsent(addtlConsentString) {
   let providerList = addtlConsentString.replace(ADDITIONAL_CONSENT_VERSION, '').split('.');
   const addtlConsentSliders = document.querySelectorAll('.as-js-additional-consent-slider');
 

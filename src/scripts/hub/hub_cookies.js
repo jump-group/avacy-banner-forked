@@ -46,7 +46,7 @@ export function setPoiCookie(groupName, payload) {
       policyVersion: getPolicyVersionFromPayload(payload),
       addtlConsent: getAdditionalConsentFromPayload(payload)
     };
-    setDomainCookie(getOilHubCookieName(groupName), cookie, getCookieExpireInDays(), false);
+    setDomainCookie(getOilHubCookieName(groupName), cookie, getCookieExpireInDays(), true);
   } else {
     logError('Oil Hub received old or empty payload! No POI cookie stored.')
   }

@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from '@now/node';
-import {TCString} from '@iabtcf/core';
+import {TCModel, TCString} from '@iabtcf/core';
 import { getAllPreferences } from './../src/scripts/core/core_consents';
 
 export default async function (req: NowRequest, res: NowResponse) {
@@ -17,8 +17,9 @@ export default async function (req: NowRequest, res: NowResponse) {
 
 export const decode = async (body) => {
     let tcString = JSON.parse(body).IABTCF_TCString;
+    let atpString = JSON.parse(body).IABTCF_AddtlConsent;
     const tcModel = TCString.decode(tcString);
-    let privacySettings = getAllPreferences(tcModel);
+    let privacySettings = getAllPreferences(tcModel, atpString);
 
     return {
         status: 200,

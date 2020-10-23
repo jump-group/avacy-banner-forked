@@ -36,7 +36,7 @@ export function checkOptIn() {
     // Verify Power Opt In (will return immediately if not activated), it will overwrite the SOI result only if its positive
     verifyPowerOptIn().then((powerOptIn) => {
       logPreviewOptInInfo(soiOptIn, powerOptIn.power_opt_in);
-      if (powerOptIn.power_opt_in) {
+      if (powerOptIn.power_opt_in && resultOptIn) {
         cookie = powerOptIn;
         resultOptIn = cookie.power_opt_in;
         if (!soiOptIn) {

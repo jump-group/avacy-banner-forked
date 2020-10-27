@@ -59,6 +59,9 @@ export function initOilLayer() {
          */
         sendEventToHostSite(EVENT_NAME_HAS_OPTED_IN);
         updateTcfApi(cookieData, false, cookieData.addtlConsent);
+        if(window.AS_OIL.isInCollection('oil-dom-loaded')) {
+          manageDomElementActivation();
+        }
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start with found opt-in finished!'));
       } else {
         /**
@@ -86,7 +89,10 @@ function registerDomElementActivationManager() {
 
 function onDomContentLoaded() {
   document.removeEventListener('DOMContentLoaded', onDomContentLoaded);
-  manageDomElementActivation();
+  sendEventToHostSite('oil-dom-loaded');
+  if(window.AS_OIL.isInCollection('oil-checked-optin')) {
+    manageDomElementActivation();
+  }
 }
 
 /**

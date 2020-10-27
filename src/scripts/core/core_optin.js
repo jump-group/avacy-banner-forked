@@ -4,6 +4,7 @@ import { logPreviewInfo } from './core_log';
 import { verifyPowerOptIn } from './core_poi';
 import { getPolicyVersion } from './core_config';
 import { manageDomElementActivation } from './core_tag_management.js';
+import { sendEventToHostSite } from './core_utils.js';
 /**
  * Log Helper function for checkOptIn
  * @param {*} singleOptIn
@@ -26,30 +27,34 @@ function logPreviewOptInInfo(singleOptIn, powerOptIn) {
 export function checkOptIn() {
   return new Promise((resolve, reject) => {
     let cookie = getSoiCookie();
-    let soiOptIn = cookie.opt_in;
-    let resultOptIn = soiOptIn;
-
-    if (cookie.policyVersion !== getPolicyVersion()) {
-      resultOptIn = false;
+    if(cookie.opt_in && isCookieVersionOk(cookie)){
+        sendEventToHostSite('oil-checked-optin');
+        resolve([cookie.opt_in, cookie]);
+        return;
     }
 
-    // Verify Power Opt In (will return immediately if not activated), it will overwrite the SOI result only if its positive
     verifyPowerOptIn().then((powerOptIn) => {
-      logPreviewOptInInfo(soiOptIn, powerOptIn.power_opt_in);
-      if (powerOptIn.power_opt_in && resultOptIn) {
-        cookie = powerOptIn;
-        resultOptIn = cookie.power_opt_in;
-        if (!soiOptIn) {
-          setSoiCookieWithPoiCookieData(powerOptIn)
+        if(powerOptIn.power_opt_in && isCookieVersionOk(powerOptIn)){
+            setSoiCookieWithPoiCookieData(powerOptIn)
             .then(() => {
-              manageDomElementActivation();
-              resolve([resultOptIn, cookie])
+                sendEventToHostSite('oil-checked-optin');
+                resolve([powerOptIn.power_opt_in, powerOptIn]);
+                return;
             })
             .catch(error => reject(error));
+        } else {
+          sendEventToHostSite('oil-checked-optin');
+          resolve([false, powerOptIn]);
+          return;
         }
-      }
-      resolve([resultOptIn, cookie]);
     });
   });
+}
+
+function isCookieVersionOk(cookie) {
+  if (cookie.policyVersion === getPolicyVersion()) {
+    return true;
+  }
+  return false
 }
 

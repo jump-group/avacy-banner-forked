@@ -30,20 +30,10 @@ export function setSessionCookie(name, value) {
   Cookie.set(name, value);
 }
 
-export function setDomainCookie(name, value, expires_in_days, secure) {
+export function setDomainCookie(name, value, expires_in_days) {
   // decoded consent data must not be written to the cookie
   delete value.consentData;
-
-  //SE QUANDO CHIAMO QUESTA FUNZIONE NON PASSO IL PARAMETRO TRUE, LUI ANDRÀ SEMPRE IN ELSE
-  if (secure) {
-    Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
-  } else {
-    if (inIframe()) {
-      Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
-    } else {
-      Cookie.set(name, value, { expires: expires_in_days});
-    }
-  }
+  Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
 }
 
 export function getOilCookie(cookieConfig) {
@@ -87,6 +77,7 @@ export function getSoiCookie() {
 
 export function setSoiCookieWithPoiCookieData(poiCookieJson) {
   //TODO: set new consent @tcf2 @tcf2poi
+  console.log('poiCookieJson',poiCookieJson);
   return new Promise((resolve, reject) => {
     loadVendorListAndCustomVendorList().then(() => {
       let cookieConfig = getOilCookieConfig();
@@ -117,8 +108,8 @@ export function setSoiCookieWithPoiCookieData(poiCookieJson) {
         policyVersion: policyVersion,
         addtlConsent: addtlConsent
       };
-
-      setDomainCookie(cookieConfig.name, cookie, cookieConfig.expires, false);
+      console.log('cookie',cookie);
+      setDomainCookie(cookieConfig.name, cookie, cookieConfig.expires);
       resolve(cookie);
     }).catch(error => reject(error));
   });
@@ -218,7 +209,7 @@ export function setSoiCookie(privacySettings) {
 
   return new Promise((resolve, reject) => {
     buildSoiCookie(privacySettings).then((cookie) => {
-      setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays(), false);
+      setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays());
       resolve(cookie);
     }).catch(error => reject(error));
   });

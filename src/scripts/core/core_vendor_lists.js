@@ -28,6 +28,7 @@ export let cachedCustomVendorList = null;
 export let cachedAdditionalConsent = null;
 export let pendingVendorListPromise = null;
 let cachedGVL = null;
+let gvlPromise = null;
 
 export function loadVendorListAndCustomVendorList() {
   //TODO @tcf2 load from API @tc2soi
@@ -104,20 +105,20 @@ function loadAdditionalConsentList() {
 }
 
 function getGlobalVendorList() {
-  //TODO: Per ora ho commentato il seguente if, ma è da rivedere;
-  // if (cachedGVL) {
-  //   return cachedGVL;
-  // }
-  
-  GVL.baseUrl = getIabVendorListDomain();
+  if (!gvlPromise) {
+    GVL.baseUrl = getIabVendorListDomain();
+    cachedGVL = new GVL();
+    gvlPromise = cachedGVL.readyPromise.then(() => {
+      return cachedGVL
+    });
+  }
 
-  cachedGVL = new GVL();
-  return cachedGVL;
+  return gvlPromise;
 }
 
-function getGlobalVendorListPromise() {
+async function getGlobalVendorListPromise() {
 
-  let iabGvl = getGlobalVendorList();
+  let iabGvl = await getGlobalVendorList();
 
   let newLang = getLanguageFromConfigObject();
   return iabGvl.changeLanguage(newLang).then(() => {
@@ -221,6 +222,7 @@ export function clearVendorListCache() {
   cachedVendorList = undefined;
   cachedCustomVendorList = undefined;
   pendingVendorListPromise = null;
+  cachedGVL = null;
 }
 
 export function getVendorsToDisplay() {

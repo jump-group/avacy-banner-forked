@@ -17,7 +17,7 @@ import { getLocaleVariantVersion } from './core_utils';
 import { ADDITIONAL_CONSENT_VERSION, OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFAULT_VERSION, OIL_SPEC } from './core_constants';
 import { getCustomVendorListVersion, getLimitedVendorIds, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders, getAdditionalConsentList } from './core_vendor_lists';
 import { OilVersion } from './core_utils';
-import { TCModel, TCString } from '@iabtcf/core';
+import { TCModel, TCString } from 'didomi-iabtcf-core';
 
 const COOKIE_PREVIEW_NAME = 'oil_preview';
 const COOKIE_VERBOSE_NAME = 'oil_verbose';

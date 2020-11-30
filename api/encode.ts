@@ -1,7 +1,7 @@
 require('browser-env')();
 import { NowRequest, NowResponse } from '@now/node';
-import { TCModel, TCString, GVL } from '@iabtcf/core';
-import { CmpApi } from '@iabtcf/cmpapi';
+import { TCModel, TCString, GVL } from 'didomi-iabtcf-core';
+import { CmpApi } from 'didomi-iabtcf-cmpapi';
 import { updateTCModel } from './../src/scripts/core/core_cookies';
 import { OIL_SPEC } from './../src/scripts/core/core_constants';
 import fetch from 'node-fetch';

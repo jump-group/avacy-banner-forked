@@ -9,6 +9,8 @@ import { updateTcfApi } from './core_tcf_api';
 import { manageDomElementActivation } from './core_tag_management';
 import { sendConsentInformationToCustomVendors } from './core_custom_vendors';
 import { getPurposes, clearVendorListCache } from './core_vendor_lists';
+import { observer } from './../element-observer/observer';
+
 /**
  * Initialize Oil on Host Site
  * This functions gets called directly after Oil has loaded
@@ -90,6 +92,7 @@ function registerDomElementActivationManager() {
 function onDomContentLoaded() {
   document.removeEventListener('DOMContentLoaded', onDomContentLoaded);
   sendEventToHostSite('oil-dom-loaded');
+  observer.disconnect();
   if(window.AS_OIL.isInCollection('oil-checked-optin')) {
     manageDomElementActivation();
   }

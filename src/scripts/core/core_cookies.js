@@ -77,7 +77,6 @@ export function getSoiCookie() {
 
 export function setSoiCookieWithPoiCookieData(poiCookieJson) {
   //TODO: set new consent @tcf2 @tcf2poi
-  console.log('poiCookieJson',poiCookieJson);
   return new Promise((resolve, reject) => {
     loadVendorListAndCustomVendorList().then(() => {
       let cookieConfig = getOilCookieConfig();
@@ -108,7 +107,7 @@ export function setSoiCookieWithPoiCookieData(poiCookieJson) {
         policyVersion: policyVersion,
         addtlConsent: addtlConsent
       };
-      console.log('cookie',cookie);
+
       setDomainCookie(cookieConfig.name, cookie, cookieConfig.expires);
       resolve(cookie);
     }).catch(error => reject(error));

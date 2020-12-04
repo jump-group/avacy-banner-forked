@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Test Banner Rai A</title>
     <link rel="stylesheet" href="../assets/test.css">
+    <!-- <script src="https://cdn.jsdelivr.net/gh/jump-group/yett@0.2.0/docs/lib/yett.min.js"></script> -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,800&amp;display=swap" rel="stylesheet">
     <script id="oil-configuration" type="application/configuration">
         {
@@ -17,7 +18,7 @@
             "timeout": -1,
             "poi_activate_poi": true,
             "poi_group_name": "GruppoRai",
-            "poi_hub_origin": "https://testrai.jumpgroup.it",
+            "poi_hub_origin": "https://avacyhub.test/",
             "poi_hub_path": "/hub.html",
             "show_limited_vendors_only": true,
             "iabVendorWhitelist": [3, 4, 5],
@@ -109,9 +110,11 @@
         <button onclick='(function(){window.AS_OIL.triggerOptOut(); location.reload();})();'>Effettua
             Optout e ricarica</button><br>
         <button onclick="window.AS_OIL.showPreferenceCenter('absolute')">Modifica Consenso</button><br>
+        <button onclick="window.yett.unblock();">Sblocca tutti gli iframe</button><br>
+        <button onclick="window.yett.unblock(/youtube/);">Sblocca tutti gli iframe vimeo</button><br>
         <div id="oil-preference-center"></div>
     </section>
-
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/xdEFVYlMMW0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <section class="js-esempio1">
         <div>
             <h2 class="SectionTitle">Esempio consensi:</h2>
@@ -172,6 +175,28 @@
             document.querySelector('.js-esempio3').classList.add('is-active');
             document.querySelector('.js-esempio3 .ScriptItem').classList.add('is-active');
             document.querySelector('.js-esempio3 .ScriptItem__Content h1').innerText = 'Script Attivo';
+        </script>
+    </section>
+
+    <section class="js-esempio4">
+        <div>
+            <h2 class="SectionTitle">Esempio consensi:</h2>
+            <ul>
+                <li>Finalità: tutte</li>
+                <li>Legittimo Interesse: tutti</li>
+                <li>Funzionalità Speciali: tutte</li>
+                <li>src</li>
+            </ul>
+        </div>
+        <div class="SectionContent ScriptItem">
+            <div class="ScriptItem__Content">
+                <h1>Script Disattivo</h1>
+            </div>
+        </div>
+        <script src="http://mystest.com/example.html" data-managed="as-oil" data-type="text/javascript" data-legints data-special-features type="as-oil" charset="UTF-8">
+            document.querySelector('.js-esempio4').classList.add('is-active');
+            document.querySelector('.js-esempio4 .ScriptItem').classList.add('is-active');
+            document.querySelector('.js-esempio4 .ScriptItem__Content h1').innerText = 'Script Attivo';
         </script>
     </section>
     <button onclick="window.scrollTo(0,0);" title="Back to top" class="BackToTop">

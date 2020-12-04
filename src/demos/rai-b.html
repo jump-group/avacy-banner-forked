@@ -8,16 +8,75 @@
     <title>Test Banner Rai B</title>
     <link rel="stylesheet" href="../assets/test.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,800&amp;display=swap" rel="stylesheet">
+    <script id="avacy-blocking">
+
+        PAPYRI_BLACKLIST = [
+            {
+                pattern: /googleapis/,
+                rules: {
+                    'data-purposes': [1,2,7,9],
+                    'data-legints':[2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    'data-special-features': [2],
+                }
+            },
+            {
+                pattern: /raiAdv/,
+                rules: {
+                    'data-purposes': [1,2,7,9],
+                    'data-legints':[2, 3, 4, 5],
+                    'data-special-features': [1,2],
+                }
+            },
+            {
+                pattern: /test.js/,
+                rules: {
+                    'data-purposes': [1,2,3,4,5,6,7,8,9,10],
+                    'data-legints':[2, 3, 4, 5],
+                    'data-special-features': [1],
+                }
+            },
+            {
+                pattern: /twitter/,
+                rules: {
+                    'data-purposes': [1,2,3,4,5,6,7,8,9,10],
+                    'data-legints':[2, 3, 4, 5],
+                    'data-special-features': [1,2],
+                }
+            },
+            {
+                pattern: /youtube/,
+                rules: {
+                    'data-purposes': [1,3,4,5,9,10],
+                    'data-legints':[2,5],
+                    'data-special-features': [1],
+                }
+            },
+            {
+                pattern: /facebook/,
+                rules: {
+                    'data-purposes': [1,3,4,5,9,10],
+                    'data-legints':[2,5],
+                    'data-special-features': [1],
+                }
+            },
+        ]
+    </script>
     <script id="oil-configuration" type="application/configuration">
         {
             "config_version": 1,
             "policy_version": 2,
             "advanced_settings": true,
             "iabVendorListUrl": "https://cdn.jumpgroup.it/assets/",
-            "customVendorListUrl": "https://cdn.jumpgroup.it/assets/custom-vendor-list.json",
             "timeout": -1,
+            "poi_activate_poi": true,
+            "poi_group_name": "GruppoRai",
+            "poi_hub_origin": "https://avacyhub.test/",
+            "poi_hub_path": "/hub.html",
             "show_limited_vendors_only": true,
             "iabVendorWhitelist": [3, 4, 5],
+            "atpWhitelist": [39, 43, 46],
+            "additionalConsentUrl": "https://cdn.jumpgroup.it/assets/additional-consent-providers.json",
+            "publicPath": "/",
             "cookie_expires_in_days": 15,
             "language": "it",
             "languages": {
@@ -63,7 +122,8 @@
                         "label_cpc_legint_rejectbox_text": "Legittimo interesse per i fornitori",
                         "label_cpc_legint_box_text": "Permetti a questo servizio di trattare i tuoi dati sulla base di un interesse legittimo.",
                         "label_cpc_legint_infobox_title": "Legittimo interesse",
-                        "label_cpc_legint_infobox_description": "Un \"interesse legittimo\" è un interesse che, in base alla legislazione applicabile, giustifica il trattamento di dati personali.<br>I servizi che decidono di fare affidamento su di un interesse legittimo possono processare i tuoi dati a meno che tu non ti opponga a tale trattamento.<br><p><b>Deselezionando questa casella eserciti il tuo diritto di opposizione.</b></p>"
+                        "label_cpc_legint_infobox_description": "Un \"interesse legittimo\" è un interesse che, in base alla legislazione applicabile, giustifica il trattamento di dati personali.<br>I servizi che decidono di fare affidamento su di un interesse legittimo possono processare i tuoi dati a meno che tu non ti opponga a tale trattamento.<br><p><b>Deselezionando questa casella eserciti il tuo diritto di opposizione.</b></p>",
+                        "label_additional_consent_heading": "Google Partner"
                     }
                 }
             },
@@ -125,48 +185,16 @@
             document.querySelector('.js-esempio1 .ScriptItem__Content h1').innerText = 'Script Attivo';
         </script>
     </section>
-
-    <section class="js-esempio2">
-        <div>
-            <h2 class="SectionTitle">Esempio consensi:</h2>
-            <ul>
-                <li>Finalità: tutte</li>
-                <li>Legittimo Interesse: nessuno</li>
-                <li>Funzionalità Speciali: nessuna</li>
-            </ul>
-        </div>
-        <div class="SectionContent ScriptItem">
-            <div class="ScriptItem__Content">
-                <h1>Script Disattivo</h1>
-            </div>
-        </div>
-        <script data-managed="as-oil" data-type="text/javascript" type="as-oil" charset="UTF-8">
-            document.querySelector('.js-esempio2').classList.add('is-active');
-            document.querySelector('.js-esempio2 .ScriptItem').classList.add('is-active');
-            document.querySelector('.js-esempio2 .ScriptItem__Content h1').innerText = 'Script Attivo';
-        </script>
+    <section>
+        <script id="twitter-wjs" type="text/javascript" async defer src="//platform.twitter.com/widgets.js"></script>
+        
+        <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js" type="text/javascript"></script>
+        <script defer="" src="/assets/js/raiAdv.js" type="text/javascript"></script>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/xdEFVYlMMW0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <script src="/assets/js/test.js" type="text/javascript"></script>
+        <img src="https://www.facebook.com/tr?id=836944033164609&ev=PageView&noscript=1" alt="Girl in a jacket" width="500" height="600">
     </section>
-
-    <section class="js-esempio3">
-        <div>
-            <h2 class="SectionTitle">Esempio consensi:</h2>
-            <ul>
-                <li>Finalità: tutte</li>
-                <li>Legittimo Interesse: tutti</li>
-                <li>Funzionalità Speciali: tutte</li>
-            </ul>
-        </div>
-        <div class="SectionContent ScriptItem">
-            <div class="ScriptItem__Content">
-                <h1>Script Disattivo</h1>
-            </div>
-        </div>
-        <script data-managed="as-oil" data-type="text/javascript" data-legints data-special-features type="as-oil" charset="UTF-8">
-            document.querySelector('.js-esempio3').classList.add('is-active');
-            document.querySelector('.js-esempio3 .ScriptItem').classList.add('is-active');
-            document.querySelector('.js-esempio3 .ScriptItem__Content h1').innerText = 'Script Attivo';
-        </script>
-    </section>
+    
     <button onclick="window.scrollTo(0,0);" title="Back to top" class="BackToTop">
         <span>^</span>
     </button>

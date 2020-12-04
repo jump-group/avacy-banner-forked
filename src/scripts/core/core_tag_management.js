@@ -4,6 +4,8 @@ import { getSoiCookie } from './core_cookies';
 import { arrayContainsArray, sendEventToHostSite } from './core_utils';
 import { getPurposeIds, getSpecialFeatureIds, getLegintIds } from './core_vendor_lists';
 import { getCustomPurposeIds, gdprApplies } from './core_config';
+import { observer, transformElement } from './../element-observer/observer';
+import { backupIframes } from './../element-observer/variables';
 
 export function manageDomElementActivation() {
   if(window.AS_OIL.isInCollection('oil-managed-elements')){
@@ -14,10 +16,10 @@ export function manageDomElementActivation() {
   let cookie = getSoiCookie();
   
   if(cookie.opt_in){
-    sendEventToHostSite('oil-managed-elements')
     for (let i = 0; i < managedElements.length; i++) {
       manageElement(managedElements[i], cookie);
     }
+    sendEventToHostSite('oil-managed-elements')
   }
 }
 
@@ -93,6 +95,25 @@ function manageScriptElement(element, cookie) {
   parent.removeChild(element);
 }
 
+// function manageNonScriptElement2(element, cookie) {
+//   if (!hasConsent(element, cookie)) {
+//     let rules = {
+//       'data-purposes': element.dataset.purposes,
+//       'data-legints': element.dataset.legints,
+//       'data-special-features': element.dataset.specialFeatures
+//     }
+
+//     transformElement(element, rules);
+
+//   } else {
+//     if (element.hasAttribute('data-avacy-iframe-id')) {
+//       injectIframe(element);
+//     }
+//   }
+
+//   observer.disconnect();
+// }
+
 function manageNonScriptElement(element, cookie) {
   let managedAttributes = ['href', 'src', 'title', 'display'];
   if (hasConsent(element, cookie)) {
@@ -108,6 +129,7 @@ function manageNonScriptElement(element, cookie) {
 
 function manageElementWithConsent(element, managedAttribute) {
   let managedAttributeValue = element.getAttribute('data-' + managedAttribute);
+
   if (managedAttribute === 'display') {
     element.style.display = managedAttributeValue ? managedAttributeValue : '';
   } else {
@@ -160,4 +182,24 @@ function hasConsent(element, cookie) {
   } else {
     return false;
   }
+}
+
+function injectIframe(el) {
+  let iframeId = el.dataset.avacyIframeId;
+  let backupList = backupIframes.blacklisted;
+  //cerco l'indice dell mio array dove ho salvato il mio iframe;
+  let index = backupList.findIndex(item => item[0] === iframeId);
+  let iframe = backupList[index][1];
+  iframe.setAttribute('data-purposes', el.dataset.purposes);
+  iframe.setAttribute('data-legints', el.dataset.legints);
+  iframe.setAttribute('data-special-features', el.dataset.specialFeatures);
+  iframe.setAttribute('data-managed', el.dataset.managed);
+
+  //cerco il placeholder associato al mio iframe -> lo uso per inserire il mio iframe -> lo rimuovo
+  let placeholder = document.querySelector(`span[data-avacy-iframe-id=${iframeId}]`);
+  placeholder.parentElement.insertBefore(iframe, placeholder);
+  placeholder.parentElement.removeChild(placeholder);
+
+  //rimuovo dal mio array l'elemento all'indice trovato inizialmente
+  backupIframes.blacklisted.splice(index);
 }

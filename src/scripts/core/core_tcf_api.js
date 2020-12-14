@@ -1,25 +1,26 @@
-import { CmpApi, TCData } from '@iabtcf/cmpapi';
+import { CmpApi } from 'didomi-iabtcf-cmpapi';
 import { OIL_SPEC, ADDITIONAL_CONSENT_VERSION } from './core_constants';
 
 let tcfCmpApi = null;
+let acm = ADDITIONAL_CONSENT_VERSION;
 
-function loadTcfApi(addtlConsent) {
-    tcfCmpApi = new CmpApi(OIL_SPEC.CMP_ID, OIL_SPEC.CMP_VERSION, true, {
-        'getTCData': (next, tcData, success) => {
-            // tcData will be constructed via the TC string and can be added to here
-            tcData.addtlConsent = addtlConsent;
-            // pass data along
-            next(tcData, success);
-        }
-    });
+function loadTcfApi() {
+    if (!tcfCmpApi) {
+        tcfCmpApi = new CmpApi(OIL_SPEC.CMP_ID, OIL_SPEC.CMP_VERSION, true, {
+            'getTCData': (next, tcData, success) => {
+                // tcData will be constructed via the TC string and can be added to here
+                tcData.addtlConsent = acm;
+                // pass data along
+                next(tcData, success);
+            }
+        });
+    }
     return tcfCmpApi;
 }
 
 export function updateTcfApi(cookieData, cmpVisible = false, addtlConsent) {
-    // if (!tcfCmpApi) {
-    //     loadTcfApi(addtlConsent);
-    // }
-    loadTcfApi(addtlConsent);
+    acm = addtlConsent;
+    loadTcfApi();
 
     let TCString = (cookieData && cookieData.consentString) ? cookieData.consentString : '';
     tcfCmpApi.update(TCString, cmpVisible);
@@ -28,10 +29,8 @@ export function updateTcfApi(cookieData, cmpVisible = false, addtlConsent) {
 }
 
 export function disableGdprTcfApi() {
-    // if (!tcfCmpApi) {
-    //     loadTcfApi();
-    // }
-    loadTcfApi(ADDITIONAL_CONSENT_VERSION);
+    acm = ADDITIONAL_CONSENT_VERSION;
+    loadTcfApi();
 
     tcfCmpApi.update(null, false);
     return tcfCmpApi;

@@ -6,7 +6,6 @@ let acm = ADDITIONAL_CONSENT_VERSION;
 
 function loadTcfApi() {
     if (!tcfCmpApi) {
-        console.log('generoTcfCmpApi')
         tcfCmpApi = new CmpApi(OIL_SPEC.CMP_ID, OIL_SPEC.CMP_VERSION, true, {
             'getTCData': (next, tcData, success) => {
                 // tcData will be constructed via the TC string and can be added to here

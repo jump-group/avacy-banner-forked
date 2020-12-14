@@ -33,7 +33,12 @@ export function setSessionCookie(name, value) {
 export function setDomainCookie(name, value, expires_in_days) {
   // decoded consent data must not be written to the cookie
   delete value.consentData;
-  Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
+
+  if (window.location.protocol === 'http:') {
+    Cookie.set(name, value);
+  } else {
+    Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
+  }  
 }
 
 export function getOilCookie(cookieConfig) {
@@ -77,7 +82,7 @@ export function getSoiCookie() {
 
 export function setSoiCookieWithPoiCookieData(poiCookieJson) {
   //TODO: set new consent @tcf2 @tcf2poi
-  console.log('poiCookieJson',poiCookieJson);
+
   return new Promise((resolve, reject) => {
     loadVendorListAndCustomVendorList().then(() => {
       let cookieConfig = getOilCookieConfig();
@@ -108,7 +113,7 @@ export function setSoiCookieWithPoiCookieData(poiCookieJson) {
         policyVersion: policyVersion,
         addtlConsent: addtlConsent
       };
-      console.log('cookie',cookie);
+
       setDomainCookie(cookieConfig.name, cookie, cookieConfig.expires);
       resolve(cookie);
     }).catch(error => reject(error));

@@ -2,7 +2,7 @@
 import { getCustomVendorListUrl, getAdditionalConsentListUrl, getIabVendorBlacklist, getIabVendorListDomain, getIabVendorWhitelist, getShowLimitedVendors, getLanguageFromConfigObject, getAtpWhitelist } from './core_config';
 import { logError, logInfo } from './core_log';
 import { fetchJsonData } from './core_utils';
-import { GVL } from '@iabtcf/core';
+import { GVL } from 'didomi-iabtcf-core';
 
 export const DEFAULT_VENDOR_LIST = {
   vendorListVersion: 36, //TODO: @tcf2 @tc2soi

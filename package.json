@@ -1,6 +1,6 @@
 {
   "name": "@ideasio/oil.js",
-  "version": "2.5.2",
+  "version": "2.5.4",
   "description": "oil.js Opt-In Layer for consent management based on the IAB TCF Standard",
   "keywords": [
     "IAB Europe",
@@ -43,9 +43,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@iabtcf/cmpapi": "1.1.4",
-    "@iabtcf/core": "1.1.4",
-    "@iabtcf/stub": "1.1.4",
+    "didomi-iabtcf-cmpapi": "1.1.4-1",
+    "didomi-iabtcf-core": "1.1.4-1",
+    "didomi-iabtcf-stub": "1.1.4",
     "browser-env": "^3.3.0",
     "consent-string": "1.4.2",
     "js-cookie": "2.1.4"

@@ -17,7 +17,7 @@ import { getLocaleVariantVersion } from './core_utils';
 import { ADDITIONAL_CONSENT_VERSION, OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFAULT_VERSION, OIL_SPEC } from './core_constants';
 import { getCustomVendorListVersion, getLimitedVendorIds, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders, getAdditionalConsentList } from './core_vendor_lists';
 import { OilVersion } from './core_utils';
-import { TCModel, TCString } from '@iabtcf/core';
+import { TCModel, TCString } from 'didomi-iabtcf-core';
 
 const COOKIE_PREVIEW_NAME = 'oil_preview';
 const COOKIE_VERBOSE_NAME = 'oil_verbose';
@@ -33,7 +33,12 @@ export function setSessionCookie(name, value) {
 export function setDomainCookie(name, value, expires_in_days) {
   // decoded consent data must not be written to the cookie
   delete value.consentData;
-  Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
+
+  if (window.location.protocol === 'http:') {
+    Cookie.set(name, value);
+  } else {
+    Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
+  }  
 }
 
 export function getOilCookie(cookieConfig) {
@@ -77,6 +82,7 @@ export function getSoiCookie() {
 
 export function setSoiCookieWithPoiCookieData(poiCookieJson) {
   //TODO: set new consent @tcf2 @tcf2poi
+
   return new Promise((resolve, reject) => {
     loadVendorListAndCustomVendorList().then(() => {
       let cookieConfig = getOilCookieConfig();
@@ -115,7 +121,7 @@ export function setSoiCookieWithPoiCookieData(poiCookieJson) {
 }
 
 export function updateTCModel(privacySettings, tcModel) {
-
+  tcModel.cmpId = OIL_SPEC.CMP_ID;
   if (privacySettings !== 1) {
     ['purpose', 'vendor'].forEach((category) => {
       privacySettings[category] && Object.entries(privacySettings[category]).forEach((value) => {
@@ -180,7 +186,7 @@ export function buildSoiCookie(privacySettings) {
       let cookieConfig = getOilCookieConfig();
 
       logInfo('creating TCModel with this settings:', privacySettings);
-      let consentData = updateTCModel(privacySettings, cookieConfig.defaultCookieContent.consentData, privacySettings.addtlConsent);
+      let consentData = updateTCModel(privacySettings, cookieConfig.defaultCookieContent.consentData);
 
       logInfo('privacySettings', privacySettings);
       logInfo('new TCModel', consentData);

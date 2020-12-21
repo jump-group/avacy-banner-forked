@@ -3,6 +3,7 @@ import { getSoiCookie, setSoiCookieWithPoiCookieData } from './core_cookies';
 import { logPreviewInfo } from './core_log';
 import { verifyPowerOptIn } from './core_poi';
 import { getPolicyVersion } from './core_config';
+import { OIL_SPEC } from './core_constants.js';
 import { manageDomElementActivation } from './core_tag_management.js';
 import { sendEventToHostSite } from './core_utils.js';
 /**
@@ -27,14 +28,14 @@ function logPreviewOptInInfo(singleOptIn, powerOptIn) {
 export function checkOptIn() {
   return new Promise((resolve, reject) => {
     let cookie = getSoiCookie();
-    if(cookie.opt_in && isCookieVersionOk(cookie)){
+    if(cookie.opt_in && isCookieVersionOk(cookie) && isCmpIdValid(cookie)){
         sendEventToHostSite('oil-checked-optin');
         resolve([cookie.opt_in, cookie]);
         return;
     }
 
     verifyPowerOptIn().then((powerOptIn) => {
-        if(powerOptIn.power_opt_in && isCookieVersionOk(powerOptIn)){
+        if(powerOptIn.power_opt_in && isCookieVersionOk(powerOptIn) && isCmpIdValid(powerOptIn)){
             setSoiCookieWithPoiCookieData(powerOptIn)
             .then(() => {
                 sendEventToHostSite('oil-checked-optin');
@@ -53,6 +54,14 @@ export function checkOptIn() {
 
 function isCookieVersionOk(cookie) {
   if (cookie.policyVersion === getPolicyVersion()) {
+    return true;
+  }
+  return false
+}
+
+function isCmpIdValid(cookie) {
+  /** TODO: check if TCF isn't Service Specific */
+  if ( cookie.consentData.cmpId_ === OIL_SPEC.CMP_ID) {
     return true;
   }
   return false

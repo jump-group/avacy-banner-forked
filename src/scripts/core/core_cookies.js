@@ -121,7 +121,7 @@ export function setSoiCookieWithPoiCookieData(poiCookieJson) {
 }
 
 export function updateTCModel(privacySettings, tcModel) {
-
+  tcModel.cmpId = OIL_SPEC.CMP_ID;
   if (privacySettings !== 1) {
     ['purpose', 'vendor'].forEach((category) => {
       privacySettings[category] && Object.entries(privacySettings[category]).forEach((value) => {
@@ -186,7 +186,7 @@ export function buildSoiCookie(privacySettings) {
       let cookieConfig = getOilCookieConfig();
 
       logInfo('creating TCModel with this settings:', privacySettings);
-      let consentData = updateTCModel(privacySettings, cookieConfig.defaultCookieContent.consentData, privacySettings.addtlConsent);
+      let consentData = updateTCModel(privacySettings, cookieConfig.defaultCookieContent.consentData);
 
       logInfo('privacySettings', privacySettings);
       logInfo('new TCModel', consentData);

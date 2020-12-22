@@ -20,7 +20,10 @@
             "poi_group_name": "GruppoRai",
             "poi_hub_origin": "https://testrai.jumpgroup.it",
             "poi_hub_path": "/hub.html",
-            "publicPath": "/",
+            "show_limited_vendors_only": true,
+            "iabVendorWhitelist": [3, 4, 5],
+            "atpWhitelist": [39, 43, 46],
+            "additionalConsentUrl": "https://cdn.jumpgroup.it/assets/additional-consent-providers.json",
             "cookie_expires_in_days": 15,
             "language": "it",
             "languages": {
@@ -173,9 +176,6 @@
     <button onclick="window.scrollTo(0,0);" title="Back to top" class="BackToTop">
         <span>^</span>
     </button>
-    <!-- <footer>
-        <script src="/oil.2.1.0-SNAPSHOT.min.js" type="text/javascript"></script>
-    </footer> -->
 </body>
 
 </html>

@@ -13,6 +13,10 @@ export const OIL_LABELS = {
   ATTR_LABEL_THIRD_PARTY_LIST_TEXT: 'label_thirdparty_list_text',
   ATTR_LABEL_CUSTOM_THIRD_PARTY_HEADING: 'label_custom_thirdparty_heading',
 
+  // ADDITIONAL CONSENT LABELS
+  ATTR_LABEL_ADDITIONAL_CONSENT_HEADING: 'label_additional_consent_heading',
+  ATTR_LABEL_ADDITIONAL_CONSENT_DESCRIPTION: 'label_additional_consent_description',
+
 
   // CPC CATEGORIES
   ATTR_LABEL_CPC_PURPOSE_TITLE: 'label_cpc_purpose_title',

@@ -157,6 +157,14 @@ export function getCustomVendorListUrl() {
   return getConfigValue(OIL_CONFIG.ATTR_CUSTOM_VENDOR_LIST_URL, undefined);
 }
 
+export function getAdditionalConsentListUrl() {
+  return getConfigValue(OIL_CONFIG.ATTR_ADDITIONAL_CONSENT_LIST_URL, undefined);
+}
+
+export function getAtpWhitelist() {
+  return getConfigValue(OIL_CONFIG.ATTR_ATP_WHITELIST, undefined);
+}
+
 export function getIabVendorWhitelist() {
   return getConfigValue(OIL_CONFIG.ATTR_IAB_VENDOR_WHITELIST, undefined);
 }

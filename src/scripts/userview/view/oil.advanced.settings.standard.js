@@ -1,8 +1,8 @@
 import '../../../styles/cpc_standard.scss';
-import { getCustomPurposes, getCustomVendorListUrl } from '../../core/core_config';
+import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl } from '../../core/core_config'
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../../core/core_constants';
 import { setGlobalOilObject } from '../../core/core_utils';
-import { getCustomVendorList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay } from '../../core/core_vendor_lists';
+import { getCustomVendorList, getAdditionalConsentList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay } from '../../core/core_vendor_lists';
 import { getLabel, getLabelWithDefault } from '../userview_config';
 import { OIL_LABELS } from '../userview_constants';
 import { forEach } from '../userview_modal';
@@ -74,6 +74,11 @@ const ContentSnippet = () => {
           ${getLabel(OIL_LABELS.ATTR_LABEL_CUSTOM_THIRD_PARTY_HEADING)}
         </a>
       ` : ''}
+      ${IsAdditionalConsentEnables() ? `
+        <a href="#as-oil-cpc-additional-consent" onclick='${OIL_GLOBAL_OBJECT_NAME}._switchLeftMenuClass(this)' class="as-oil-cpc__category-link">
+          ${getLabel(OIL_LABELS.ATTR_LABEL_ADDITIONAL_CONSENT_HEADING)}
+        </a>
+      ` : ''}
     </div>
   </div>
   <div class="as-oil-cpc__middle scroll-content-end as-js-purposes">
@@ -110,6 +115,7 @@ const ContentSnippet = () => {
 
       ${buildIabVendorList()}
       ${buildCustomVendorList()}
+      ${buildAdditionalConsentList()}
     </div>
   </div>
   <div class="as-oil-cpc__right">
@@ -177,6 +183,10 @@ const IsCustomVendorsEnables = () => {
   return !!getCustomVendorListUrl();
 };
 
+const IsAdditionalConsentEnables = () => {
+  return !!getAdditionalConsentListUrl();
+};
+
 const buildIabVendorList = () => {
   return `
 <div class="as-oil-cpc__row-title" id="as-oil-cpc-third-parties">
@@ -202,6 +212,7 @@ const buildIabVendorList = () => {
 </div>`
 };
 
+
 const buildCustomVendorList = () => {
   if (IsCustomVendorsEnables()) {
     return `
@@ -219,6 +230,22 @@ const buildCustomVendorList = () => {
   }
 };
 
+const buildAdditionalConsentList = () => {
+  if (IsAdditionalConsentEnables()) {
+    return `
+<div class="as-oil-cpc__row-title" id="as-oil-cpc-additional-consent">
+  ${getLabel(OIL_LABELS.ATTR_LABEL_ADDITIONAL_CONSENT_HEADING)}
+</div>
+  ${getLabel(OIL_LABELS.ATTR_LABEL_ADDITIONAL_CONSENT_DESCRIPTION) === OIL_LABELS.ATTR_LABEL_ADDITIONAL_CONSENT_DESCRIPTION ? '' : `
+  <div class="as-oil-cpc__row-additionalContentText">${getLabel(OIL_LABELS.ATTR_LABEL_ADDITIONAL_CONSENT_DESCRIPTION)}</div>
+  `}
+<div id="as-oil-additional-consent-list">
+  ${buildAdditionalConsentEntries()}
+</div>`
+  } else {
+    return '';
+  }
+};
 
 const buildIabVendorEntries = () => {
   let vendorList = getVendorList();
@@ -255,6 +282,21 @@ const buildCustomVendorEntries = () => {
   }
 };
 
+const buildAdditionalConsentEntries = () => {
+  let additionalConsentList = getAdditionalConsentList();
+  if (additionalConsentList) {
+    if (typeof (additionalConsentList) === 'object') {
+      additionalConsentList = Object.values(additionalConsentList)
+    }
+    additionalConsentList = additionalConsentList.map((element) => {
+      return buildAdditionalConsentListEntry(element);
+    });
+    return `<div class="as-oil-poi-group-list">${additionalConsentList.join('')}</div>`;
+  } else {
+    return 'Missing custom vendor list! Maybe vendor list retrieval has failed! Please contact web administrator!';
+  }
+};
+
 const buildVendorListEntry = (element) => {
   if (element.name) {
     return `
@@ -278,6 +320,28 @@ const buildVendorListEntry = (element) => {
                 ${snippetLegalDescription(element.specialFeatures, 'specialFeatures', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_SPECIAL_FEATURES))}
               </div>
               ${element.legIntPurposes.length > 0 ? snippetLengint(element.id) : ''}
+            </div>
+          `;
+  }
+};
+
+const buildAdditionalConsentListEntry = (element) => {
+  if (element.name) {
+    return `
+          <div class="as-oil-third-party-list-element Vendor">
+              <span class="Vendor__Heading" onclick='${OIL_GLOBAL_OBJECT_NAME}._toggleViewElements(this)'>
+                  <svg class='as-oil-icon-plus' width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.675 4.328H10v1.344H5.675V10h-1.35V5.672H0V4.328h4.325V0h1.35z" fill="#0068FF" fill-rule="evenodd" fill-opacity=".88"/>
+                  </svg>
+                  <svg class='as-oil-icon-minus' style='display: none;' width="10" height="5" viewBox="0 0 10 5" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0h10v1.5H0z" fill="#3B7BE2" fill-rule="evenodd" opacity=".88"/>
+                  </svg>
+                  <span class='as-oil-third-party-name'>${element.name}</span>
+              </span>
+                ${snippetAdditionalConsent(element.id)}
+              <div class='as-oil-third-party-toggle-part' style='display: none;'>
+                <a class='as-oil-third-party-link' href='${element.policyUrl}'>${element.policyUrl}</a>  
+              </div>
             </div>
           `;
   }
@@ -313,6 +377,15 @@ const snippetVendorConsent = (id) => {
   return `
     <label class="as-oil-cpc__switch">
       <input data-id="${id}" id="as-js-vendor-slider-${id}" class="as-js-vendor-slider" type="checkbox" name="oil-cpc-purpose" value=""/>
+      <span class="as-oil-cpc__slider"></span>
+    </label>
+  `;
+}
+
+const snippetAdditionalConsent = (id) => {
+  return `
+    <label class="as-oil-cpc__switch">
+      <input data-id="${id}" id="as-js-additional-consent-slider-${id}" class="as-js-additional-consent-slider" type="checkbox" name="oil-cpc-additional-consent" value=""/>
       <span class="as-oil-cpc__slider"></span>
     </label>
   `;
@@ -356,14 +429,14 @@ const formatPurposeId = (id) => {
 };
 
 function activateAll() {
-  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider');
+  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider, .as-js-additional-consent-slider');
   forEach(elements, (domNode) => {
     domNode && (domNode.checked = true);
   });
 }
 
 export function deactivateAll() {
-  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider');
+  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider, .as-js-additional-consent-slider');
   forEach(elements, (domNode) => {
     domNode && (domNode.checked = false);
   });

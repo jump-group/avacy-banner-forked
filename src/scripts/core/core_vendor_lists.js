@@ -1,8 +1,8 @@
 //REVIEW: changes in todo comments @tcf2
-import { getCustomVendorListUrl, getIabVendorBlacklist, getIabVendorListDomain, getIabVendorWhitelist, getShowLimitedVendors, getLanguageFromConfigObject } from './core_config';
+import { getCustomVendorListUrl, getAdditionalConsentListUrl, getIabVendorBlacklist, getIabVendorListDomain, getIabVendorWhitelist, getShowLimitedVendors, getLanguageFromConfigObject, getAtpWhitelist } from './core_config';
 import { logError, logInfo } from './core_log';
 import { fetchJsonData } from './core_utils';
-import { GVL } from '@iabtcf/core';
+import { GVL } from 'didomi-iabtcf-core';
 
 export const DEFAULT_VENDOR_LIST = {
   vendorListVersion: 36, //TODO: @tcf2 @tc2soi
@@ -19,14 +19,20 @@ export const DEFAULT_CUSTOM_VENDOR_LIST = {
   'vendors': []
 };
 
+export const DEFAULT_ADDITIONAL_CONSENT_LIST = {
+  'providers': {}
+};
+
 export let cachedVendorList = null;
 export let cachedCustomVendorList = null;
+export let cachedAdditionalConsent = null;
 export let pendingVendorListPromise = null;
 let cachedGVL = null;
+let gvlPromise = null;
 
 export function loadVendorListAndCustomVendorList() {
   //TODO @tcf2 load from API @tc2soi
-  if (cachedVendorList && cachedCustomVendorList) {
+  if (cachedVendorList && cachedCustomVendorList && cachedAdditionalConsent) {
     return new Promise(resolve => {
       resolve();
     });
@@ -37,14 +43,14 @@ export function loadVendorListAndCustomVendorList() {
       getGlobalVendorListPromise()
         .then(response => {
           cachedVendorList = response;
-          loadCustomVendorList().then(() => {
+          Promise.all([loadCustomVendorList(), loadAdditionalConsentList()]).then(() => {
             pendingVendorListPromise = null;
             resolve();
           });
         })
         .catch(error => {
           logError(`OIL getVendorList failed and returned error: ${error}. Falling back to default vendor list!`);
-          loadCustomVendorList().then(() => {
+          Promise.all([loadCustomVendorList(), loadAdditionalConsentList()]).then(() => {
             pendingVendorListPromise = null;
             resolve();
           });
@@ -77,21 +83,42 @@ function loadCustomVendorList() {
   });
 }
 
-function getGlobalVendorList() {
-  //TODO: Per ora ho commentato il seguente if, ma è da rivedere;
-  // if (cachedGVL) {
-  //   return cachedGVL;
-  // }
-  
-  GVL.baseUrl = getIabVendorListDomain();
-
-  cachedGVL = new GVL();
-  return cachedGVL;
+function loadAdditionalConsentList() {
+  return new Promise(resolve => {
+    let additionalConsentListUrl = getAdditionalConsentListUrl();
+    if (!additionalConsentListUrl) {
+      cachedAdditionalConsent = DEFAULT_ADDITIONAL_CONSENT_LIST;
+      resolve();
+    } else {
+      fetchJsonData(additionalConsentListUrl)
+        .then(response => {
+          cachedAdditionalConsent = response;
+          resolve();
+        })
+        .catch(error => {
+          cachedAdditionalConsent = DEFAULT_ADDITIONAL_CONSENT_LIST;
+          logError(`OIL getCustomVendorList failed and returned error: ${error}. Falling back to default custom vendor list!`);
+          resolve();
+        });
+    }
+  });
 }
 
-function getGlobalVendorListPromise() {
+function getGlobalVendorList() {
+  if (!gvlPromise) {
+    GVL.baseUrl = getIabVendorListDomain();
+    cachedGVL = new GVL();
+    gvlPromise = cachedGVL.readyPromise.then(() => {
+      return cachedGVL
+    });
+  }
 
-  let iabGvl = getGlobalVendorList();
+  return gvlPromise;
+}
+
+async function getGlobalVendorListPromise() {
+
+  let iabGvl = await getGlobalVendorList();
 
   let newLang = getLanguageFromConfigObject();
   return iabGvl.changeLanguage(newLang).then(() => {
@@ -156,6 +183,34 @@ export function getCustomVendorList() {
   return cachedCustomVendorList ? cachedCustomVendorList : DEFAULT_CUSTOM_VENDOR_LIST;
 }
 
+export function getAdditionalConsentList() {
+  let wholeAdditionalConsent = cachedAdditionalConsent ? cachedAdditionalConsent : DEFAULT_ADDITIONAL_CONSENT_LIST;
+  let additionalConsentList = wholeAdditionalConsent.providers;
+  let atpWhitelist = [];
+  if (getAtpWhitelist() && getAtpWhitelist().length > 0) {      
+    getAtpWhitelist().forEach(element => {
+      if (additionalConsentList[element] !== undefined ) {
+        atpWhitelist[element] = additionalConsentList[element];
+      }
+    });
+    return atpWhitelist;
+  }
+  return additionalConsentList;
+}
+
+export function getAllAdditionalConsentProviders() {
+  let additionalConsentList = getAdditionalConsentList();
+
+  if (typeof (additionalConsentList) === 'object') {
+    additionalConsentList = Object.values(additionalConsentList)
+  }
+
+  return additionalConsentList.map(element => {
+    return element.id;
+  }).join('.')
+
+}
+
 export function getCustomVendorListVersion() {
   if (cachedCustomVendorList && !cachedCustomVendorList.isDefault) {
     return cachedCustomVendorList.vendorListVersion;
@@ -167,6 +222,7 @@ export function clearVendorListCache() {
   cachedVendorList = undefined;
   cachedCustomVendorList = undefined;
   pendingVendorListPromise = null;
+  cachedGVL = null;
 }
 
 export function getVendorsToDisplay() {

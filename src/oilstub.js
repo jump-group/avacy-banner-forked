@@ -1,2 +1,2 @@
-const cmpstub = require('@iabtcf/stub');
+const cmpstub = require('didomi-iabtcf-stub');
 cmpstub();

@@ -4,7 +4,6 @@ import { getSoiCookie } from './core_cookies';
 import { arrayContainsArray, sendEventToHostSite } from './core_utils';
 import { getPurposeIds, getSpecialFeatureIds, getLegintIds } from './core_vendor_lists';
 import { getCustomPurposeIds, gdprApplies } from './core_config';
-import { observer, transformElement } from './../element-observer/observer';
 import { backupIframes } from './../element-observer/variables';
 
 export function manageDomElementActivation() {

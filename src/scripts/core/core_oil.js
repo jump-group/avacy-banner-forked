@@ -92,7 +92,9 @@ function registerDomElementActivationManager() {
 function onDomContentLoaded() {
   document.removeEventListener('DOMContentLoaded', onDomContentLoaded);
   sendEventToHostSite('oil-dom-loaded');
-  observer.disconnect();
+  if (window.CLIENT_SIDE_BLOCKING.active) {
+    observer.disconnect();
+  }
   if(window.AS_OIL.isInCollection('oil-checked-optin')) {
     manageDomElementActivation();
   }

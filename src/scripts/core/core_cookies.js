@@ -18,6 +18,7 @@ import { ADDITIONAL_CONSENT_VERSION, OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFA
 import { getCustomVendorListVersion, getLimitedVendorIds, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders, getAdditionalConsentList } from './core_vendor_lists';
 import { OilVersion } from './core_utils';
 import { TCModel, TCString } from 'didomi-iabtcf-core';
+import { tcModelBaseValues } from './core_tcf_api'
 
 const COOKIE_PREVIEW_NAME = 'oil_preview';
 const COOKIE_VERBOSE_NAME = 'oil_verbose';
@@ -211,7 +212,7 @@ export function buildSoiCookie(privacySettings) {
 }
 
 export function setSoiCookie(privacySettings) {
-
+  // console.log(writeSettings(privacySettings));
   return new Promise((resolve, reject) => {
     buildSoiCookie(privacySettings).then((cookie) => {
       setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays());
@@ -371,13 +372,7 @@ function isCookieValid(name, data) {
 function getDefaultTCModel() {
   let gvl = getVendorList();
   let consentData = new TCModel(gvl);
-  consentData.cmpId = OIL_SPEC.CMP_ID;
-  consentData.publisherCountryCode = 'IT';
-  consentData.cmpVersion = OIL_SPEC.CMP_VERSION;
-  consentData.isServiceSpecific = true;
-  consentData.purposeOneTreatment = true;
-  consentData.supportOOB = false;
-  consentData.consentScreen = 1;
+  tcModelBaseValues(consentData);
 
   return consentData;
 }

@@ -4,6 +4,7 @@ import { TCModel, TCString, GVL } from 'didomi-iabtcf-core';
 import { CmpApi } from 'didomi-iabtcf-cmpapi';
 import { updateTCModel } from './../src/scripts/core/core_cookies';
 import { OIL_SPEC } from './../src/scripts/core/core_constants';
+import { tcModelBaseValues } from './../src/scripts/core/core_tcf_api';
 import fetch from 'node-fetch';
 
 export default async function (req: NowRequest, res: NowResponse) {
@@ -73,13 +74,7 @@ const getTCModel = async () => {
     let gvl = new GVL(gvlJson);
 
     let consentData = new TCModel(gvl);
-    consentData.cmpId = OIL_SPEC.CMP_ID;
-    consentData.publisherCountryCode = 'IT';
-    consentData.cmpVersion = OIL_SPEC.CMP_VERSION;
-    consentData.isServiceSpecific = true;
-    consentData.purposeOneTreatment = true;
-    consentData.supportOOB = false;
-    consentData.consentScreen = 1;
+    tcModelBaseValues(consentData);
 
     return consentData
 }

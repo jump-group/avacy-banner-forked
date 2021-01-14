@@ -35,7 +35,7 @@ import { manageDomElementActivation } from '../core/core_tag_management';
 import { sendConsentInformationToCustomVendors } from '../core/core_custom_vendors';
 import { getAllPreferences } from '../core/core_consents';
 import { getVisualConfig, getDefaultVisualConfig } from '../userview/userview_config';
-import { updateTcfApi } from '../core/core_tcf_api';
+import { updateTcfApi, writeSettings, readSettings } from '../core/core_tcf_api';
 // Initialize our Oil wrapper and save it ...
 
 export const oilWrapper = defineOilWrapper;
@@ -97,21 +97,33 @@ export function oilShowPreferenceCenter(mode) {
             logError('No wrapper for the CPC with the id #oil-preference-center was found.');
             return;
           }
-          let soiCookie = getSoiCookie();
-          let consentData = soiCookie.opt_in ? soiCookie.consentData : undefined;
-          let addtlConsent = soiCookie.opt_in ? soiCookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
-
-          let currentPrivacySettings;
-          if (consentData && addtlConsent) {
-            currentPrivacySettings = getAllPreferences(consentData, addtlConsent);
-          } else {
-            currentPrivacySettings = [];
-          }
-          applyPrivacySettings(currentPrivacySettings);
+          //TODO: Fill and Apply Preferences
+          let mobile = 0;
+          applyPrivacySettings(mobile ? getSettingsFromMobile() : getSettingsFromCookie());
         });
       });
     })
     .catch((error) => logError(error));
+}
+
+function getSettingsFromCookie() {
+  let soiCookie = getSoiCookie();
+  let consentData = soiCookie.opt_in ? soiCookie.consentData : undefined;
+  let addtlConsent = soiCookie.opt_in ? soiCookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
+
+  let cookiePrivacySettings;
+  if (consentData && addtlConsent) {
+    cookiePrivacySettings = getAllPreferences(consentData, addtlConsent);
+  } else {
+    cookiePrivacySettings = [];
+  }
+
+  console.log(JSON.stringify(cookiePrivacySettings));
+  return cookiePrivacySettings;
+}
+
+function getSettingsFromMobile() {
+  return readSettings();
 }
 
 function handleOptInBtn() {
@@ -119,6 +131,7 @@ function handleOptInBtn() {
   handleOptIn();
 }
 export function handleOptIn() {
+  console.log('handleOptIn')
   stopTimeOut();
   if (isPoiActive()) {
     import('../poi-list/poi.group.list.js').then(poi_group_list => {
@@ -140,6 +153,7 @@ function onOptInComplete() {
   sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after user\'s opt-in finished!'));
   manageDomElementActivation();
   updateTcfApi(getSoiCookie(), false, getSoiCookie().addtlConsent);
+  writeSettings();
   if (document.querySelector('#oil-preference-center')) {
     document.querySelector('#oil-preference-center').innerHTML = '';
   }

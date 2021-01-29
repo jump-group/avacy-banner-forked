@@ -28,14 +28,14 @@ function logPreviewOptInInfo(singleOptIn, powerOptIn) {
 export function checkOptIn() {
   return new Promise((resolve, reject) => {
     let cookie = getSoiCookie();
-    if(cookie.opt_in && isCookieVersionOk(cookie) && isCmpIdValid(cookie)){
+    if(cookie.opt_in && isCookieVersionOk(cookie) && isCmpIdValid(cookie) && isOOBValid(cookie) && isServiceSpecificValid(cookie) ){
         sendEventToHostSite('oil-checked-optin');
         resolve([cookie.opt_in, cookie]);
         return;
     }
 
     verifyPowerOptIn().then((powerOptIn) => {
-        if(powerOptIn.power_opt_in && isCookieVersionOk(powerOptIn) && isCmpIdValid(powerOptIn)){
+        if(powerOptIn.power_opt_in && isCookieVersionOk(powerOptIn) && isCmpIdValid(powerOptIn) && isOOBValid(powerOptIn) && isServiceSpecificValid(powerOptIn)){
             setSoiCookieWithPoiCookieData(powerOptIn)
             .then(() => {
                 sendEventToHostSite('oil-checked-optin');
@@ -62,6 +62,20 @@ function isCookieVersionOk(cookie) {
 function isCmpIdValid(cookie) {
   /** TODO: check if TCF isn't Service Specific */
   if ( cookie.consentData.cmpId_ === OIL_SPEC.CMP_ID) {
+    return true;
+  }
+  return false
+}
+
+function isOOBValid(cookie) {
+  if ( cookie.consentData.supportOOB_ === OIL_SPEC.SUPPORT_OOB) {
+    return true;
+  }
+  return false
+}
+
+function isServiceSpecificValid(cookie) {
+  if ( cookie.consentData.isServiceSpecific_ === OIL_SPEC.IS_SERVICE_SPECIFIC) {
     return true;
   }
   return false

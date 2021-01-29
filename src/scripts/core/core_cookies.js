@@ -122,6 +122,9 @@ export function setSoiCookieWithPoiCookieData(poiCookieJson) {
 
 export function updateTCModel(privacySettings, tcModel) {
   tcModel.cmpId = OIL_SPEC.CMP_ID;
+  tcModel.supportOOB = OIL_SPEC.SUPPORT_OOB;
+  tcModel.isServiceSpecific = OIL_SPEC.IS_SERVICE_SPECIFIC;
+  console.log('update', tcModel);
   if (privacySettings !== 1) {
     ['purpose', 'vendor'].forEach((category) => {
       privacySettings[category] && Object.entries(privacySettings[category]).forEach((value) => {

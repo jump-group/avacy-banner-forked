@@ -143,6 +143,11 @@ module.exports = {
     chunksSortMode: 'dependency',
     inject: 'head'
   }, {
+    filename: 'demos/sdk-mobile.html',
+    template: path.resolve(sourcePath, 'demos', 'sdk-mobile.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
   }, {
     filename: 'demos/rai-c.html',
     template: path.resolve(sourcePath, 'demos', 'rai-c.html'),

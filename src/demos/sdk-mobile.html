@@ -5,12 +5,16 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Test Banner Rai B</title>
-    <link rel="stylesheet" href="../assets/test.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,800&amp;display=swap" rel="stylesheet">
+    <title>Mobile SDK</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
     <script id="oil-configuration" type="application/configuration">
         {
-            "solutionEnvironment": "web",
+            "solutionEnvironment": "mobile",
             "config_version": 1,
             "policy_version": 2,
             "advanced_settings": true,
@@ -19,7 +23,7 @@
             "timeout": -1,
             "poi_activate_poi": true,
             "poi_group_name": "GruppoRai",
-            "poi_hub_origin": "https://testrai.jumpgroup.it",
+            "poi_hub_origin": "avacy-sdk.jumpgroup.it",
             "poi_hub_path": "/hub.html",
             "show_limited_vendors_only": false,
             "additionalConsentUrl": "https://cdn.jumpgroup.it/assets/additional-consent-providers.json",
@@ -102,80 +106,6 @@
 </head>
 
 <body>
-    <h1 class="PageTitle">Lista Script Bloccati</h1>
-    <section class="Optout">
-        <h2 class="SectionTitle">Ricarica Banner</h2>
-        <button onclick='(function(){window.AS_OIL.triggerOptOut(); location.reload();})();'>Effettua
-            Optout e ricarica</button><br>
-        <button onclick="window.AS_OIL.showPreferenceCenter('absolute')">Modifica Consenso</button><br>
-        <div id="oil-preference-center"></div>
-    </section>
-
-    <section class="js-esempio1">
-        <div>
-            <h2 class="SectionTitle">Esempio consensi:</h2>
-            <ul>
-                <li>Finalità: 1,3,4,5,9,10</li>
-                <li>Legittimo Interesse: 2,5</li>
-                <li>Funzionalità Speciali: 1</li>
-            </ul>
-        </div>
-        <div class="SectionContent ScriptItem">
-            <div class="ScriptItem__Content">
-                <h1>Script Disattivo</h1>
-            </div>
-        </div>
-        <script data-managed="as-oil" data-type="text/javascript" data-purposes="1,3,4,5,9,10" data-legints="2,5" data-special-features="1" type="as-oil" charset="UTF-8">
-            document.querySelector('.js-esempio1').classList.add('is-active');
-            document.querySelector('.js-esempio1 .ScriptItem').classList.add('is-active');
-            document.querySelector('.js-esempio1 .ScriptItem__Content h1').innerText = 'Script Attivo';
-        </script>
-    </section>
-
-    <section class="js-esempio2">
-        <div>
-            <h2 class="SectionTitle">Esempio consensi:</h2>
-            <ul>
-                <li>Finalità: tutte</li>
-                <li>Legittimo Interesse: nessuno</li>
-                <li>Funzionalità Speciali: nessuna</li>
-            </ul>
-        </div>
-        <div class="SectionContent ScriptItem">
-            <div class="ScriptItem__Content">
-                <h1>Script Disattivo</h1>
-            </div>
-        </div>
-        <script data-managed="as-oil" data-type="text/javascript" type="as-oil" charset="UTF-8">
-            document.querySelector('.js-esempio2').classList.add('is-active');
-            document.querySelector('.js-esempio2 .ScriptItem').classList.add('is-active');
-            document.querySelector('.js-esempio2 .ScriptItem__Content h1').innerText = 'Script Attivo';
-        </script>
-    </section>
-
-    <section class="js-esempio3">
-        <div>
-            <h2 class="SectionTitle">Esempio consensi:</h2>
-            <ul>
-                <li>Finalità: tutte</li>
-                <li>Legittimo Interesse: tutti</li>
-                <li>Funzionalità Speciali: tutte</li>
-            </ul>
-        </div>
-        <div class="SectionContent ScriptItem">
-            <div class="ScriptItem__Content">
-                <h1>Script Disattivo</h1>
-            </div>
-        </div>
-        <script data-managed="as-oil" data-type="text/javascript" data-legints data-special-features type="as-oil" charset="UTF-8">
-            document.querySelector('.js-esempio3').classList.add('is-active');
-            document.querySelector('.js-esempio3 .ScriptItem').classList.add('is-active');
-            document.querySelector('.js-esempio3 .ScriptItem__Content h1').innerText = 'Script Attivo';
-        </script>
-    </section>
-    <button onclick="window.scrollTo(0,0);" title="Back to top" class="BackToTop">
-        <span>^</span>
-    </button>
 </body>
 
 </html>

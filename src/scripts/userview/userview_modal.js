@@ -26,7 +26,7 @@ import * as AdvancedSettingsStandard from './view/oil.advanced.settings.standard
 import * as AdvancedSettingsTabs from './view/oil.advanced.settings.tabs';
 import { logError, logInfo } from '../core/core_log';
 import { getCpcType, getTimeOutValue, isOptoutConfirmRequired, isPersistMinimumTracking, getBannerPosition, getBannerAnimation } from './userview_config';
-import { gdprApplies, getAdvancedSettingsPurposesDefault, isInfoBannerOnly, isPoiActive } from '../core/core_config';
+import { gdprApplies, getAdvancedSettingsPurposesDefault, isInfoBannerOnly, isPoiActive, getSolutionEnvironment } from '../core/core_config';
 import { applyPrivacySettings, getPrivacySettings, applyAdditionalConsent } from './userview_privacy';
 import { activateOptoutConfirm } from './userview_optout_confirm';
 import { getPurposeIds, loadVendorListAndCustomVendorList} from '../core/core_vendor_lists';
@@ -273,6 +273,7 @@ function setWrapperStyles(wrapper) {
   setFontFamily(wrapper);
   setTabsBlur(wrapper);
   setContentBlur(wrapper);
+  setSolutionEnvironment(wrapper);
 }
 
 function setTabsBlur(wrapper) {
@@ -342,6 +343,13 @@ function setFontFamily(wrapper) {
     wrapper.style.setProperty('--avacy_font_family',font_family)
   } else {
     wrapper.style.setProperty('--avacy_font_family',default_font_family)
+  }
+}
+
+function setSolutionEnvironment(wrapper) {
+  if (getSolutionEnvironment() === 'mobile') {
+    wrapper.classList.add('OilMobile');
+    document.documentElement.style.setProperty('--vh', `${window.screen.availHeight}px`);
   }
 }
 

@@ -35,7 +35,7 @@ export function updateTcfApi(cookieData, cmpVisible = false, addtlConsent) {
     let TCString = (cookieData && cookieData.consentString) ? cookieData.consentString : '';
     tcfCmpApi.update(TCString, cmpVisible);
     if (!cmpVisible) {
-        nativeInterface('destroy');
+        // nativeInterface('destroy');
     } else {
         nativeInterface('show');
     }

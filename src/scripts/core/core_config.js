@@ -161,6 +161,10 @@ export function getAdditionalConsentListUrl() {
   return getConfigValue(OIL_CONFIG.ATTR_ADDITIONAL_CONSENT_LIST_URL, undefined);
 }
 
+export function getSolutionEnvironment() {
+  return getConfigValue(OIL_CONFIG.ATTR_SOLUTION_ENVIRONMENT, undefined);
+}
+
 export function getAtpWhitelist() {
   return getConfigValue(OIL_CONFIG.ATTR_ATP_WHITELIST, undefined);
 }

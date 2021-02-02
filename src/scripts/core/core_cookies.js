@@ -43,9 +43,12 @@ export function setDomainCookie(name, value, expires_in_days) {
 
 export function getOilCookie(cookieConfig) {
   //TODO: set new consent @tcf2 @tcf2soi
-  let cookieJson = Cookie.getJSON(cookieConfig.name);
-  cookieJson.consentData = TCString.decode(cookieJson.consentString);
-  logInfo('getting consent settings from cookie:', cookieJson.consentData);
+  let cookieJson = Cookie.getJSON(cookieConfig.name)
+
+  if (cookieJson !== undefined ) {    
+    cookieJson.consentData = TCString.decode(cookieJson.consentString, getDefaultTCModel());
+    logInfo('getting consent settings from cookie:', cookieJson.consentData);
+  }
   return cookieJson;
 }
 
@@ -75,7 +78,6 @@ export function findCookieConsideringCookieVersions(cookieConfig, outdatedCookie
 export function getSoiCookie() {
   let cookieConfig = getOilCookieConfig();
   let cookie = findCookieConsideringCookieVersions(cookieConfig, transformOutdatedOilCookie);
-
   logInfo('Current Oil data from domain cookie: ', cookie);
   return cookie;
 }
@@ -124,7 +126,6 @@ export function updateTCModel(privacySettings, tcModel) {
   tcModel.cmpId = OIL_SPEC.CMP_ID;
   tcModel.supportOOB = OIL_SPEC.SUPPORT_OOB;
   tcModel.isServiceSpecific = OIL_SPEC.IS_SERVICE_SPECIFIC;
-  console.log('update', tcModel);
   if (privacySettings !== 1) {
     ['purpose', 'vendor'].forEach((category) => {
       privacySettings[category] && Object.entries(privacySettings[category]).forEach((value) => {
@@ -371,13 +372,13 @@ function isCookieValid(name, data) {
   return cookieDataHasKeys(name, data);
 }
 
-function getDefaultTCModel() {
+export function getDefaultTCModel() {
   let gvl = getVendorList();
   let consentData = new TCModel(gvl);
   consentData.cmpId = OIL_SPEC.CMP_ID;
   consentData.publisherCountryCode = 'IT';
   consentData.cmpVersion = OIL_SPEC.CMP_VERSION;
-  consentData.isServiceSpecific = true;
+  consentData.isServiceSpecific = OIL_SPEC.IS_SERVICE_SPECIFIC;
   consentData.purposeOneTreatment = true;
   consentData.supportOOB = false;
   consentData.consentScreen = 1;
@@ -389,15 +390,17 @@ function getOilCookieConfig() {
   //TODO: set new consent @tcf2 @tcf2soi
   let consentData;
   let consentString;
+  let cookie = getOilCookie({name: OIL_DOMAIN_COOKIE_NAME});
 
-  try {
-    consentData = getOilCookie({name: OIL_DOMAIN_COOKIE_NAME}).consentData;
+  if (cookie) {
+    consentData = cookie.consentData;
+    consentData.supportOOB = false;
     consentData.gvl = getVendorList();
-    consentString = getOilCookie({name: OIL_DOMAIN_COOKIE_NAME}).consentString;
-  } catch (error) {
+    consentString = cookie.consentString;
+  } else {
     consentData = getDefaultTCModel();
     consentString = consentData.gvl.isReady ? TCString.encode(consentData) : ''; 
-  } 
+  }
 
   return {
     name: OIL_DOMAIN_COOKIE_NAME,

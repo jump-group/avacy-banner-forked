@@ -1,0 +1,41 @@
+.as-oil{
+    &.OilMobile {
+        position: initial;
+
+        .as-oil-content-overlay {
+            overflow: scroll;
+            max-height: var(--vh);
+            position: initial;
+
+            &[data-qa="oil-cpc-overlay"] {
+                top: 0;
+
+                .as-oil-cpc__row-btn-all {
+                    margin-top: 0;
+                    padding-bottom: 0;
+                }
+
+                .as-oil-cpc__purpose {
+                    padding-left: 10px;
+                }
+            }
+        }
+
+        .as-oil__intro-txt {
+            max-height: initial;
+            overflow: unset;
+        }
+
+        .as-oil-cpc-wrapper {
+            height: 100%;
+            flex-direction: column;
+            flex-wrap: initial;
+            justify-content: flex-start;
+        }
+
+        .as-oil-cpc__middle {
+            max-height: calc(var(--vh) / 3);
+            height: auto;
+        }
+    }
+}

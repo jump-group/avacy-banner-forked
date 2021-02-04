@@ -243,6 +243,7 @@ export function getCustomPurposeIds() {
 }
 
 export function isMobileEnvironment() {
+  // return 'mobile';
   return getConfigValue(OIL_CONFIG.ATTR_DEVICE_ENVIRONMENT, undefined) === 'mobile' ? true : false;
 }
 

@@ -9,6 +9,7 @@ import { updateTcfApi } from './core_tcf_api';
 import { manageDomElementActivation } from './core_tag_management';
 import { sendConsentInformationToCustomVendors } from './core_custom_vendors';
 import { getPurposes, clearVendorListCache } from './core_vendor_lists';
+import { consentStore } from './core_consent_store';
 /**
  * Initialize Oil on Host Site
  * This functions gets called directly after Oil has loaded
@@ -53,6 +54,8 @@ export function initOilLayer() {
       let optin = result[0];
       let cookieData = result[1];
 
+      
+
       if (optin) {
         /**
          * User has opted in
@@ -62,6 +65,7 @@ export function initOilLayer() {
         if(window.AS_OIL.isInCollection('oil-dom-loaded')) {
           manageDomElementActivation();
         }
+        // consentStore().hidePanel();
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start with found opt-in finished!'));
       } else {
         /**
@@ -72,6 +76,7 @@ export function initOilLayer() {
             userview_modal.locale(uv_m => uv_m.renderOil({ optIn: false }));
             if (gdprApplies()) {
               updateTcfApi(cookieData, true, ADDITIONAL_CONSENT_VERSION);
+              consentStore().showPanel();
             }
           })
           .catch((e) => {

@@ -1,5 +1,6 @@
 import { CmpApi } from 'didomi-iabtcf-cmpapi';
 import { OIL_SPEC, ADDITIONAL_CONSENT_VERSION } from './core_constants';
+import { consentStore } from './core_consent_store';
 
 let tcfCmpApi = null;
 let acm = ADDITIONAL_CONSENT_VERSION;
@@ -12,6 +13,12 @@ function loadTcfApi() {
                 tcData.addtlConsent = acm;
                 // pass data along
                 next(tcData, success);
+            },
+            'getInAppTCData': (next, appTCData, success) => {
+                // tcData will be constructed via the TC string and can be added to here
+                appTCData.addtlConsent = acm;
+                // pass data along
+                next(appTCData, success);
             }
         });
     }
@@ -34,4 +41,10 @@ export function disableGdprTcfApi() {
 
     tcfCmpApi.update(null, false);
     return tcfCmpApi;
+}
+
+function getQueryStringParam(string) {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    return urlParams.get(string);
 }

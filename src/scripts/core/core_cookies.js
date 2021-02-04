@@ -18,6 +18,8 @@ import { ADDITIONAL_CONSENT_VERSION, OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFA
 import { getCustomVendorListVersion, getLimitedVendorIds, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders, getAdditionalConsentList } from './core_vendor_lists';
 import { OilVersion } from './core_utils';
 import { TCModel, TCString } from 'didomi-iabtcf-core';
+import { consentStore } from './core_consent_store';
+import { updateTcfApi } from '../core/core_tcf_api';
 
 const COOKIE_PREVIEW_NAME = 'oil_preview';
 const COOKIE_VERBOSE_NAME = 'oil_verbose';
@@ -26,7 +28,6 @@ const OIL_DOMAIN_COOKIE_NAME = 'oil_data';
 const OIL_SESSION_COOKIE_NAME = 'oil_data_session';
 
 export function setSessionCookie(name, value) {
-
   Cookie.set(name, value);
 }
 
@@ -35,21 +36,23 @@ export function setDomainCookie(name, value, expires_in_days) {
   delete value.consentData;
 
   if (window.location.protocol === 'http:') {
-    Cookie.set(name, value);
+      consentStore().writeConsent(name, value);
+      // Cookie.set(name, value);
   } else {
-    Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
+      consentStore().writeConsent(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
+      // Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
   }  
 }
 
 export function getOilCookie(cookieConfig) {
-  //TODO: set new consent @tcf2 @tcf2soi
-  let cookieJson = Cookie.getJSON(cookieConfig.name)
+    //TODO: set new consent @tcf2 @tcf2soi
+    let cookieJson = consentStore().readConsent(cookieConfig)
 
-  if (cookieJson !== undefined ) {    
-    cookieJson.consentData = TCString.decode(cookieJson.consentString, getDefaultTCModel());
-    logInfo('getting consent settings from cookie:', cookieJson.consentData);
-  }
-  return cookieJson;
+    if (cookieJson !== undefined ) {    
+      cookieJson.consentData = TCString.decode(cookieJson.consentString, getDefaultTCModel());
+      logInfo('getting consent settings from cookie:', cookieJson.consentData);
+    }
+    return cookieJson;
 }
 
 export function hasOutdatedOilCookie(cookieConfig) {
@@ -218,7 +221,11 @@ export function setSoiCookie(privacySettings) {
 
   return new Promise((resolve, reject) => {
     buildSoiCookie(privacySettings).then((cookie) => {
+      //TODO: da rivedere, ma ho bisogno di fare l'update prima di settare il cookie.
+      updateTcfApi(cookie, false, cookie.addtlConsent);
+
       setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays());
+      // consentStore().hidePanel();
       resolve(cookie);
     }).catch(error => reject(error));
   });

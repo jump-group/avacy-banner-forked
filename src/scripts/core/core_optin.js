@@ -6,6 +6,7 @@ import { getPolicyVersion } from './core_config';
 import { OIL_SPEC } from './core_constants.js';
 import { manageDomElementActivation } from './core_tag_management.js';
 import { sendEventToHostSite } from './core_utils.js';
+
 /**
  * Log Helper function for checkOptIn
  * @param {*} singleOptIn

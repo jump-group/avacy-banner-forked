@@ -1,15 +1,217 @@
 <!DOCTYPE html>
-<html lang="it" class="no-js">
+<html lang="en"><head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Simple HTML page</title>
+	<script>
+		var dictConsent = {
+			"IABTCF_CmpSdkID": 123456,
+			"IABTCF_CmpSdkVersion": 1234456,
+			"IABTCF_PolicyVersion": 1234556,
+			"IABTCF_gdprApplies": 1,
+			"IABTCF_PublisherCC": "AA",
+			"IABTCF_PurposeOneTreatment": 1,
+			"IABTCF_UseNonStandardStacks": 1,
+			"IABTCF_TCString": "test",
+			"IABTCF_VendorConsents": "01010101",
+			"IABTCF_VendorLegitimateInterests": "01010101",
+			"IABTCF_PurposeConsents": "01010101",
+			"IABTCF_PurposeLegitimateInterests": "01010101",
+			"IABTCF_SpecialFeaturesOptIns": "01010101",
+			"IABTCF_PublisherRestrictions{ID}": "1",
+			"IABTCF_PublisherConsent": "01010101",
+			"IABTCF_PublisherLegitimateInterests": "01010101",
+			"IABTCF_PublisherCustomPurposesConsents": "01010101",
+			"IABTCF_PublisherCustomPurposesLegitimateInterests": "01010101"
+		}
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Test iFrame</title>
+		var decodedConsent = {
+			"addtlConsent": "1~39.43.46",
+			"purpose": {
+				"1": {
+					"consent": true
+				},
+				"2": {
+					"consent": true,
+					"legint": true
+				},
+				"3": {
+					"consent": true,
+					"legint": true
+				},
+				"4": {
+					"consent": false,
+					"legint": true
+				},
+				"5": {
+					"consent": true,
+					"legint": true
+				},
+				"6": {
+					"consent": true,
+					"legint": true
+				},
+				"8": {
+					"consent": true,
+					"legint": true
+				},
+				"9": {
+					"consent": false,
+					"legint": true
+				},
+				"10": {
+					"consent": true,
+					"legint": true
+				}
+			},
+			"vendor": {
+				"4": {
+					"consent": true
+				}
+			},
+			"specialFeature": {
+				"1": {
+					"optin": true
+				},
+				"2": {
+					"optin": true
+				}
+			}
+		}
+
+
+
+		function changeEcho(newText) {
+			var echoElement = document.getElementById("echo");
+			echoElement.innerText = newText;
+		}
+
+
+		function check() {
+			if (isAndroid()) {
+				if (Android.checkConsent())
+					console.log('check consent true')
+				else
+					console.log('check consent false')
+			} else {
+				checkConsent().then(
+					function (returnValue) {
+						console.log('returnValue: ' + returnValue);
+					},
+					function (error) {
+						console.log(error);
+					})
+			}
+		}
+
+		function retrieve() {
+			if (isAndroid()) {
+				var value = Android.retrieveConsent()
+				console.log('returnValue: ' + value);
+			} else {
+				retrieveConsent().then(
+					function (returnValue) {
+
+						console.log('returnValue: ', JSON.parse(returnValue));
+
+					},
+					function (error) {
+						console.log(error);
+					}
+				)
+			}
+		}
+
+		function send() {
+			if (isAndroid()) {
+				Android.sendConsent(JSON.stringify(dictConsent))
+				Android.sendDecodedConsent(JSON.stringify(decodedConsent))
+
+				console.log('consent: ' + JSON.stringify(dictConsent))
+				console.log('decoded consent: ' + JSON.stringify(decodedConsent))
+			} else {
+				sendConsent(dictConsent).then(
+					function (returnValue) {
+						console.log('OK');
+					},
+					function (error) {
+						console.log('KO');
+					}
+				);
+				sendDecodedConsent(decodedConsent).then(
+					function (returnValue) {
+						console.log('OK');
+					},
+					function (error) {
+						console.log('KO');
+					}
+				)
+
+			}
+		}
+
+		function show() {
+			if (isAndroid()) {
+				Android.showView()
+			} else {
+				showView().then(
+					function (returnValue) {
+						console.log('returnValue: ' + returnValue);
+					},
+					function (error) {
+						console.log(error);
+					}
+				)
+			}
+		}
+
+		function hide() {
+			if (isAndroid()) {
+				Android.hideView()
+			} else {
+				hideView().then(
+					function (returnValue) {
+						console.log('returnValue: ' + returnValue);
+					},
+					function (error) {
+						console.log(error);
+					}
+				)
+			}
+		}
+
+		function isAndroid() {
+			var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+			return (/android/i.test(userAgent))
+		}
+
+		setTimeout(function () {
+			show()
+		}, 2000)
+		// var div = document.getElementById('divLog');
+		// window.console.log = function(message) {
+      	// div.insertAdjacentHTML("beforeend", message+"<br>");
+		// }
+
+	</script>
 </head>
 
 <body>
-    <iframe src="rai-a.html" frameborder="0" width="100%" height="800px"></iframe>
-</body>
+<div class="container">
+	<h2>Pagina Test CMP </h2>
+	<button class="button" onclick="check()">Check Consent</button>
+	<br>
+	<button class="button" onclick="retrieve()">Retrieve</button>
+	<br>
+	<button class="button" onclick="send()">Send Consent</button>
+	<br>
+	<button class="button" onclick="show()">show view</button>
+	<br>
+	<button class="button" onclick="hide()">hide view</button>
+</div>
+<div id="divLog"></div>
 
-</html>
+
+
+</body></html>

@@ -24,8 +24,9 @@ const OIL_HUB_DOMAIN_COOKIE_NAME = 'oil_data';
 const OIL_HUB_UNKNOWN_VALUE = 'unknown';
 
 export function getPoiCookie(groupName = '') {
-  let cookieConfig = getHubDomainCookieConfig(groupName);
-  let cookie = findCookieConsideringCookieVersions(cookieConfig, transformOutdatedOilCookie);
+  let cookie = getHubDomainCookieConfig(groupName);
+  // HO COMMENTATO LA FUNZIONE
+  // let cookie = findCookieConsideringCookieVersions(cookieConfig, transformOutdatedOilCookie);
   logInfo('Oil Hub Domain Cookie: ', cookie);
   return cookie;
 }
@@ -77,6 +78,7 @@ function getOilHubCookieName(groupName) {
   return OIL_HUB_DOMAIN_COOKIE_NAME;
 }
 
+// TODO: Allineare TCF 2.0 -- IN GENERALE QUESTO DOCUMENTO
 function getHubDomainCookieConfig(groupName) {
   let consentData = new ConsentString();
   consentData.setCmpId(OIL_SPEC.CMP_ID);

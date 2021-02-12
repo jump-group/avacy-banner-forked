@@ -46,13 +46,17 @@ export function setDomainCookie(name, value, expires_in_days) {
 
 export function getOilCookie(cookieConfig) {
     //TODO: set new consent @tcf2 @tcf2soi
-    let cookieJson = consentStore().readConsent(cookieConfig)
+    return consentStore().readConsent(cookieConfig.name).then((cookieJson) => {
+      console.log('getOilCookie cookieJson',cookieJson)
+  
+      if (cookieJson !== undefined ) {
+        console.log('NOT UNDEFINED')
+        cookieJson.consentData = TCString.decode(cookieJson.consentString, getDefaultTCModel());
+        logInfo('getting consent settings from cookie:', cookieJson.consentData);
+      }
+      return cookieJson;
+    });
 
-    if (cookieJson !== undefined ) {    
-      cookieJson.consentData = TCString.decode(cookieJson.consentString, getDefaultTCModel());
-      logInfo('getting consent settings from cookie:', cookieJson.consentData);
-    }
-    return cookieJson;
 }
 
 export function hasOutdatedOilCookie(cookieConfig) {
@@ -60,37 +64,44 @@ export function hasOutdatedOilCookie(cookieConfig) {
 }
 
 
-//TODO: CAPIRE IMPLEMENTAZIONE
-export function findCookieConsideringCookieVersions(cookieConfig, outdatedCookieTransformer) {
-  let cookie;
+//TODO: DA RIMUOVERE
+// export function findCookieConsideringCookieVersions(cookieConfig, outdatedCookieTransformer) {
+//   let cookie;
 
-  if (hasCurrentOilCookie(cookieConfig)) {
-    cookie = getOilCookie(cookieConfig);
-  } else if (hasOilCookieWithoutVersion(cookieConfig)) {
-    cookie = getOilCookie(cookieConfig);
-    cookie.configVersion = OIL_CONFIG_DEFAULT_VERSION;
-    cookie.policyVersion = OIL_POLICY_DEFAULT_VERSION;
-  } else if (hasOutdatedOilCookie(cookieConfig)) {
-    cookie = outdatedCookieTransformer(cookieConfig);
-  } else {
-    cookie = cookieConfig.defaultCookieContent;
-  }
-  return cookie;
-}
+//   if (hasCurrentOilCookie(cookieConfig)) {
+//     cookie = getOilCookie(cookieConfig);
+//   } else if (hasOilCookieWithoutVersion(cookieConfig)) {
+//     cookie = getOilCookie(cookieConfig);
+//     cookie.configVersion = OIL_CONFIG_DEFAULT_VERSION;
+//     cookie.policyVersion = OIL_POLICY_DEFAULT_VERSION;
+//   } else if (hasOutdatedOilCookie(cookieConfig)) {
+//     cookie = outdatedCookieTransformer(cookieConfig);
+//   } else {
+//     cookie = cookieConfig.defaultCookieContent;
+//   }
+
+//   return cookie;
+// }
 
 export function getSoiCookie() {
-  let cookieConfig = getOilCookieConfig();
-  let cookie = findCookieConsideringCookieVersions(cookieConfig, transformOutdatedOilCookie);
-  logInfo('Current Oil data from domain cookie: ', cookie);
-  return cookie;
+  return getOilCookieConfig().then(cookieConfig => {
+    // let cookie = findCookieConsideringCookieVersions(cookieConfig, transformOutdatedOilCookie);
+    let cookie;
+    if (hasCurrentOilCookie(cookieConfig)) {
+      cookie = getOilCookie(cookieConfig);
+    } else {
+      cookie = cookieConfig.defaultCookieContent;
+    }
+    logInfo('Current Oil data from domain cookie: ', cookie);
+    return cookie;
+  });
 }
 
 export function setSoiCookieWithPoiCookieData(poiCookieJson) {
   //TODO: set new consent @tcf2 @tcf2poi
-
   return new Promise((resolve, reject) => {
-    loadVendorListAndCustomVendorList().then(() => {
-      let cookieConfig = getOilCookieConfig();
+    Promise.all([loadVendorListAndCustomVendorList(), getOilCookieConfig()]).then(results => {  
+      let cookieConfig = results[1];
       let consentString;
       let configVersion = poiCookieJson.configVersion || cookieConfig.defaultCookieContent.configVersion;
       let policyVersion = poiCookieJson.policyVersion || cookieConfig.defaultCookieContent.policyVersion;
@@ -189,8 +200,8 @@ export function updateTCModel(privacySettings, tcModel) {
 
 export function buildSoiCookie(privacySettings) {
   return new Promise((resolve, reject) => {
-    loadVendorListAndCustomVendorList().then(() => {
-      let cookieConfig = getOilCookieConfig();
+    Promise.all([loadVendorListAndCustomVendorList(),getOilCookieConfig()]).then( results => {
+      let cookieConfig = results[1];
 
       logInfo('creating TCModel with this settings:', privacySettings);
       let consentData = updateTCModel(privacySettings, cookieConfig.defaultCookieContent.consentData);
@@ -225,7 +236,6 @@ export function setSoiCookie(privacySettings) {
       updateTcfApi(cookie, false, cookie.addtlConsent);
 
       setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays());
-      // consentStore().hidePanel();
       resolve(cookie);
     }).catch(error => reject(error));
   });
@@ -360,9 +370,13 @@ function isCookie(name) {
  */
 function cookieDataHasKeys(name, data) {
   if (typeof (name) === 'string' && Array.isArray(data)) {
+    let cookieData;
     if (isCookie(name)) {
-      const cookieData = Cookie.getJSON(name);
-
+      cookieData = Cookie.getJSON(name);
+    } else {
+      cookieData = consentStore().readConsent(name); 
+    }
+    if (cookieData) {
       return data.every(item => item === 'consentData' || cookieData.hasOwnProperty(item));
     }
   }
@@ -375,6 +389,7 @@ function cookieDataHasKeys(name, data) {
  * @param data {array}  Keys of data object
  * @returns boolean
  */
+// TODO: Controllare se è realmente necesario validareil Cookie
 function isCookieValid(name, data) {
   return cookieDataHasKeys(name, data);
 }
@@ -397,40 +412,44 @@ function getOilCookieConfig() {
   //TODO: set new consent @tcf2 @tcf2soi
   let consentData;
   let consentString;
-  let cookie = getOilCookie({name: OIL_DOMAIN_COOKIE_NAME});
+  return getOilCookie({name: OIL_DOMAIN_COOKIE_NAME}).then(cookie => {
 
-  if (cookie) {
-    consentData = cookie.consentData;
-    consentData.supportOOB = false;
-    consentData.gvl = getVendorList();
-    consentString = cookie.consentString;
-  } else {
-    consentData = getDefaultTCModel();
-    consentString = consentData.gvl.isReady ? TCString.encode(consentData) : ''; 
-  }
+    if (cookie) {
+      consentData = cookie.consentData;
+      consentData.supportOOB = false;
+      consentData.gvl = getVendorList();
+      consentString = cookie.consentString;
+    } else {
+      consentData = getDefaultTCModel();
+      consentString = consentData.gvl.isReady ? TCString.encode(consentData) : ''; 
+    }
+  
+    return {
+      name: OIL_DOMAIN_COOKIE_NAME,
+      expires: getCookieExpireInDays(),
+      defaultCookieContent: {
+        opt_in: false,
+        version: OilVersion.get(),
+        localeVariantName: getLocaleVariantName(),
+        localeVariantVersion: getLocaleVariantVersion(),
+        customPurposes: getAllowedCustomPurposesDefault(),
+        consentData: consentData,
+        consentString: !isInfoBannerOnly() ? consentString : '',
+        configVersion: getConfigVersion(),
+        policyVersion: getPolicyVersion(),
+        addtlConsent: ADDITIONAL_CONSENT_VERSION
+      },
+      outdated_cookie_content_keys: ['opt_in', 'timestamp', 'version', 'localeVariantName', 'localeVariantVersion', 'privacy', 'addtlConsent']
+    };
+  });
 
-  return {
-    name: OIL_DOMAIN_COOKIE_NAME,
-    expires: getCookieExpireInDays(),
-    defaultCookieContent: {
-      opt_in: false,
-      version: OilVersion.get(),
-      localeVariantName: getLocaleVariantName(),
-      localeVariantVersion: getLocaleVariantVersion(),
-      customPurposes: getAllowedCustomPurposesDefault(),
-      consentData: consentData,
-      consentString: !isInfoBannerOnly() ? consentString : '',
-      configVersion: getConfigVersion(),
-      policyVersion: getPolicyVersion(),
-      addtlConsent: ADDITIONAL_CONSENT_VERSION
-    },
-    outdated_cookie_content_keys: ['opt_in', 'timestamp', 'version', 'localeVariantName', 'localeVariantVersion', 'privacy', 'addtlConsent']
-  };
 }
 
 function transformOutdatedOilCookie(cookieConfig) {
   //REVIEW: when does it run? @tcf2
   let cookieJson = Cookie.getJSON(cookieConfig.name);
+
+  console.log('coookie JSon', cookieJson);
 
   let cookie = cookieConfig.defaultCookieContent;
   cookie.opt_in = cookieJson.opt_in;

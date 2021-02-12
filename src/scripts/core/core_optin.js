@@ -28,27 +28,28 @@ function logPreviewOptInInfo(singleOptIn, powerOptIn) {
  */
 export function checkOptIn() {
   return new Promise((resolve, reject) => {
-    let cookie = getSoiCookie();
-    if(cookie.opt_in && isCookieStillValid(cookie)){
-        sendEventToHostSite('oil-checked-optin');
-        resolve([cookie.opt_in, cookie]);
-        return;
-    }
-
-    verifyPowerOptIn().then((powerOptIn) => {
-        if(powerOptIn.power_opt_in && isCookieStillValid(powerOptIn)){
-            setSoiCookieWithPoiCookieData(powerOptIn)
-            .then(() => {
-                sendEventToHostSite('oil-checked-optin');
-                resolve([powerOptIn.power_opt_in, powerOptIn]);
-                return;
-            })
-            .catch(error => reject(error));
-        } else {
+    getSoiCookie().then(cookie => {
+      if(cookie.opt_in && isCookieStillValid(cookie)){
           sendEventToHostSite('oil-checked-optin');
-          resolve([false, cookie]);
+          resolve([cookie.opt_in, cookie]);
           return;
-        }
+      }
+  
+      verifyPowerOptIn().then((powerOptIn) => {
+          if(powerOptIn.power_opt_in && isCookieStillValid(powerOptIn)){
+              setSoiCookieWithPoiCookieData(powerOptIn)
+              .then(() => {
+                  sendEventToHostSite('oil-checked-optin');
+                  resolve([powerOptIn.power_opt_in, powerOptIn]);
+                  return;
+              })
+              .catch(error => reject(error));
+          } else {
+            sendEventToHostSite('oil-checked-optin');
+            resolve([false, cookie]);
+            return;
+          }
+      });
     });
   });
 }

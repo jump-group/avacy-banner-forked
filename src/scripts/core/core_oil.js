@@ -54,8 +54,6 @@ export function initOilLayer() {
       let optin = result[0];
       let cookieData = result[1];
 
-      
-
       if (optin) {
         /**
          * User has opted in
@@ -65,7 +63,14 @@ export function initOilLayer() {
         if(window.AS_OIL.isInCollection('oil-dom-loaded')) {
           manageDomElementActivation();
         }
-        // consentStore().hidePanel();
+
+        if (!getQueryStringParam('prefcenter')) {
+          consentStore().hidePanel();
+          // console.log('ce l\'hoooo');
+          // consentStore().showPanel();
+          // window.PAPYRI.showPreferenceCenter('absolute');
+        }
+
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start with found opt-in finished!'));
       } else {
         /**
@@ -84,8 +89,20 @@ export function initOilLayer() {
           });
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start without found opt-in finished!'));
       }
+
+      if (getQueryStringParam('prefcenter')) {
+        console.log('ce l\'hoooo');
+        consentStore().showPanel();
+        window.PAPYRI.showPreferenceCenter('absolute');
+      }
     });
   }
+}
+
+function getQueryStringParam(string) {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  return urlParams.get(string);
 }
 
 function registerDomElementActivationManager() {
@@ -154,9 +171,9 @@ function attachUtilityFunctionsToWindowObject() {
     return 'OIL language Changed';
   });
 
-  setGlobalOilObject('status', () => {
-    return getSoiCookie();
-  });
+  // setGlobalOilObject('status', () => {
+  //   return getSoiCookie();
+  // });
 
   setGlobalOilObject('showPreferenceCenter', (mode = 'inline') => {
     loadLocale(userview_modal => {

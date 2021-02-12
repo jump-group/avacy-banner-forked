@@ -16,6 +16,7 @@ import {
   OIL_PAYLOAD_ADDITIONAL_CONSENT_STRING
 } from '../core/core_constants';
 import { setSoiCookie } from '../core/core_cookies';
+import { consentStore } from '../core/core_consent_store';
 import { isAmpModeActivated, isInfoBannerOnly, isPoiActive } from '../core/core_config';
 
 
@@ -84,7 +85,8 @@ export function oilOptIn(privacySettings = PRIVACY_FULL_TRACKING) {
     setSoiCookie(privacySettings).then(() => {
 
       sendEventToHostSite(EVENT_NAME_OPT_IN);
-
+      // TODO: conviene chiudere durante l'oilOptin o dopo averlo "risolto"?
+      consentStore().hidePanel();
       resolve(true);
     }).catch((error) => reject(error));
   });

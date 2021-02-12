@@ -75,6 +75,7 @@ export function renderOil(props) {
 }
 
 export function oilShowPreferenceCenter(mode) {
+  // NON RITORNA
   // We need the PowerGroupUi-Stuff for the CPC
 
   import('../poi-list/poi-info.js');
@@ -97,17 +98,19 @@ export function oilShowPreferenceCenter(mode) {
             logError('No wrapper for the CPC with the id #oil-preference-center was found.');
             return;
           }
-          let soiCookie = getSoiCookie();
-          let consentData = soiCookie.opt_in ? soiCookie.consentData : undefined;
-          let addtlConsent = soiCookie.opt_in ? soiCookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
+          getSoiCookie().then(soiCookie => {
 
-          let currentPrivacySettings;
-          if (consentData && addtlConsent) {
-            currentPrivacySettings = getAllPreferences(consentData, addtlConsent);
-          } else {
-            currentPrivacySettings = [];
-          }
-          applyPrivacySettings(currentPrivacySettings);
+            let consentData = soiCookie.opt_in ? soiCookie.consentData : undefined;
+            let addtlConsent = soiCookie.opt_in ? soiCookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
+  
+            let currentPrivacySettings;
+            if (consentData && addtlConsent) {
+              currentPrivacySettings = getAllPreferences(consentData, addtlConsent);
+            } else {
+              currentPrivacySettings = [];
+            }
+            applyPrivacySettings(currentPrivacySettings);
+          });
         });
       });
     })
@@ -133,16 +136,19 @@ export function handleOptIn() {
 }
 
 function onOptInComplete() {
+  // NON RITORNA
   let commandCollectionExecutor = getGlobalOilObject('commandCollectionExecutor');
   if (commandCollectionExecutor) {
     commandCollectionExecutor();
   }
   sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after user\'s opt-in finished!'));
   manageDomElementActivation();
-  updateTcfApi(getSoiCookie(), false, getSoiCookie().addtlConsent);
-  if (document.querySelector('#oil-preference-center')) {
-    document.querySelector('#oil-preference-center').innerHTML = '';
-  }
+  getSoiCookie().then(soiCookie => {
+    updateTcfApi(soiCookie, false, soiCookie.addtlConsent);
+    if (document.querySelector('#oil-preference-center')) {
+      document.querySelector('#oil-preference-center').innerHTML = '';
+    }
+  })
 }
 
 function shouldRenderOilLayer(props) {

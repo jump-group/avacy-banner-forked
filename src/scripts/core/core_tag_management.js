@@ -6,19 +6,21 @@ import { getPurposeIds, getSpecialFeatureIds, getLegintIds } from './core_vendor
 import { getCustomPurposeIds, gdprApplies } from './core_config';
 
 export function manageDomElementActivation() {
+  // NON RITORNA
   if(window.AS_OIL.isInCollection('oil-managed-elements')){
     return;
   }
 
   let managedElements = findManagedElements();
-  let cookie = getSoiCookie();
-  
-  if(cookie.opt_in){
-    sendEventToHostSite('oil-managed-elements')
-    for (let i = 0; i < managedElements.length; i++) {
-      manageElement(managedElements[i], cookie);
+  getSoiCookie().then(cookie => {
+    if(cookie.opt_in){
+      sendEventToHostSite('oil-managed-elements')
+      for (let i = 0; i < managedElements.length; i++) {
+        manageElement(managedElements[i], cookie);
+      }
     }
-  }
+  });
+  
 }
 
 function getNecessaryPurposes(element) {

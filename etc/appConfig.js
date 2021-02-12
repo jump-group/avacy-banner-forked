@@ -19,6 +19,12 @@ module.exports = {
     name: ['polyfills'].reverse()
   },
   indexFiles: [{
+    filename: 'favicon.ico',
+    template: path.resolve(sourcePath, '', 'favicon.ico'),
+    chunks: [],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  },{
     filename: 'hub.html',
     template: path.resolve(sourcePath, '', 'hub.html'),
     chunks: ['hub'],

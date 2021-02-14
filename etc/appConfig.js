@@ -142,16 +142,26 @@ module.exports = {
     chunksSortMode: 'dependency',
     inject: 'head'
   }, {
-  }, {
     filename: 'demos/rai-b.html',
     template: path.resolve(sourcePath, 'demos', 'rai-b.html'),
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'
   }, {
-  }, {
     filename: 'demos/rai-c.html',
     template: path.resolve(sourcePath, 'demos', 'rai-c.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  }, {
+    filename: 'demos/rai-sdk.html',
+    template: path.resolve(sourcePath, 'demos', 'rai-sdk.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  }, {
+    filename: 'demos/avacy-sdk.html',
+    template: path.resolve(sourcePath, 'demos', 'avacy-sdk.html'),
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'

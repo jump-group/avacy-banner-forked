@@ -24,14 +24,23 @@ const OIL_HUB_DOMAIN_COOKIE_NAME = 'oil_data';
 const OIL_HUB_UNKNOWN_VALUE = 'unknown';
 
 export function getPoiCookie(groupName = '') {
-  let cookie = getHubDomainCookieConfig(groupName);
-  // HO COMMENTATO LA FUNZIONE
+  let config = getHubDomainCookieConfig(groupName);
+  console.log('Poi Cookie', cookie);
+  console.log('Cookie.getJSON(name)', Cookie.getJSON(config.name));
+  // TODO: RIVEDERE IMPLEMENTAZIONE
   // let cookie = findCookieConsideringCookieVersions(cookieConfig, transformOutdatedOilCookie);
-  logInfo('Oil Hub Domain Cookie: ', cookie);
-  return cookie;
+  let cookie = Cookie.getJSON(config.name);
+  if (cookie && cookie.power_opt_in === true) {
+    logInfo('Oil Hub Domain Cookie: ', cookie);
+    console.log('Return Poi Cookie', cookie);
+    return cookie;
+  } else {
+    return config.defaultCookieContent;
+  }
 }
 
 export function setPoiCookie(groupName, payload) {
+  console.table('setPoiCookie', groupName, payload)
   // If we send OLD DATA to a NEW HUB, we got a problem - in this case we do not want to store the POI-Cookie --> new data = consent string, old = privacy object
   let consentStringAsPrivacy = getConsentStringFromPayload(payload);
   if (payload && (typeof (consentStringAsPrivacy) === 'string')) {
@@ -53,23 +62,24 @@ export function setPoiCookie(groupName, payload) {
   }
 }
 
-function transformOutdatedOilCookie(cookieConfig) {
-  let cookieJson = Cookie.getJSON(cookieConfig.name);
+// TODO: RIMUOVERE 
+// function transformOutdatedOilCookie(cookieConfig) {
+//   let cookieJson = Cookie.getJSON(cookieConfig.name);
 
-  let cookie = cookieConfig.defaultCookieContent;
-  cookie.power_opt_in = cookieJson.power_opt_in;
-  cookie.version = cookieJson.version;
-  cookie.configVersion = OIL_CONFIG_DEFAULT_VERSION;
-  cookie.policyVersion = OIL_POLICY_DEFAULT_VERSION;
-  cookie.addtlConsent = ADDITIONAL_CONSENT_VERSION;
-  cookie.localeVariantName = cookieJson.localeVariantName;
-  cookie.localeVariantVersion = cookieJson.localeVariantVersion;
-  cookie.customPurposes = []; // we do not know custom purposes config in the hub, but old cookies does not encode them
-  cookie.consentData.setConsentLanguage(getLanguageFromLocale(cookieJson.localeVariantName));
-  cookie.consentData.setPurposesAllowed(getStandardPurposesWithConsent(cookieJson.privacy));
-  cookie.consentData.setVendorsAllowed(getLimitedVendorIds());
-  return cookie;
-}
+//   let cookie = cookieConfig.defaultCookieContent;
+//   cookie.power_opt_in = cookieJson.power_opt_in;
+//   cookie.version = cookieJson.version;
+//   cookie.configVersion = OIL_CONFIG_DEFAULT_VERSION;
+//   cookie.policyVersion = OIL_POLICY_DEFAULT_VERSION;
+//   cookie.addtlConsent = ADDITIONAL_CONSENT_VERSION;
+//   cookie.localeVariantName = cookieJson.localeVariantName;
+//   cookie.localeVariantVersion = cookieJson.localeVariantVersion;
+//   cookie.customPurposes = []; // we do not know custom purposes config in the hub, but old cookies does not encode them
+//   cookie.consentData.setConsentLanguage(getLanguageFromLocale(cookieJson.localeVariantName));
+//   cookie.consentData.setPurposesAllowed(getStandardPurposesWithConsent(cookieJson.privacy));
+//   cookie.consentData.setVendorsAllowed(getLimitedVendorIds());
+//   return cookie;
+// }
 
 function getOilHubCookieName(groupName) {
   if (groupName) {

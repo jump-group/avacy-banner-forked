@@ -1,18 +1,15 @@
 import Cookie from 'js-cookie';
-import { logInfo } from './core_log';
-import { isMobileEnvironment } from './core_config';
-import { getDefaultTCModel } from './core_cookies';
-import { TCString } from 'didomi-iabtcf-core';
-import { reject } from 'core-js/fn/promise';
+import { resolve } from 'path';
+import { isMobileEnvironment, getNativePublisher } from './core_config';
 
 let consentStoreInstance;
 
 class ConsentStore {
     // Constructor
-    constructor(publisher) {
-        this.publisher = publisher;
-        this.osEnv = isMobileEnvironment() ? 'mobile' : 'web';
-        this.cookieJson;
+    constructor() {
+        this.publisher = getNativePublisher();
+        this.osEnv = isMobileEnvironment() ? 'native' : 'web';
+        this.cookieJsonPromise;
     }
 
     //Getters
@@ -33,212 +30,376 @@ class ConsentStore {
         this._osEnv = env;
     }
 
-    // Private Methods
-    async _read(name) {
-        if (this.cookieJson !== undefined) {
-            console.log('Cookie Json Cachato')
-            return this.cookieJson;
-        }
 
-        switch (this._publisher) {
-            case 'avacy':
-                if (window.CMPWebInterface) {
-                    // Call Android interface
-                    if (typeof window.CMPWebInterface.readAll === 'function'){
-                        this.cookieJson = await new Promise((resolve, reject) => {
-                            window.myResolve = resolve;
-                            window.CMPWebInterface.readAll('callbackFunction');
-                        }).then(res => res)
-                    }
-                } else if (window.webkit
-                    && window.webkit.messageHandlers
-                    && window.webkit.messageHandlers.CMPWebInterface) {
-                    // Call iOS interface
-                    let message = {
-                        command: 'readAll',
-                        callbackFunction: 'callbackFunction'
-                    };
-                    result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
-                } else {
-                    // No Android or iOS interface found
-                    console.log('No native APIs found. true');
-                }
-                break;
-        
-            default:
-                break;
-        }
+    // PRIVATE PUBLISHER METHODS
+    _readAvacySDK(name) {
+        let cookieName = name.toUpperCase();
+        if (window.CMPWebInterface) {
+            // Call Android interface
+            if (typeof window.CMPWebInterface.readAll === 'function'){
+                let wrapper = document.querySelector('.as-oil.OilMobile');
+                window.CMPWebInterface.readAll('callbackFunction');
 
-        return this.cookieJson;
+                // if (cookieName in result) {
+                //     // let cookie = JSON.parse(result[cookieName]);
+                //     // return cookie;
+                // } else {
+                //     // return undefined;
+                // }
+            }
+        } else if (window.webkit
+            && window.webkit.messageHandlers
+            && window.webkit.messageHandlers.CMPWebInterface) {
+            // Call iOS interface
+            let message = {
+                command: 'readAll',
+                callbackFunction: 'callbackFunction'
+            };
+            result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
+        } else {
+            // No Android or iOS interface found
+            console.log('No native APIs found. true');
+        }
     }
 
-    _write() {
-        console.log('_write');
-        this.cookieJson = undefined;
+    _readRaiSDK(name) {
+        console.log('_readRaiSDK');
+        let cookieName = name.toUpperCase();
 
+        if(this._isAndroid()) {
+            return new Promise((resolve, reject) => {
+                let result = JSON.parse(window.Android.retrieveConsent());
+                //DEVO CONTROLLARE SE ESITE NELLA STRUTTURA DATI RITORNATA UN INDICE CON CHIAVE "name"
+                let cookie;
+                if (cookieName in result) {
+                    cookie = JSON.parse(result[cookieName].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent));
+                } else {
+                    cookie = undefined;
+                }
+
+                resolve(cookie)
+            })
+
+        }else{
+            return checkConsent().then(
+                function (hasConsent) {
+                    if (hasConsent) {
+                        return retrieveConsent().then(
+                                function (returnValue) {
+                                    let result = JSON.parse(returnValue);
+                                    if (cookieName in result) {
+                                        let cookie = result[cookieName].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
+                                        return JSON.parse(cookie);
+                                    } else {
+                                        return undefined;
+                                    }
+                                },
+                                function (error) {
+                                    console.log(error);
+                                }
+                            )
+                    } else {
+                        return undefined
+                    }
+                },
+                function (error) {
+                    console.log(error);
+                })
+        }
+
+
+    }
+
+    _writeAvacySDK(name, value) {
+        let objToWrite = this._buildObjectToWrite(name, value);
+        
+        if (window.CMPWebInterface) {
+            // Call Android interface
+            if (typeof window.CMPWebInterface.writeAll === 'function'){
+                window.CMPWebInterface.writeAll(JSON.stringify(objToWrite), 'callbackFunction');
+            }
+        } else if (window.webkit
+            && window.webkit.messageHandlers
+            && window.webkit.messageHandlers.CMPWebInterface) {
+            // Call iOS interface
+            let message = {
+                command: 'writeAll',	
+                values: JSON.stringify(objToWrite),
+                callbackFunction: 'callbackFunction'
+            };
+            result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
+        } else {
+            // No Android or iOS interface found
+            console.log('No native APIs found. true');
+        }
+    }
+
+    _writeRaiSDK(name, value) {
+        console.log('_writeRaiSDK');
+        let objToWrite = this._buildObjectToWrite(name, value);
+        console.log('objToWrite', objToWrite);
+        
+        if(this._isAndroid()) {
+            // SALVO L'OGGETTO MERGIATO
+            // console.log('objToWrite stringify', JSON.stringify(objToWrite));
+            window.Android.sendConsent(JSON.stringify(objToWrite));
+        }else{
+            sendConsent(objToWrite).then(
+                function (returnValue) {
+
+                },
+                function (error) {
+                }
+            )
+        }
+    }
+
+    // QUESTA FUNZIONE LA USA SOLO RAI PER ADESSO
+    writeDecodedRaiConsentSDK(privacySettings) {
+        if (this.osEnv !== 'native') {
+            return
+        }
+        if(this._isAndroid()) {
+            window.Android.sendDecodedConsent(JSON.stringify(privacySettings))
+        }else{
+            sendDecodedConsent(privacySettings).then(
+                function (returnValue) {
+                    console.log('OK');
+                },
+                function (error) {
+                    console.log('KO');
+                }
+            )
+        }
+    } 
+
+    _buildObjectToWrite(name, value) {
+        console.log('_buildObjectToWrite');
+        let objectToWrite = {}
+
+        // ASSEGNO A objectToWrite IL COOKIE OIL_DATA STRINGIFIZZATO
+        let encodedValue;
+        // CONTROLLO PERCHE' su ANDROID NON USO LA LIBRERIA DI ENCODING
+        if (this._isAndroid()) {
+            encodedValue = JSON.stringify(value);
+        } else {
+            encodedValue = encodeURIComponent(JSON.stringify(value)).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent);
+        }
+
+        Object.assign(objectToWrite, { [name.toUpperCase()] : encodedValue })
+        
+        // MI PRENDO I VALORI IAB DA SALVARE
+        let iabValues = this._IABValues();
+        if (iabValues) {
+            Object.assign(objectToWrite, iabValues)
+        }
+
+        return objectToWrite;
+    }
+
+    _showAvacySDK() {
+        console.log('_showAvacySDK');
+        if (window.CMPWebInterface) {
+            // Call Android interface
+            if (typeof window.CMPWebInterface.show === 'function'){
+                window.CMPWebInterface.show();
+            }
+        } else if (window.webkit
+            && window.webkit.messageHandlers
+            && window.webkit.messageHandlers.CMPWebInterface) {
+            // Call iOS interface
+            let message = {
+                command: 'show'
+            };
+            result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
+        } else {
+            // No Android or iOS interface found
+            console.log('No native APIs found. true');
+        }
+    }
+
+    _showRaiSDK() {
+        if(this._isAndroid()) {
+            console.log('window.Android.showView()');
+            window.Android.showView();
+        }else{
+            showView().then(
+                function (returnValue) {
+                },
+                function (error) {
+                }
+            )
+        }
+    }
+
+    _hideAvacySDK() {
+        console.log('_hideAvacySDK');
+        if (window.CMPWebInterface) {
+            // Call Android interface
+            if (typeof window.CMPWebInterface.destroy === 'function'){
+                window.CMPWebInterface.destroy();
+            }
+        } else if (window.webkit
+            && window.webkit.messageHandlers
+            && window.webkit.messageHandlers.CMPWebInterface) {
+            // Call iOS interface
+            let message = {
+                command: 'destroy'
+            };
+            result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
+        } else {
+            // No Android or iOS interface found
+            console.log('No native APIs found. true');
+        }
+    }
+
+    _hideRaiSDK() {
+        if(this._isAndroid()) {
+            window.Android.hideView()
+        }else{
+            hideView().then(
+                function (returnValue) {
+                },
+                function (error) {
+                }
+            )
+        }
+    }
+
+    _IABValues() {
         let tcData;
         //@ts-ignore
         window.__tcfapi('getInAppTCData', 2, (appTCData, success) => {
             tcData=appTCData;
         });
 
-        let iabValues = {
-            IABTCF_CmpSdkID: tcData.cmpId,
-            IABTCF_CmpSdkVersion: tcData.cmpVersion,
-            IABTCF_PolicyVersion: tcData.tcfPolicyVersion,
-            IABTCF_gdprApplies: tcData.gdprApplies,
-            IABTCF_PublisherCC: tcData.publisherCC,
-            IABTCF_PurposeOneTreatment: tcData.purposeOneTreatment,
-            IABTCF_UseNonStandardStacks: tcData.useNonStandardStacks,
-            IABTCF_TCString: tcData.tcString,
-            IABTCF_VendorConsents: tcData.vendor.consents,
-            IABTCF_VendorLegitimateInterests: tcData.vendor.legitimateInterests,
-            IABTCF_PurposeConsents: tcData.purpose.consents,
-            IABTCF_PurposeLegitimateInterests: tcData.purpose.legitimateInterests,
-            IABTCF_SpecialFeaturesOptIns: tcData.specialFeatureOptins,
-            IABTCF_AddtlConsent: tcData.addtlConsent
+        return {
+            IABTCF_CmpSdkID: Number(tcData.cmpId),
+            IABTCF_CmpSdkVersion: Number(tcData.cmpVersion),
+            IABTCF_PolicyVersion: Number(tcData.tcfPolicyVersion),
+            IABTCF_gdprApplies: Number(tcData.gdprApplies),
+            IABTCF_PublisherCC: String(tcData.publisherCC),
+            IABTCF_PurposeOneTreatment: Number(tcData.purposeOneTreatment),
+            IABTCF_UseNonStandardStacks: Number(tcData.useNonStandardStacks),
+            IABTCF_TCString: String(tcData.tcString),
+            IABTCF_VendorConsents: String(tcData.vendor.consents),
+            IABTCF_VendorLegitimateInterests: String(tcData.vendor.legitimateInterests),
+            IABTCF_PurposeConsents: String(tcData.purpose.consents),
+            IABTCF_PurposeLegitimateInterests: String(tcData.purpose.legitimateInterests),
+            IABTCF_SpecialFeaturesOptIns: String(tcData.specialFeatureOptins),
+            IABTCF_AddtlConsent: String(tcData.addtlConsent)
+        }
+    }
+
+    _isAndroid() {
+        let userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        return (/android/i.test(userAgent))
+    }
+
+    // NEW PUBLIC METHODS
+    readConsent(name) {
+        if (this.cookieJsonPromise) {
+            return this.cookieJsonPromise;
         }
 
-        switch (this._publisher) {
-            case 'avacy':
-                if (window.CMPWebInterface) {
-                    // Call Android interface
-                    if (typeof window.CMPWebInterface.writeAll === 'function'){
-                        console.log(iabValues);
-                        window.CMPWebInterface.writeAll(JSON.stringify(iabValues), 'callbackFunction');
-                    }
-                } else if (window.webkit
-                    && window.webkit.messageHandlers
-                    && window.webkit.messageHandlers.CMPWebInterface) {
-                    // Call iOS interface
-                    let message = {
-                        command: 'writeAll',	
-                        values: JSON.stringify(iabValues),
-                        callbackFunction: 'callbackFunction'
-                    };
-                    result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
+        switch (this._osEnv) {
+            case 'native':
+                // QUI SONO MOBILE
+                if (this._publisher === 'papyri') {
+                    // SE SONO UN PUBLISHER PARTICOLARE
+                    this.cookieJsonPromise = this._readRaiSDK(name);
                 } else {
-                    // No Android or iOS interface found
-                    console.log('No native APIs found. true');
+                    // SE SONO AVACY DI FALLBACK / DEFAULT
+                    this.cookieJsonPromise = this._readAvacySDK(name);
                 }
-                break;
-            
-            case 'papyri':
-                
+
+                return this.cookieJsonPromise;
+        
+            default:
+                // QUI SONO WEB DI DEFAULT
+                return new Promise((resolve,reject) => {
+                    resolve(Cookie.getJSON(name));
+                })
+        }
+    }
+
+    writeConsent(name, value, options = undefined) {
+        switch (this._osEnv) {
+            case 'native':
+                // QUI SONO MOBILE
+
+                if (this._publisher === 'papyri') {
+                    // SE SONO UN PUBLISHER PARTICOLARE
+                    this._writeRaiSDK(name, value);
+                } else {
+                    // SE SONO AVACY DI FALLBACK / DEFAULT
+                    this._writeAvacySDK(name, value);
+                }
+
                 break;
         
             default:
+                // QUI SONO WEB DI DEFAULT
+                Cookie.set(name, value, options);
                 break;
         }
-    }
 
-    _show() {
-        console.log('_show');
-        switch (this._publisher) {
-            case 'avacy':
-                if (window.CMPWebInterface) {
-                    // Call Android interface
-                    if (typeof window.CMPWebInterface.show === 'function'){
-                        window.CMPWebInterface.show();
-                    }
-                } else if (window.webkit
-                    && window.webkit.messageHandlers
-                    && window.webkit.messageHandlers.CMPWebInterface) {
-                    // Call iOS interface
-                    let message = {
-                        command: 'show'
-                    };
-                    result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
-                } else {
-                    // No Android or iOS interface found
-                    console.log('No native APIs found. true');
-                }
-                break;
-        
-            case 'papyri':
-                
-                break;
-        
-            default:
-                break;
-        }
-    }
 
-    _hide() {
-        console.log('_hide');
-        switch (this._publisher) {
-            case 'avacy':
-                if (window.CMPWebInterface) {
-                    // Call Android interface
-                    if (typeof window.CMPWebInterface.destroy === 'function'){
-                        window.CMPWebInterface.destroy();
-                    }
-                } else if (window.webkit
-                    && window.webkit.messageHandlers
-                    && window.webkit.messageHandlers.CMPWebInterface) {
-                    // Call iOS interface
-                    let message = {
-                        command: 'destroy'
-                    };
-                    result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
-                } else {
-                    // No Android or iOS interface found
-                    console.log('No native APIs found. true');
-                }
-                break;
-        
-            case 'papyri':
-                
-                break;
-        
-            default:
-                break;
-        }
-    }
-
-    // Public Methods
-    readConsent(cookieConfig) {
-        console.log('LEGGO IL CONSENSO');
-
-        if(this._osEnv === 'web') {
-            return Cookie.getJSON(cookieConfig.name);
-        } else {
-            let result = this._read(cookieConfig.name);
-            console.log(typeof result);
-
-            return Cookie.getJSON(cookieConfig.name)
-            // console.log('this._read(cookieConfig.name)',this._read(cookieConfig.name));
-        }
-    }
-
-    writeConsent(name, value, expires_in_days) {
-        console.log('SCRIVO IL CONSENSO');
-
-        if(this._osEnv === 'web') {
-            
-        } else {
-            this._write();
-        }
     }
 
     showPanel() {
-        this._show();
+        console.log('showPanel');
+        switch (this._osEnv) {
+            case 'native':
+                // QUI SONO MOBILE
+
+                if (this._publisher === 'papyri') {
+                    // SE SONO UN PUBLISHER PARTICOLARE
+                    this._showRaiSDK();
+                } else {
+                    // SE SONO AVACY DI FALLBACK / DEFAULT
+                    this._showAvacySDK();
+                }
+
+                break;
+        
+            default:
+                // QUI SONO WEB DI DEFAULT
+                break;
+        }
     }
 
     hidePanel() {
-        this._hide();
+        console.log('hidePanel');
+        switch (this._osEnv) {
+            case 'native':
+                // QUI SONO MOBILE
+
+                if (this._publisher === 'papyri') {
+                    // SE SONO UN PUBLISHER PARTICOLARE
+                    this._hideRaiSDK();
+                } else {
+                    // SE SONO AVACY DI FALLBACK / DEFAULT
+                    this._hideAvacySDK();
+                }
+
+                break;
+        
+            default:
+                // QUI SONO WEB DI DEFAULT
+                break;
+        }
     }
 }
 
 export const consentStore = () => {
     if (!consentStoreInstance) {
-        consentStoreInstance = new ConsentStore('avacy')
+        consentStoreInstance = new ConsentStore()
     }
 
     return consentStoreInstance;
 }
 
 window.callbackFunction = (result) => {
-    window.myResolve(result);
-    console.log('RISULTATO CALLBACK',result);
+    window.callbackResult = result;
 }

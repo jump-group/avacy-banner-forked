@@ -64,13 +64,6 @@ export function initOilLayer() {
           manageDomElementActivation();
         }
 
-        if (!getQueryStringParam('prefcenter')) {
-          consentStore().hidePanel();
-          // console.log('ce l\'hoooo');
-          // consentStore().showPanel();
-          // window.PAPYRI.showPreferenceCenter('absolute');
-        }
-
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start with found opt-in finished!'));
       } else {
         /**
@@ -89,11 +82,11 @@ export function initOilLayer() {
           });
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start without found opt-in finished!'));
       }
-
-      if (getQueryStringParam('prefcenter')) {
-        console.log('ce l\'hoooo');
+      if (getQueryStringParam('prefcenter') && getQueryStringParam('prefcenter') === '1') {
         consentStore().showPanel();
         window.PAPYRI.showPreferenceCenter('absolute');
+      } else if (optin) {
+        consentStore().hidePanel();
       }
     });
   }

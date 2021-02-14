@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from '@now/node';
-import {TCModel, TCString} from '@iabtcf/core';
+import {TCModel, TCString} from 'didomi-iabtcf-core';
 import { getAllPreferences } from './../src/scripts/core/core_consents';
 
 export default async function (req: NowRequest, res: NowResponse) {

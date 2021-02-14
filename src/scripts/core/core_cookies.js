@@ -13,6 +13,7 @@ import {
   getLocaleVariantName,
   getIabVendorWhitelist
 } from './core_config';
+import { getAllPreferences } from './core_consents';
 import { getLocaleVariantVersion } from './core_utils';
 import { ADDITIONAL_CONSENT_VERSION, OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFAULT_VERSION, OIL_SPEC } from './core_constants';
 import { getCustomVendorListVersion, getLimitedVendorIds, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders, getAdditionalConsentList } from './core_vendor_lists';
@@ -45,12 +46,11 @@ export function setDomainCookie(name, value, expires_in_days) {
 }
 
 export function getOilCookie(cookieConfig) {
+    const read = consentStore().readConsent(cookieConfig.name);
+
     //TODO: set new consent @tcf2 @tcf2soi
-    return consentStore().readConsent(cookieConfig.name).then((cookieJson) => {
-      console.log('getOilCookie cookieJson',cookieJson)
-  
+    return read.then( cookieJson => {
       if (cookieJson !== undefined ) {
-        console.log('NOT UNDEFINED')
         cookieJson.consentData = TCString.decode(cookieJson.consentString, getDefaultTCModel());
         logInfo('getting consent settings from cookie:', cookieJson.consentData);
       }
@@ -59,12 +59,13 @@ export function getOilCookie(cookieConfig) {
 
 }
 
-export function hasOutdatedOilCookie(cookieConfig) {
-  return isCookieValid(cookieConfig.name, cookieConfig.outdated_cookie_content_keys);
-}
+// TODO: DA RIMUOVERE
+// export function hasOutdatedOilCookie(cookieConfig) {
+//   return isCookieValid(cookieConfig.name, cookieConfig.outdated_cookie_content_keys);
+// }
 
 
-//TODO: DA RIMUOVERE
+// TODO: DA RIMUOVERE
 // export function findCookieConsideringCookieVersions(cookieConfig, outdatedCookieTransformer) {
 //   let cookie;
 
@@ -84,20 +85,21 @@ export function hasOutdatedOilCookie(cookieConfig) {
 // }
 
 export function getSoiCookie() {
-  return getOilCookieConfig().then(cookieConfig => {
-    // let cookie = findCookieConsideringCookieVersions(cookieConfig, transformOutdatedOilCookie);
-    let cookie;
-    if (hasCurrentOilCookie(cookieConfig)) {
-      cookie = getOilCookie(cookieConfig);
-    } else {
-      cookie = cookieConfig.defaultCookieContent;
-    }
-    logInfo('Current Oil data from domain cookie: ', cookie);
-    return cookie;
+  return getOilCookieConfig().then(cookieConfig => {    
+    return getOilCookie(cookieConfig).then(config => {
+      let cookie;
+      if (config && config.opt_in === true) {
+        cookie = config;
+      } else {
+        cookie = cookieConfig.defaultCookieContent;
+      }
+      return cookie;
+    })
   });
 }
 
 export function setSoiCookieWithPoiCookieData(poiCookieJson) {
+  console.log('poiCookieJson', poiCookieJson);
   //TODO: set new consent @tcf2 @tcf2poi
   return new Promise((resolve, reject) => {
     Promise.all([loadVendorListAndCustomVendorList(), getOilCookieConfig()]).then(results => {  
@@ -223,7 +225,8 @@ export function buildSoiCookie(privacySettings) {
         addtlConsent: getAdditionalConsentWithSettings(privacySettings)
       };
 
-      resolve(outputCookie);
+      // TODO: inizialmente risolvevo solo outputCookie, ma per poter lanciare la sendDecodedConsent ho bisogno del TCmodel, ovvero consentData
+      resolve([outputCookie, consentData]);
     }).catch(error => reject(error));
   });
 }
@@ -231,11 +234,14 @@ export function buildSoiCookie(privacySettings) {
 export function setSoiCookie(privacySettings) {
 
   return new Promise((resolve, reject) => {
-    buildSoiCookie(privacySettings).then((cookie) => {
+    buildSoiCookie(privacySettings).then( results => {
+      let cookie = results[0];
+      let consentData = results[1];
       //TODO: da rivedere, ma ho bisogno di fare l'update prima di settare il cookie.
       updateTcfApi(cookie, false, cookie.addtlConsent);
-
       setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays());
+      consentStore().writeDecodedRaiConsentSDK(getAllPreferences(consentData, cookie.addtlConsent));
+
       resolve(cookie);
     }).catch(error => reject(error));
   });
@@ -339,19 +345,22 @@ function getAllowedCustomPurposesDefault() {
   return getCustomPurposesWithConsent(getDefaultToOptin() ? 1 : 0);
 }
 
-function getAllowedVendorsDefault() {
-  return getDefaultToOptin() ? getLimitedVendorIds() : [];
-}
+// TODO: DA RIMUOVERE
+// function getAllowedVendorsDefault() {
+//   return getDefaultToOptin() ? getLimitedVendorIds() : [];
+// }
 
-function hasOilCookieWithoutVersion(cookieConfig) {
-  let expectedKeys = Object.keys(cookieConfig.defaultCookieContent);
-  expectedKeys.splice(expectedKeys.indexOf('configVersion'), 1);
-  return isCookieValid(cookieConfig.name, expectedKeys);
-}
+// TODO: DA RIMUOVERE
+// function hasOilCookieWithoutVersion(cookieConfig) {
+//   let expectedKeys = Object.keys(cookieConfig.defaultCookieContent);
+//   expectedKeys.splice(expectedKeys.indexOf('configVersion'), 1);
+//   return isCookieValid(cookieConfig.name, expectedKeys);
+// }
 
-function hasCurrentOilCookie(cookieConfig) {
-  return isCookieValid(cookieConfig.name, Object.keys(cookieConfig.defaultCookieContent));
-}
+// TODO: DA RIMUOVERE
+// function hasCurrentOilCookie(cookieConfig) {
+//   return isCookieValid(cookieConfig.name, Object.keys(cookieConfig.defaultCookieContent));
+// }
 
 /**
  * Checks weather a cookie exists
@@ -368,20 +377,22 @@ function isCookie(name) {
  * @param data {array}  Keys of data object
  * @returns boolean
  */
-function cookieDataHasKeys(name, data) {
-  if (typeof (name) === 'string' && Array.isArray(data)) {
-    let cookieData;
-    if (isCookie(name)) {
-      cookieData = Cookie.getJSON(name);
-    } else {
-      cookieData = consentStore().readConsent(name); 
-    }
-    if (cookieData) {
-      return data.every(item => item === 'consentData' || cookieData.hasOwnProperty(item));
-    }
-  }
-  return false;
-}
+
+ // TODO: DA RIMUOVERE
+// function cookieDataHasKeys(name, data) {  
+//   if (typeof (name) === 'string' && Array.isArray(data)) {
+//     let cookieData;
+//     if (isCookie(name)) {
+//       cookieData = Cookie.getJSON(name);
+//     } else {
+//       // cookieData = consentStore().readConsent(name); 
+//     }
+//     if (cookieData) {
+//       return data.every(item => item === 'consentData' || cookieData.hasOwnProperty(item));
+//     }
+//   }
+//   return false;
+// }
 
 /**
  * Checks if a cookie is valid and contains a data object with given keys
@@ -389,10 +400,10 @@ function cookieDataHasKeys(name, data) {
  * @param data {array}  Keys of data object
  * @returns boolean
  */
-// TODO: Controllare se è realmente necesario validareil Cookie
-function isCookieValid(name, data) {
-  return cookieDataHasKeys(name, data);
-}
+// TODO: DA RIMUOVERE - Controllare se è realmente necesario validareil Cookie
+// function isCookieValid(name, data) {
+//   return cookieDataHasKeys(name, data);
+// }
 
 export function getDefaultTCModel() {
   let gvl = getVendorList();
@@ -410,8 +421,10 @@ export function getDefaultTCModel() {
 
 function getOilCookieConfig() {
   //TODO: set new consent @tcf2 @tcf2soi
+  // TODO: Capire bene come tornare un cookie in funzione del se o dato o meno l'optin
   let consentData;
   let consentString;
+  
   return getOilCookie({name: OIL_DOMAIN_COOKIE_NAME}).then(cookie => {
 
     if (cookie) {
@@ -445,25 +458,24 @@ function getOilCookieConfig() {
 
 }
 
-function transformOutdatedOilCookie(cookieConfig) {
-  //REVIEW: when does it run? @tcf2
-  let cookieJson = Cookie.getJSON(cookieConfig.name);
+// TODO: DA RIMUOVERE
+// function transformOutdatedOilCookie(cookieConfig) {
+//   //REVIEW: when does it run? @tcf2
+//   let cookieJson = Cookie.getJSON(cookieConfig.name);
 
-  console.log('coookie JSon', cookieJson);
-
-  let cookie = cookieConfig.defaultCookieContent;
-  cookie.opt_in = cookieJson.opt_in;
-  cookie.version = cookieJson.version;
-  cookie.localeVariantName = cookieJson.localeVariantName;
-  cookie.localeVariantVersion = cookieJson.localeVariantVersion;
-  cookie.configVersion = OIL_CONFIG_DEFAULT_VERSION;
-  cookie.policyVersion = OIL_POLICY_DEFAULT_VERSION;
-  cookie.addtlConsent = ADDITIONAL_CONSENT_VERSION;
-  cookie.customPurposes = getCustomPurposesWithConsent(cookieJson.privacy);
-  cookie.consentData.setConsentLanguage(getLanguageFromLocale(cookieJson.localeVariantName));
-  cookie.consentData.setPurposesAllowed(getStandardPurposesWithConsent(cookieJson.privacy));
-  cookie.consentData.setVendorsAllowed(getLimitedVendorIds());
-  cookie.consentData.setGlobalVendorList(getVendorList());
-  cookie.consentString = !isInfoBannerOnly() ? cookie.consentData.getConsentString() : '';
-  return cookie;
-}
+//   let cookie = cookieConfig.defaultCookieContent;
+//   cookie.opt_in = cookieJson.opt_in;
+//   cookie.version = cookieJson.version;
+//   cookie.localeVariantName = cookieJson.localeVariantName;
+//   cookie.localeVariantVersion = cookieJson.localeVariantVersion;
+//   cookie.configVersion = OIL_CONFIG_DEFAULT_VERSION;
+//   cookie.policyVersion = OIL_POLICY_DEFAULT_VERSION;
+//   cookie.addtlConsent = ADDITIONAL_CONSENT_VERSION;
+//   cookie.customPurposes = getCustomPurposesWithConsent(cookieJson.privacy);
+//   cookie.consentData.setConsentLanguage(getLanguageFromLocale(cookieJson.localeVariantName));
+//   cookie.consentData.setPurposesAllowed(getStandardPurposesWithConsent(cookieJson.privacy));
+//   cookie.consentData.setVendorsAllowed(getLimitedVendorIds());
+//   cookie.consentData.setGlobalVendorList(getVendorList());
+//   cookie.consentString = !isInfoBannerOnly() ? cookie.consentData.getConsentString() : '';
+//   return cookie;
+// }

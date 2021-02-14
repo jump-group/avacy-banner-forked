@@ -4,6 +4,7 @@ import { logError } from './core_log';
 import { getSoiCookie } from './core_cookies';
 import { getPurposesAllowed } from './core_consents';
 
+// TODO: CAPIRE SE SERVE
 export function sendConsentInformationToCustomVendors() {
   return Promise.all([loadVendorListAndCustomVendorList(), getSoiCookie() ]).then(results => {
       let customVendorList = getCustomVendorList();

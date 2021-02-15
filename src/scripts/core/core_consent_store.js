@@ -1,3 +1,4 @@
+import { reject } from 'core-js/fn/promise';
 import Cookie from 'js-cookie';
 import { resolve } from 'path';
 import { isMobileEnvironment, getNativePublisher } from './core_config';
@@ -37,15 +38,22 @@ class ConsentStore {
         if (window.CMPWebInterface) {
             // Call Android interface
             if (typeof window.CMPWebInterface.readAll === 'function'){
-                let wrapper = document.querySelector('.as-oil.OilMobile');
-                window.CMPWebInterface.readAll('callbackFunction');
+                return new Promise((resolve, reject) => {
+                    window.myResolve = resolve;
+                    window.CMPWebInterface.readAll('callbackFunction');
+                }).then(res => {
+                    let result = JSON.parse(res);
 
-                // if (cookieName in result) {
-                //     // let cookie = JSON.parse(result[cookieName]);
-                //     // return cookie;
-                // } else {
-                //     // return undefined;
-                // }
+                    return new Promise((resolve, reject) => {
+                        let cookie;
+                        if (cookieName in result) {
+                            cookie = JSON.parse(result[cookieName].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent));
+                        } else {
+                            cookie = undefined;
+                        }
+                        resolve(cookie);
+                    })
+                })
             }
         } else if (window.webkit
             && window.webkit.messageHandlers
@@ -156,9 +164,10 @@ class ConsentStore {
 
     // QUESTA FUNZIONE LA USA SOLO RAI PER ADESSO
     writeDecodedRaiConsentSDK(privacySettings) {
-        if (this.osEnv !== 'native') {
+        if (this._osEnv !== 'native' || this._publisher === 'avacy') {
             return
         }
+
         if(this._isAndroid()) {
             window.Android.sendDecodedConsent(JSON.stringify(privacySettings))
         }else{
@@ -180,11 +189,17 @@ class ConsentStore {
         // ASSEGNO A objectToWrite IL COOKIE OIL_DATA STRINGIFIZZATO
         let encodedValue;
         // CONTROLLO PERCHE' su ANDROID NON USO LA LIBRERIA DI ENCODING
-        if (this._isAndroid()) {
-            encodedValue = JSON.stringify(value);
+
+        if (this._publisher === 'papyri') {
+            if (this._isAndroid()) {
+                encodedValue = JSON.stringify(value);
+            } else {
+                encodedValue = encodeURIComponent(JSON.stringify(value)).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent);
+            }
         } else {
             encodedValue = encodeURIComponent(JSON.stringify(value)).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent);
         }
+
 
         Object.assign(objectToWrite, { [name.toUpperCase()] : encodedValue })
         
@@ -194,6 +209,7 @@ class ConsentStore {
             Object.assign(objectToWrite, iabValues)
         }
 
+        console.log('objectToWrite', objectToWrite)
         return objectToWrite;
     }
 
@@ -401,5 +417,5 @@ export const consentStore = () => {
 }
 
 window.callbackFunction = (result) => {
-    window.callbackResult = result;
+    window.myResolve(result);
 }

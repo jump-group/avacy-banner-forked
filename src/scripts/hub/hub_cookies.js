@@ -13,26 +13,20 @@ import {
   ADDITIONAL_CONSENT_VERSION
 } from '../core/core_constants';
 import { logError, logInfo } from '../core/core_log';
-import { getConfigVersion, getPolicyVersion, getCookieExpireInDays, getLanguageFromLocale } from '../core/core_config';
-import { getLimitedVendorIds } from '../core/core_vendor_lists';
-import { findCookieConsideringCookieVersions, getStandardPurposesWithConsent, setDomainCookie } from '../core/core_cookies';
+import { getConfigVersion, getPolicyVersion, getCookieExpireInDays } from '../core/core_config';
+import { getDefaultTCModel, setDomainCookie } from '../core/core_cookies';
 import Cookie from 'js-cookie';
-
-const {ConsentString} = require('consent-string');
+import { TCString } from 'didomi-iabtcf-core';
 
 const OIL_HUB_DOMAIN_COOKIE_NAME = 'oil_data';
 const OIL_HUB_UNKNOWN_VALUE = 'unknown';
 
 export function getPoiCookie(groupName = '') {
   let config = getHubDomainCookieConfig(groupName);
-  console.log('Poi Cookie', cookie);
-  console.log('Cookie.getJSON(name)', Cookie.getJSON(config.name));
-  // TODO: RIVEDERE IMPLEMENTAZIONE
-  // let cookie = findCookieConsideringCookieVersions(cookieConfig, transformOutdatedOilCookie);
   let cookie = Cookie.getJSON(config.name);
-  if (cookie && cookie.power_opt_in === true) {
+
+  if (cookie) {
     logInfo('Oil Hub Domain Cookie: ', cookie);
-    console.log('Return Poi Cookie', cookie);
     return cookie;
   } else {
     return config.defaultCookieContent;
@@ -40,7 +34,6 @@ export function getPoiCookie(groupName = '') {
 }
 
 export function setPoiCookie(groupName, payload) {
-  console.table('setPoiCookie', groupName, payload)
   // If we send OLD DATA to a NEW HUB, we got a problem - in this case we do not want to store the POI-Cookie --> new data = consent string, old = privacy object
   let consentStringAsPrivacy = getConsentStringFromPayload(payload);
   if (payload && (typeof (consentStringAsPrivacy) === 'string')) {
@@ -62,25 +55,6 @@ export function setPoiCookie(groupName, payload) {
   }
 }
 
-// TODO: RIMUOVERE 
-// function transformOutdatedOilCookie(cookieConfig) {
-//   let cookieJson = Cookie.getJSON(cookieConfig.name);
-
-//   let cookie = cookieConfig.defaultCookieContent;
-//   cookie.power_opt_in = cookieJson.power_opt_in;
-//   cookie.version = cookieJson.version;
-//   cookie.configVersion = OIL_CONFIG_DEFAULT_VERSION;
-//   cookie.policyVersion = OIL_POLICY_DEFAULT_VERSION;
-//   cookie.addtlConsent = ADDITIONAL_CONSENT_VERSION;
-//   cookie.localeVariantName = cookieJson.localeVariantName;
-//   cookie.localeVariantVersion = cookieJson.localeVariantVersion;
-//   cookie.customPurposes = []; // we do not know custom purposes config in the hub, but old cookies does not encode them
-//   cookie.consentData.setConsentLanguage(getLanguageFromLocale(cookieJson.localeVariantName));
-//   cookie.consentData.setPurposesAllowed(getStandardPurposesWithConsent(cookieJson.privacy));
-//   cookie.consentData.setVendorsAllowed(getLimitedVendorIds());
-//   return cookie;
-// }
-
 function getOilHubCookieName(groupName) {
   if (groupName) {
     return groupName + '_' + OIL_HUB_DOMAIN_COOKIE_NAME;
@@ -88,16 +62,9 @@ function getOilHubCookieName(groupName) {
   return OIL_HUB_DOMAIN_COOKIE_NAME;
 }
 
-// TODO: Allineare TCF 2.0 -- IN GENERALE QUESTO DOCUMENTO
 function getHubDomainCookieConfig(groupName) {
-  let consentData = new ConsentString();
-  consentData.setCmpId(OIL_SPEC.CMP_ID);
-  consentData.setCmpVersion(OIL_SPEC.CMP_VERSION);
-  consentData.setConsentScreen(1);
-
-  consentData.setConsentLanguage('en'); // this value can't be figured out
-  consentData.setPurposesAllowed([]);
-  consentData.setVendorsAllowed([]);
+  let consentData = getDefaultTCModel();
+  let consentString = consentData.gvl.isReady ? TCString.encode(consentData) : '';
 
   return {
     name: getOilHubCookieName(groupName),
@@ -109,10 +76,10 @@ function getHubDomainCookieConfig(groupName) {
       localeVariantVersion: 0, // this value can't be figured out
       customPurposes: [],
       consentData: consentData,
-      consentString: '', // consent string is not computed because global vendor list is not loaded in hub
+      consentString: consentString,
       configVersion: getConfigVersion(),
       policyVersion: getPolicyVersion(),
-      addtlConsent: consentData.addtlConsent
+      addtlConsent: ADDITIONAL_CONSENT_VERSION
     },
     outdated_cookie_content_keys: ['power_opt_in', 'timestamp', 'version', 'localeVariantName', 'localeVariantVersion', 'privacy', 'addtlConsent']
   };

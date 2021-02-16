@@ -1,6 +1,5 @@
 import { CmpApi } from 'didomi-iabtcf-cmpapi';
 import { OIL_SPEC, ADDITIONAL_CONSENT_VERSION } from './core_constants';
-import { consentStore } from './core_consent_store';
 
 let tcfCmpApi = null;
 let acm = ADDITIONAL_CONSENT_VERSION;
@@ -41,10 +40,4 @@ export function disableGdprTcfApi() {
 
     tcfCmpApi.update(null, false);
     return tcfCmpApi;
-}
-
-function getQueryStringParam(string) {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    return urlParams.get(string);
 }

@@ -1,11 +1,11 @@
 //NOTE: no changes to be made @tcf2
-import { getSoiCookie, setSoiCookieWithPoiCookieData } from './core_cookies';
+import { getSoiCookie, setSoiCookieWithPoiCookieData, getDefaultTCModel } from './core_cookies';
 import { logPreviewInfo } from './core_log';
 import { verifyPowerOptIn } from './core_poi';
 import { getPolicyVersion } from './core_config';
 import { OIL_SPEC } from './core_constants.js';
-import { manageDomElementActivation } from './core_tag_management.js';
 import { sendEventToHostSite } from './core_utils.js';
+import { TCString } from 'didomi-iabtcf-core';
 
 /**
  * Log Helper function for checkOptIn
@@ -36,6 +36,10 @@ export function checkOptIn() {
       }
   
       verifyPowerOptIn().then((powerOptIn) => {
+          if (powerOptIn.power_opt_in) {
+            // Mi serve sapere la consentData in modo da poter fare poi il controllo se il cookie è ancora valido
+            powerOptIn.consentData = TCString.decode(powerOptIn.consentString, getDefaultTCModel());
+          }
           if(powerOptIn.power_opt_in && isCookieStillValid(powerOptIn)){
               setSoiCookieWithPoiCookieData(powerOptIn)
               .then(() => {

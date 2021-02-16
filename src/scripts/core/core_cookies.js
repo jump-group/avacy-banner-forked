@@ -1,5 +1,3 @@
-//REVIEW: changes in todo comments @tcf2
-
 import Cookie from 'js-cookie';
 import { logInfo } from './core_log';
 import {
@@ -9,14 +7,13 @@ import {
   getCustomPurposes,
   getDefaultToOptin,
   isInfoBannerOnly,
-  getLanguageFromLocale,
   getLocaleVariantName,
   getIabVendorWhitelist
 } from './core_config';
 import { getAllPreferences } from './core_consents';
 import { getLocaleVariantVersion } from './core_utils';
-import { ADDITIONAL_CONSENT_VERSION, OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFAULT_VERSION, OIL_SPEC } from './core_constants';
-import { getCustomVendorListVersion, getLimitedVendorIds, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders, getAdditionalConsentList } from './core_vendor_lists';
+import { ADDITIONAL_CONSENT_VERSION, OIL_SPEC } from './core_constants';
+import { getCustomVendorListVersion, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders } from './core_vendor_lists';
 import { OilVersion } from './core_utils';
 import { TCModel, TCString } from 'didomi-iabtcf-core';
 import { consentStore } from './core_consent_store';
@@ -38,17 +35,14 @@ export function setDomainCookie(name, value, expires_in_days) {
 
   if (window.location.protocol === 'http:') {
       consentStore().writeConsent(name, value);
-      // Cookie.set(name, value);
   } else {
       consentStore().writeConsent(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
-      // Cookie.set(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
   }  
 }
 
 export function getOilCookie(cookieConfig) {
     const read = consentStore().readConsent(cookieConfig.name);
 
-    //TODO: set new consent @tcf2 @tcf2soi
     return read.then( cookieJson => {
       if (cookieJson !== undefined ) {
         cookieJson.consentData = TCString.decode(cookieJson.consentString, getDefaultTCModel());
@@ -56,33 +50,7 @@ export function getOilCookie(cookieConfig) {
       }
       return cookieJson;
     });
-
 }
-
-// TODO: DA RIMUOVERE
-// export function hasOutdatedOilCookie(cookieConfig) {
-//   return isCookieValid(cookieConfig.name, cookieConfig.outdated_cookie_content_keys);
-// }
-
-
-// TODO: DA RIMUOVERE
-// export function findCookieConsideringCookieVersions(cookieConfig, outdatedCookieTransformer) {
-//   let cookie;
-
-//   if (hasCurrentOilCookie(cookieConfig)) {
-//     cookie = getOilCookie(cookieConfig);
-//   } else if (hasOilCookieWithoutVersion(cookieConfig)) {
-//     cookie = getOilCookie(cookieConfig);
-//     cookie.configVersion = OIL_CONFIG_DEFAULT_VERSION;
-//     cookie.policyVersion = OIL_POLICY_DEFAULT_VERSION;
-//   } else if (hasOutdatedOilCookie(cookieConfig)) {
-//     cookie = outdatedCookieTransformer(cookieConfig);
-//   } else {
-//     cookie = cookieConfig.defaultCookieContent;
-//   }
-
-//   return cookie;
-// }
 
 export function getSoiCookie() {
   return getOilCookieConfig().then(cookieConfig => {    
@@ -99,8 +67,6 @@ export function getSoiCookie() {
 }
 
 export function setSoiCookieWithPoiCookieData(poiCookieJson) {
-  console.log('poiCookieJson', poiCookieJson);
-  //TODO: set new consent @tcf2 @tcf2poi
   return new Promise((resolve, reject) => {
     Promise.all([loadVendorListAndCustomVendorList(), getOilCookieConfig()]).then(results => {  
       let cookieConfig = results[1];
@@ -345,23 +311,6 @@ function getAllowedCustomPurposesDefault() {
   return getCustomPurposesWithConsent(getDefaultToOptin() ? 1 : 0);
 }
 
-// TODO: DA RIMUOVERE
-// function getAllowedVendorsDefault() {
-//   return getDefaultToOptin() ? getLimitedVendorIds() : [];
-// }
-
-// TODO: DA RIMUOVERE
-// function hasOilCookieWithoutVersion(cookieConfig) {
-//   let expectedKeys = Object.keys(cookieConfig.defaultCookieContent);
-//   expectedKeys.splice(expectedKeys.indexOf('configVersion'), 1);
-//   return isCookieValid(cookieConfig.name, expectedKeys);
-// }
-
-// TODO: DA RIMUOVERE
-// function hasCurrentOilCookie(cookieConfig) {
-//   return isCookieValid(cookieConfig.name, Object.keys(cookieConfig.defaultCookieContent));
-// }
-
 /**
  * Checks weather a cookie exists
  * @param name {string} Name of cookie
@@ -378,21 +327,6 @@ function isCookie(name) {
  * @returns boolean
  */
 
- // TODO: DA RIMUOVERE
-// function cookieDataHasKeys(name, data) {  
-//   if (typeof (name) === 'string' && Array.isArray(data)) {
-//     let cookieData;
-//     if (isCookie(name)) {
-//       cookieData = Cookie.getJSON(name);
-//     } else {
-//       // cookieData = consentStore().readConsent(name); 
-//     }
-//     if (cookieData) {
-//       return data.every(item => item === 'consentData' || cookieData.hasOwnProperty(item));
-//     }
-//   }
-//   return false;
-// }
 
 /**
  * Checks if a cookie is valid and contains a data object with given keys
@@ -400,10 +334,6 @@ function isCookie(name) {
  * @param data {array}  Keys of data object
  * @returns boolean
  */
-// TODO: DA RIMUOVERE - Controllare se è realmente necesario validareil Cookie
-// function isCookieValid(name, data) {
-//   return cookieDataHasKeys(name, data);
-// }
 
 export function getDefaultTCModel() {
   let gvl = getVendorList();
@@ -457,25 +387,3 @@ function getOilCookieConfig() {
   });
 
 }
-
-// TODO: DA RIMUOVERE
-// function transformOutdatedOilCookie(cookieConfig) {
-//   //REVIEW: when does it run? @tcf2
-//   let cookieJson = Cookie.getJSON(cookieConfig.name);
-
-//   let cookie = cookieConfig.defaultCookieContent;
-//   cookie.opt_in = cookieJson.opt_in;
-//   cookie.version = cookieJson.version;
-//   cookie.localeVariantName = cookieJson.localeVariantName;
-//   cookie.localeVariantVersion = cookieJson.localeVariantVersion;
-//   cookie.configVersion = OIL_CONFIG_DEFAULT_VERSION;
-//   cookie.policyVersion = OIL_POLICY_DEFAULT_VERSION;
-//   cookie.addtlConsent = ADDITIONAL_CONSENT_VERSION;
-//   cookie.customPurposes = getCustomPurposesWithConsent(cookieJson.privacy);
-//   cookie.consentData.setConsentLanguage(getLanguageFromLocale(cookieJson.localeVariantName));
-//   cookie.consentData.setPurposesAllowed(getStandardPurposesWithConsent(cookieJson.privacy));
-//   cookie.consentData.setVendorsAllowed(getLimitedVendorIds());
-//   cookie.consentData.setGlobalVendorList(getVendorList());
-//   cookie.consentString = !isInfoBannerOnly() ? cookie.consentData.getConsentString() : '';
-//   return cookie;
-// }

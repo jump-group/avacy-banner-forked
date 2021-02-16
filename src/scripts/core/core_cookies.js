@@ -34,8 +34,8 @@ export function setDomainCookie(name, value, expires_in_days) {
   delete value.consentData;
 
   if (window.location.protocol === 'http:') {
-      consentStore().writeConsent(name, value);
-  } else {
+      consentStore().writeConsent(name, value, { expires: expires_in_days });
+    } else {
       consentStore().writeConsent(name, value, { expires: expires_in_days, secure: true, sameSite: 'none' });
   }  
 }

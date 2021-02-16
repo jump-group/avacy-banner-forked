@@ -243,7 +243,7 @@ export function getCustomPurposeIds() {
 }
 
 export function isMobileEnvironment() {
-  return getConfigValue(OIL_CONFIG.ATTR_DEVICE_ENVIRONMENT, undefined) === 'native' ? true : false;
+  return getConfigValue(OIL_CONFIG.ATTR_DEVICE_ENVIRONMENT, 'web') === 'native' ? true : false;
 }
 
 export function getNativePublisher() {

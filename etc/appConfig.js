@@ -281,6 +281,24 @@ module.exports = {
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'
+  }, , {
+    filename: 'demos/demo-page-block.html',
+    template: path.resolve(sourcePath, 'demos', 'demo-page-block.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  }, , {
+    filename: 'demos/demo-page-form.html',
+    template: path.resolve(sourcePath, 'demos', 'demo-page-form.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  }, {
+    filename: 'demos/demo-page-home.html',
+    template: path.resolve(sourcePath, 'demos', 'demo-page-home.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
   }, {
     filename: 'demos/vendor-integration-with-iframe.html',
     template: path.resolve(sourcePath, 'demos', 'vendor-integration-with-iframe.html'),

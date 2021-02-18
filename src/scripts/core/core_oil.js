@@ -23,8 +23,9 @@ export function initOilLayer() {
 
   window.PAPYRI = window.AS_OIL;
   registerDomElementActivationManager();
-
   attachUtilityFunctionsToWindowObject();
+  
+  document.documentElement.style.setProperty('--home-demo-bg', `url(${getQueryStringParam('bgUrl') ? getQueryStringParam('bgUrl') : '../assets/images/bi-uk.png' }`);
 
   /**
    * We show OIL depending on the following conditions:

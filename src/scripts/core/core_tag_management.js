@@ -13,6 +13,7 @@ export function manageDomElementActivation() {
 
   let managedElements = findManagedElements();
   getSoiCookie().then(cookie => {
+    demoPage(cookie);
     if(cookie.opt_in){
       sendEventToHostSite('oil-managed-elements')
       for (let i = 0; i < managedElements.length; i++) {
@@ -161,5 +162,100 @@ function hasConsent(element, cookie) {
     return purposesResult && legintResult && specialFeaturesResult;
   } else {
     return false;
+  }
+}
+
+export function demoPage(cookie) {
+  let purposes = [
+    {
+        name: 'Archiviare e/o accedere a informazioni su un dispositivo',
+        status: false
+    },
+    {
+        name: 'Selezionare annunci basici (basic ads)',
+        status: false
+    },
+    {
+        name: 'Creare un profilo di annunci personalizzati',
+        status: false
+    },
+    {
+        name: 'Selezionare annunci personalizzati',
+        status: false
+    },
+    {
+        name: 'Creare un profilo di contenuto personalizzato',
+        status: false
+    },
+    {
+        name: 'Selezionare contenuti personalizzati',
+        status: false
+    },
+    {
+        name: 'Valutare le performance degli annunci',
+        status: false
+    },
+    {
+        name: 'Valutare le performance dei contenuti',
+        status: false
+    },
+    {
+        name: 'Applicare ricerche di mercato per generare approfondimenti sul pubblico',
+        status: false
+    },
+    {
+        name: 'Sviluppare e perfezionare i prodotti',
+        status: false
+    }
+  ];
+
+  if (cookie.opt_in) {
+    cookie.consentData.purposeConsents.set_.forEach(element => {
+      purposes[element-1].status = true;
+
+    });
+  }
+
+  setConsentsStatus(purposes);
+  setScriptsStatus(purposes)
+}
+
+function setConsentsStatus(purposes) {
+  let consentsListElement = document.querySelector('.ConsentStatus__List');
+  consentsListElement.innerHTML = '';
+  if (consentsListElement) {
+        purposes.forEach((el, index) => {
+            let newLi = document.createElement('li');
+            let name = el.name;
+            let status = !!el.status;
+            newLi.classList.add('ConsentStatus__PurposeItem');
+            if (status === true) {
+                newLi.classList.add('is-active');
+            }
+            let statusLabel = status ? 'Attivo' : 'Disattivo'
+            newLi.innerHTML = index+1 + '. ' + name + '<span class="ConsentStatus__PurposeStatus">'+ statusLabel +'</span>';
+            consentsListElement.appendChild(newLi);
+        });
+  }
+}
+
+function setScriptsStatus(purposes) {
+  let sectionBlocks = document.querySelectorAll('.SectionBlock');
+  if (sectionBlocks) {
+    sectionBlocks.forEach(block => {
+      let blockConsents = block.querySelectorAll('.SectionBlock__ConsentListItem');
+      let sectionBlockStatus = block.querySelector('.SectionBlock__Status');
+      let count = 0;
+      blockConsents.forEach(element => {
+        if (purposes[element.dataset.purpose-1].status) {
+          element.classList.add('is-active');
+          count +=1
+        }
+      });
+      if (count === blockConsents.length) {
+        block.classList.add('is-active');
+        sectionBlockStatus.innerText = 'Abilitato';
+      }
+    });
   }
 }

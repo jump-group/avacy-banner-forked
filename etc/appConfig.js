@@ -19,6 +19,12 @@ module.exports = {
     name: ['polyfills'].reverse()
   },
   indexFiles: [{
+    filename: 'favicon.ico',
+    template: path.resolve(sourcePath, '', 'favicon.ico'),
+    chunks: [],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  },{
     filename: 'hub.html',
     template: path.resolve(sourcePath, '', 'hub.html'),
     chunks: ['hub'],
@@ -136,16 +142,26 @@ module.exports = {
     chunksSortMode: 'dependency',
     inject: 'head'
   }, {
-  }, {
     filename: 'demos/rai-b.html',
     template: path.resolve(sourcePath, 'demos', 'rai-b.html'),
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'
   }, {
+    filename: 'demos/rai-sdk.html',
+    template: path.resolve(sourcePath, 'demos', 'rai-sdk.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
   }, {
-    filename: 'demos/rai-c.html',
-    template: path.resolve(sourcePath, 'demos', 'rai-c.html'),
+    filename: 'demos/avacy-sdk.html',
+    template: path.resolve(sourcePath, 'demos', 'avacy-sdk.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  }, {
+    filename: 'demos/avacy-demo.html',
+    template: path.resolve(sourcePath, 'demos', 'avacy-demo.html'),
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'

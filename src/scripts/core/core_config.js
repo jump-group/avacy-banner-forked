@@ -242,6 +242,14 @@ export function getCustomPurposeIds() {
   return getCustomPurposes().map(({ id }) => id);
 }
 
+export function isMobileEnvironment() {
+  return getConfigValue(OIL_CONFIG.ATTR_DEVICE_ENVIRONMENT, 'web') === 'native' ? true : false;
+}
+
+export function getNativePublisher() {
+  return getConfigValue(OIL_CONFIG.ATTR_NATIVE_PUBLISHER, 'avacy');
+}
+
 /**
  * Define whether in the advanced settings window checkboxes
  * should be activated by default, even when no consent was given

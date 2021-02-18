@@ -12,6 +12,12 @@ function loadTcfApi() {
                 tcData.addtlConsent = acm;
                 // pass data along
                 next(tcData, success);
+            },
+            'getInAppTCData': (next, appTCData, success) => {
+                // tcData will be constructed via the TC string and can be added to here
+                appTCData.addtlConsent = acm;
+                // pass data along
+                next(appTCData, success);
             }
         });
     }

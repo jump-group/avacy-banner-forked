@@ -1,11 +1,12 @@
 //NOTE: no changes to be made @tcf2
-import { getSoiCookie, setSoiCookieWithPoiCookieData } from './core_cookies';
+import { getSoiCookie, setSoiCookieWithPoiCookieData, getDefaultTCModel } from './core_cookies';
 import { logPreviewInfo } from './core_log';
 import { verifyPowerOptIn } from './core_poi';
 import { getPolicyVersion } from './core_config';
 import { OIL_SPEC } from './core_constants.js';
-import { manageDomElementActivation } from './core_tag_management.js';
 import { sendEventToHostSite } from './core_utils.js';
+import { TCString } from 'didomi-iabtcf-core';
+
 /**
  * Log Helper function for checkOptIn
  * @param {*} singleOptIn
@@ -27,27 +28,32 @@ function logPreviewOptInInfo(singleOptIn, powerOptIn) {
  */
 export function checkOptIn() {
   return new Promise((resolve, reject) => {
-    let cookie = getSoiCookie();
-    if(cookie.opt_in && isCookieStillValid(cookie)){
-        sendEventToHostSite('oil-checked-optin');
-        resolve([cookie.opt_in, cookie]);
-        return;
-    }
-
-    verifyPowerOptIn().then((powerOptIn) => {
-        if(powerOptIn.power_opt_in && isCookieStillValid(powerOptIn)){
-            setSoiCookieWithPoiCookieData(powerOptIn)
-            .then(() => {
-                sendEventToHostSite('oil-checked-optin');
-                resolve([powerOptIn.power_opt_in, powerOptIn]);
-                return;
-            })
-            .catch(error => reject(error));
-        } else {
+    getSoiCookie().then(cookie => {
+      if(cookie.opt_in && isCookieStillValid(cookie)){
           sendEventToHostSite('oil-checked-optin');
-          resolve([false, cookie]);
+          resolve([cookie.opt_in, cookie]);
           return;
-        }
+      }
+  
+      verifyPowerOptIn().then((powerOptIn) => {
+          if (powerOptIn.power_opt_in) {
+            // Mi serve sapere la consentData in modo da poter fare poi il controllo se il cookie è ancora valido
+            powerOptIn.consentData = TCString.decode(powerOptIn.consentString, getDefaultTCModel());
+          }
+          if(powerOptIn.power_opt_in && isCookieStillValid(powerOptIn)){
+              setSoiCookieWithPoiCookieData(powerOptIn)
+              .then(() => {
+                  sendEventToHostSite('oil-checked-optin');
+                  resolve([powerOptIn.power_opt_in, powerOptIn]);
+                  return;
+              })
+              .catch(error => reject(error));
+          } else {
+            sendEventToHostSite('oil-checked-optin');
+            resolve([false, cookie]);
+            return;
+          }
+      });
     });
   });
 }

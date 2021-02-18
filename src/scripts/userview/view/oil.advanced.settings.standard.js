@@ -25,7 +25,7 @@ export function oilAdvancedSettingsInlineTemplate() {
       ${getLabel(OIL_LABELS.ATTR_LABEL_CPC_TEXT)}
     </p>
     ${ActivateButtonSnippet()}
-    ${BackButton()}
+    ${window.AS_OIL.isInCollection('oil_has_optedin') || window.AS_OIL.isInCollection('oil_optin_done') ? '' : BackButton()}
     ${ContentSnippet()}
   </div>`
 }

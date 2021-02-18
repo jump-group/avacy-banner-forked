@@ -47,7 +47,9 @@ export const OIL_CONFIG = {
   ATTR_LANGUAGES_LIST: 'languages',
   ATTR_VISUAL_CONFIGURATION: 'visual_configuration',
   ATTR_ADDITIONAL_CONSENT_LIST_URL: 'additionalConsentUrl',
-  ATTR_ATP_WHITELIST: 'atpWhitelist'
+  ATTR_ATP_WHITELIST: 'atpWhitelist',
+  ATTR_DEVICE_ENVIRONMENT: 'deviceEnvironment',
+  ATTR_NATIVE_PUBLISHER: 'publisher'
 };
 
 export const OIL_CONFIG_CPC_TYPES = {

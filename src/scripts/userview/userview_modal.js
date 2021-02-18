@@ -26,7 +26,7 @@ import * as AdvancedSettingsStandard from './view/oil.advanced.settings.standard
 import * as AdvancedSettingsTabs from './view/oil.advanced.settings.tabs';
 import { logError, logInfo } from '../core/core_log';
 import { getCpcType, getTimeOutValue, isOptoutConfirmRequired, isPersistMinimumTracking, getBannerPosition, getBannerAnimation } from './userview_config';
-import { gdprApplies, getAdvancedSettingsPurposesDefault, isInfoBannerOnly, isPoiActive } from '../core/core_config';
+import { gdprApplies, getAdvancedSettingsPurposesDefault, isInfoBannerOnly, isPoiActive, isMobileEnvironment } from '../core/core_config';
 import { applyPrivacySettings, getPrivacySettings, applyAdditionalConsent } from './userview_privacy';
 import { activateOptoutConfirm } from './userview_optout_confirm';
 import { getPurposeIds, loadVendorListAndCustomVendorList} from '../core/core_vendor_lists';
@@ -75,6 +75,7 @@ export function renderOil(props) {
 }
 
 export function oilShowPreferenceCenter(mode) {
+  // NON RITORNA
   // We need the PowerGroupUi-Stuff for the CPC
 
   import('../poi-list/poi-info.js');
@@ -97,17 +98,19 @@ export function oilShowPreferenceCenter(mode) {
             logError('No wrapper for the CPC with the id #oil-preference-center was found.');
             return;
           }
-          let soiCookie = getSoiCookie();
-          let consentData = soiCookie.opt_in ? soiCookie.consentData : undefined;
-          let addtlConsent = soiCookie.opt_in ? soiCookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
+          getSoiCookie().then(soiCookie => {
 
-          let currentPrivacySettings;
-          if (consentData && addtlConsent) {
-            currentPrivacySettings = getAllPreferences(consentData, addtlConsent);
-          } else {
-            currentPrivacySettings = [];
-          }
-          applyPrivacySettings(currentPrivacySettings);
+            let consentData = soiCookie.opt_in ? soiCookie.consentData : undefined;
+            let addtlConsent = soiCookie.opt_in ? soiCookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
+  
+            let currentPrivacySettings;
+            if (consentData && addtlConsent) {
+              currentPrivacySettings = getAllPreferences(consentData, addtlConsent);
+            } else {
+              currentPrivacySettings = [];
+            }
+            applyPrivacySettings(currentPrivacySettings);
+          });
         });
       });
     })
@@ -133,16 +136,19 @@ export function handleOptIn() {
 }
 
 function onOptInComplete() {
+  // NON RITORNA
   let commandCollectionExecutor = getGlobalOilObject('commandCollectionExecutor');
   if (commandCollectionExecutor) {
     commandCollectionExecutor();
   }
   sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after user\'s opt-in finished!'));
   manageDomElementActivation();
-  updateTcfApi(getSoiCookie(), false, getSoiCookie().addtlConsent);
-  if (document.querySelector('#oil-preference-center')) {
-    document.querySelector('#oil-preference-center').innerHTML = '';
-  }
+  getSoiCookie().then(soiCookie => {
+    updateTcfApi(soiCookie, false, soiCookie.addtlConsent);
+    if (document.querySelector('#oil-preference-center')) {
+      document.querySelector('#oil-preference-center').innerHTML = '';
+    }
+  })
 }
 
 function shouldRenderOilLayer(props) {
@@ -259,6 +265,7 @@ function setWrapperStyles(wrapper) {
   setFontFamily(wrapper);
   setTabsBlur(wrapper);
   setContentBlur(wrapper);
+  setMobileStyle(wrapper);
 }
 
 function setTabsBlur(wrapper) {
@@ -328,6 +335,13 @@ function setFontFamily(wrapper) {
     wrapper.style.setProperty('--avacy_font_family',font_family)
   } else {
     wrapper.style.setProperty('--avacy_font_family',default_font_family)
+  }
+}
+
+function setMobileStyle(wrapper) {
+  if (isMobileEnvironment()) {
+    wrapper.classList.add('OilMobile');
+    document.documentElement.style.setProperty('--vh', `${window.screen.availHeight}px`);
   }
 }
 

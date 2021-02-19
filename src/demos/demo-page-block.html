@@ -76,6 +76,7 @@
             color: #2a2a2a;
             display: flex;
             flex-wrap: wrap;
+            margin: 20px 0;
         }
 
         .SectionBlock__Title {
@@ -90,10 +91,9 @@
 
         .SectionBlock__Script {
             background-color: #dfdfdf;
-        }
-
-        .SectionBlock__Script > *{
-            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .SectionBlock__Title,
@@ -265,12 +265,22 @@
                 data-purposes="1,3,4" frameborder="0"></iframe>
             </div>
         </section>
+        <section  class="SectionBlock">
+            <div class="SectionBlock__Description">
+                <h3 class="SectionBlock__Title">ShareThis - sharethis.com <span class="SectionBlock__Status">Bloccato</span></h3>
+                <h4 class="SectionBlock__ConsentListTitle">Consensi richiesti:</h4>
+                <ul class="SectionBlock__ConsentList">
+                    <li class="SectionBlock__ConsentListItem" data-purpose="1">1. Archiviare e/o accedere a informazioni su un dispositivo</li>
+                    <li class="SectionBlock__ConsentListItem" data-purpose="3">3. Creare un profilo di annunci personalizzati</li>
+                    <li class="SectionBlock__ConsentListItem" data-purpose="4">4. Selezionare annunci personalizzati</li>
+                </ul>
+            </div>
+            <div class="SectionBlock__Script">
+                <script data-managed="as-oil" type="as-oil" data-type="text/javascript" data-purposes="1,3,4" data-src="https://platform-api.sharethis.com/js/sharethis.js#property=602fe27649da5b00114efa08&product=inline-share-buttons" async="async"></script>  
+                <div class="sharethis-inline-share-buttons"></div>
+            </div>
+        </section>
     </main>
-        <footer>
-            <script>
-
-            </script>
-        </footer>
 </body>
 
 </html>

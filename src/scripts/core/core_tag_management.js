@@ -13,13 +13,13 @@ export function manageDomElementActivation() {
 
   let managedElements = findManagedElements();
   getSoiCookie().then(cookie => {
-    demoPage(cookie);
     if(cookie.opt_in){
       sendEventToHostSite('oil-managed-elements')
       for (let i = 0; i < managedElements.length; i++) {
         manageElement(managedElements[i], cookie);
       }
     }
+    demoPage(cookie);
   });
   
 }
@@ -208,22 +208,20 @@ export function demoPage(cookie) {
         status: false
     }
   ];
-
-  if (cookie.opt_in) {
+  if (cookie.opt_in === true) {
     cookie.consentData.purposeConsents.set_.forEach(element => {
       purposes[element-1].status = true;
 
     });
   }
-
   setConsentsStatus(purposes);
   setScriptsStatus(purposes)
 }
 
 function setConsentsStatus(purposes) {
   let consentsListElement = document.querySelector('.ConsentStatus__List');
-  consentsListElement.innerHTML = '';
   if (consentsListElement) {
+        consentsListElement.innerHTML = '';
         purposes.forEach((el, index) => {
             let newLi = document.createElement('li');
             let name = el.name;

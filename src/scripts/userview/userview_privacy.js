@@ -5,10 +5,10 @@ import { forEach } from './userview_modal';
 import { getPurposes, getSpecialFeatures, getVendorIds, getAdditionalConsentList } from '../core/core_vendor_lists';
 import { replace } from 'core-js/fn/symbol';
 
-export function getSoiConsentData() {
-  let soiCookie = getSoiCookie();
-  return soiCookie.opt_in ? soiCookie.consentData : undefined;
-}
+// export function getSoiConsentData() {
+//   let soiCookie = getSoiCookie();
+//   return soiCookie.opt_in ? soiCookie.consentData : undefined;
+// }
 
 /**
  * If the CPC is visible it returns the settings from the CPC,

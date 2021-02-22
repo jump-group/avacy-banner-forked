@@ -3,7 +3,9 @@
 export const OIL_SPEC = {
   CMP_ID: 297,
   CMP_VERSION: 2,
-  LATEST_CONSENT_STRING_VERSION: 2
+  LATEST_CONSENT_STRING_VERSION: 2,
+  IS_SERVICE_SPECIFIC: true,
+  SUPPORT_OOB: false
 };
 
 export const ADDITIONAL_CONSENT_VERSION = '1~';
@@ -45,7 +47,9 @@ export const OIL_CONFIG = {
   ATTR_LANGUAGES_LIST: 'languages',
   ATTR_VISUAL_CONFIGURATION: 'visual_configuration',
   ATTR_ADDITIONAL_CONSENT_LIST_URL: 'additionalConsentUrl',
-  ATTR_ATP_WHITELIST: 'atpWhitelist'
+  ATTR_ATP_WHITELIST: 'atpWhitelist',
+  ATTR_DEVICE_ENVIRONMENT: 'deviceEnvironment',
+  ATTR_NATIVE_PUBLISHER: 'publisher'
 };
 
 export const OIL_CONFIG_CPC_TYPES = {

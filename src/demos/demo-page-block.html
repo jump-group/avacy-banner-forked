@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="it" class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Avacy Test- Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <style>
+        :root {
+            --error: #c21616;
+            --warning: #e0e000;
+            --success: #005200;
+            --section-bg: #fafafa;
+        }
+
+        ul[class] {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+
+        body {
+            min-height: 200vh;
+            max-width: 1280px;
+        }
+        
+        .SectionContent.ScriptItem h1 {
+            display: inline-block;
+            padding: 5px 5px;
+            border-radius: 10px;
+            background-color: red !important;
+        }
+
+        .SectionContent.ScriptItem.is-active h1 {
+            background-color: green !important;
+        }
+
+        .ConsentStatus__List {
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ConsentStatus__List {
+            list-style-type: none;
+            padding-left: 10px;
+        }
+
+        .ConsentStatus__PurposeItem {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .ConsentStatus__PurposeStatus {
+            color: #fff;
+            background-color: var(--error);
+            padding: 4px 10px;
+            box-sizing: border-box;
+            text-transform: uppercase;
+            font-size: 8px;
+            margin-left: 10px;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .ConsentStatus__PurposeItem.is-active .ConsentStatus__PurposeStatus {
+            background-color: var(--success);
+        }
+
+        .SectionBlock {
+            background-color: var(--section-bg);
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-sizing: border-box;
+            color: #2a2a2a;
+            display: flex;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .SectionBlock__Title {
+            display: flex;
+            align-items: center;
+        }
+
+        .SectionBlock__Description,
+        .SectionBlock__Script {
+            width: 100%;
+        }
+
+        .SectionBlock__Script {
+            background-color: #dfdfdf;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .SectionBlock__Title,
+        .SectionBlock__ConsentListTitle {
+            color: #2a2a2a;
+        }
+
+        .SectionBlock__ConsentListItem::after{
+            content: '';
+            display: inline-block;
+            margin-left: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 100px;
+            background-color: var(--error);
+        }
+
+        .SectionBlock__ConsentListItem.is-active::after {
+            background-color: var(--success);
+        }
+
+        .SectionBlock__Status {
+            color: #fff;
+            background-color: var(--error);
+            padding: 4px 10px;
+            box-sizing: border-box;
+            text-transform: uppercase;
+            font-size: 8px;
+            margin-left: 10px;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .SectionBlock.is-active .SectionBlock__Status {
+            background-color: var(--success);
+        }
+
+        @media screen and (min-width: 1024px) {
+            .SectionBlock__Description,
+            .SectionBlock__Script {
+                width: 50%;
+            }
+        }
+    </style>
+    <script id="oil-configuration" type="application/configuration">
+        {
+            "config_version": 1,
+            "policy_version": 2,
+            "advanced_settings": true,
+            "iabVendorListUrl": "https://cdn.jumpgroup.it/assets/",
+            "timeout": -1,
+            "poi_activate_poi": true,
+            "poi_group_name": "GroupCookieName",
+            "poi_hub_origin": "https://demo-cookiebuster.jumpgroup.it",
+            "poi_hub_path": "/hub.html",
+            "show_limited_vendors_only": true,
+            "iabVendorWhitelist": [11, 21, 25, 33, 50, 52, 60, 66, 77, 92, 243, 264, 323, 373, 385, 394, 450, 553, 565, 573, 584, 613, 615, 620, 628, 647, 755, 788, 793, 804],
+            "atpWhitelist": [70, 89, 108, 171, 184, 211, 326, 453, 494, 587, 981, 1033, 1092, 1097, 1107, 1205, 1558, 1842, 2213, 2316, 2440, 2510, 2642, 2677, 2770, 2847, 2949, 2973, 2981, 3009, 3128],
+            "additionalConsentUrl": "https://cdn.jumpgroup.it/assets/additional-consent-providers.json",
+            "publicPath": "/",
+            "cookie_expires_in_days": 15,
+            "language": "it",
+            "languages": {
+                "it": {
+                    "localeId": "it",
+                    "version": 1,
+                    "texts": {
+                        "label_intro_heading": "Cookie e pubblicità su questo sito",
+                        "label_button_yes": "Acconsento",
+                        "label_intro": "Questo sito utilizza cookie e strumenti equivalenti, anche di terzi, per misurare il consumo e garantire la fruizione dei contenuti digitali, facilitare la navigazione, proporre pubblicità mirata. Per saperne di più puoi visionare linformativa estesa <a href=\"https://www.example.it/privacy/CookiePolicy.html\" target=\"_blank\">cliccando qui</a>, per negare il consenso o gestire le tue preferenze usa il pulsante \"ESPRIMO PREFERENZE\". Premendo \"ACCONSENTO\" acconsenti all’uso di cookie e strumenti equivalenti.",
+                        "label_cpc_heading": "Cookie e pubblicità su questo sito",
+                        "label_cpc_text": "Puoi visionare l'Informativa estesa sui Cookie al seguente <a href=\"https://www.examp.it/privacy/CookiePolicy.html\" target=\"_blank\">link</a>.",
+                        "label_cpc_activate_all": "Attivare tutto",
+                        "label_cpc_deactivate_all": "Disattiva tutto",
+                        "label_third_party": "Fornitori Che Aderiscono a IAB TCF",
+                        "label_cpc_purpose_title": "Finalità",
+                        "label_cpc_special_purpose_title": "Finalità Speciali",
+                        "label_cpc_feature_title": "Funzionalità",
+                        "label_cpc_special_feature_title": "Funzionalità Speciali",
+                        "label_cpc_read_less": "Leggi di meno.",
+                        "label_cpc_read_more": "Leggi di più...",
+                        "label_button_back": "Indietro",
+                        "label_button_advanced_settings": "Esprimo preferenze",
+                        "label_custom_thirdparty_heading": "Altri Fornitori",
+                        "label_third_party_object_legint": "Legittimo interesse per i fornitori",
+                        "label_cpc_purpose_optout_confirm_heading": "Sei sicuro?",
+                        "label_cpc_purpose_optout_confirm_text": "Queste impostazioni modificheranno l'esperienza sul sito.",
+                        "label_cpc_purpose_optout_confirm_proceed": "Contina",
+                        "label_cpc_purpose_optout_confirm_cancel": "Cancella",
+                        "label_poi_group_list_heading": "Lista delle unità aziendali",
+                        "label_poi_group_list_text": "Unità aziendali",
+                        "label_thirdparty_list_heading": "Your consent for third party software",
+                        "label_thirdparty_list_text": "Here is a list of third party software.",
+                        "label_nocookie_head": "In order to be able to provide our services in the best possible way, cookies must be activated in your browser.",
+                        "label_nocookie_text": "Please activate cookies in the properties of your browsers. So you can do it in <a href=\"https://support.google.com/chrome/answer/95647?co=GENIE.Platform%3DDesktop&amp;hl=en-GB\" class=\"as-oil__intro-txt--link\" target=\"_blank\">Google Chrome</a> or <a href=\"https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer\" class=\"as-oil__intro-txt--link\" target=\"_blank\">Firefox</a>.\".",
+                        "label_cpc_legal_purpose_consent": "Finalità (Consenso)",
+                        "label_cpc_legal_purpose_leg_int": "Finalità (Legittimo Interesse)",
+                        "label_cpc_legal_special_purposes": "Finalità Speciali",
+                        "label_cpc_legal_features": "Funzionalità",
+                        "label_cpc_legal_special_features": "Funzionalità Speciali",
+                        "label_third_party_description": "Questi servizi aderiscono al <a target=\"_blank\" href=\"https://iabeurope.eu/transparency-consent-framework/\">IAB Transparency and Consent Framework (TCF)</a>.",
+                        "label_cpc_save": "Salva e Continua",
+                        "label_cpc_legint_rejectbox_text": "Legittimo interesse per i fornitori",
+                        "label_cpc_legint_box_text": "Permetti a questo servizio di trattare i tuoi dati sulla base di un interesse legittimo.",
+                        "label_cpc_legint_infobox_title": "Legittimo interesse",
+                        "label_cpc_legint_infobox_description": "Un \"interesse legittimo\" è un interesse che, in base alla legislazione applicabile, giustifica il trattamento di dati personali.<br>I servizi che decidono di fare affidamento su di un interesse legittimo possono processare i tuoi dati a meno che tu non ti opponga a tale trattamento.<br><p><b>Deselezionando questa casella eserciti il tuo diritto di opposizione.</b></p>",
+                        "label_additional_consent_heading": "Google Partner"
+                    }
+                }
+            },
+            "visual_configuration" : {
+                "colors": {
+                    "text_color_primary": "#80888c",
+                    "text_color_secondary": "#262628",
+                    "background_color": "#f9f9f9",
+                    "secondary_background_color": "#dedede",
+                    "accent_primary": "#0099f2",
+                    "btn_primary_background": "#0099f2",
+                    "btn_primary_background_hover": "#0d9ef3",
+                    "btn_primary_text_color": "#ffffff",
+                    "btn_secondary_background": "#0099f2",
+                    "btn_secondary_background_hover": "#0d9ef3",
+                    "btn_secondary_text_color": "#ffffff",
+                    "btn_disabled_background": "#dfdfdf",
+                    "btn_disabled_text_color": "#545454",
+                    "slider_background": "#b1b6b8",
+                    "slider_background_circle": "#ffffff",
+                    "third_parties_background": "#eff0f0"
+                },
+                "banner_position": "PositionBottom",
+                "banner_animation": "SlideIn", 
+                "font_base_scale": 1,
+                "font_family": "Helvetica,Arial"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <main>
+        <h1 class="PageTitle">Lista Script Bloccati</h1>
+        <section class="Optout">
+            <h2 class="SectionTitle">Strumenti Veloci</h2>
+            <button class="Button"onclick='(function(){window.AS_OIL.triggerOptOut(); location.reload();})();'>Effettua
+                Optout e ricarica</button><br>
+            <button onclick="window.AS_OIL.showPreferenceCenter('absolute')">Modifica Consenso</button><br>
+        </section>
+        <section class="ConsentStatus">
+            <h2 class="SectionTitle">Stato dei consensi</h2>
+            <ul class="ConsentStatus__List"></ul>
+        </section>
+        
+        <h2 class="SectionTitle">Lista Esempi</h2>
+        
+        <section  class="SectionBlock">
+            <div class="SectionBlock__Description">
+                <h3 class="SectionBlock__Title">Youtube - youtube.com <span class="SectionBlock__Status">Bloccato</span></h3>
+                <h4 class="SectionBlock__ConsentListTitle">Consensi richiesti:</h4>
+                <ul class="SectionBlock__ConsentList">
+                    <li class="SectionBlock__ConsentListItem" data-purpose="1">1. Archiviare e/o accedere a informazioni su un dispositivo</li>
+                    <li class="SectionBlock__ConsentListItem" data-purpose="3">3. Creare un profilo di annunci personalizzati</li>
+                    <li class="SectionBlock__ConsentListItem" data-purpose="4">4. Selezionare annunci personalizzati</li>
+                </ul>
+            </div>
+            <div class="SectionBlock__Script">
+                <iframe id="ytplayer" width="640" height="360" data-managed="as-oil" type="as-oil"
+                data-type="text/javascript"
+                data-src="https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=0&origin=http://example.com"
+                data-purposes="1,3,4" frameborder="0"></iframe>
+            </div>
+        </section>
+        <section  class="SectionBlock">
+            <div class="SectionBlock__Description">
+                <h3 class="SectionBlock__Title">ShareThis - sharethis.com <span class="SectionBlock__Status">Bloccato</span></h3>
+                <h4 class="SectionBlock__ConsentListTitle">Consensi richiesti:</h4>
+                <ul class="SectionBlock__ConsentList">
+                    <li class="SectionBlock__ConsentListItem" data-purpose="1">1. Archiviare e/o accedere a informazioni su un dispositivo</li>
+                    <li class="SectionBlock__ConsentListItem" data-purpose="3">3. Creare un profilo di annunci personalizzati</li>
+                    <li class="SectionBlock__ConsentListItem" data-purpose="4">4. Selezionare annunci personalizzati</li>
+                </ul>
+            </div>
+            <div class="SectionBlock__Script">
+                <script data-managed="as-oil" type="as-oil" data-type="text/javascript" data-purposes="1,3,4" data-src="https://platform-api.sharethis.com/js/sharethis.js#property=602fe27649da5b00114efa08&product=inline-share-buttons" async="async"></script>  
+                <div class="sharethis-inline-share-buttons"></div>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>

@@ -19,6 +19,12 @@ module.exports = {
     name: ['polyfills'].reverse()
   },
   indexFiles: [{
+    filename: 'favicon.ico',
+    template: path.resolve(sourcePath, '', 'favicon.ico'),
+    chunks: [],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  },{
     filename: 'hub.html',
     template: path.resolve(sourcePath, '', 'hub.html'),
     chunks: ['hub'],
@@ -142,8 +148,20 @@ module.exports = {
     chunksSortMode: 'dependency',
     inject: false
   }, {
-    filename: 'demos/rai-c.html',
-    template: path.resolve(sourcePath, 'demos', 'rai-c.html'),
+    filename: 'demos/rai-sdk.html',
+    template: path.resolve(sourcePath, 'demos', 'rai-sdk.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  }, {
+    filename: 'demos/avacy-sdk.html',
+    template: path.resolve(sourcePath, 'demos', 'avacy-sdk.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  }, {
+    filename: 'demos/avacy-demo.html',
+    template: path.resolve(sourcePath, 'demos', 'avacy-demo.html'),
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'
@@ -282,6 +300,24 @@ module.exports = {
   }, {
     filename: 'demos/tag-management.html',
     template: path.resolve(sourcePath, 'demos', 'tag-management.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  }, , {
+    filename: 'demos/demo-page-block.html',
+    template: path.resolve(sourcePath, 'demos', 'demo-page-block.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  }, , {
+    filename: 'demos/demo-page-form.html',
+    template: path.resolve(sourcePath, 'demos', 'demo-page-form.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  }, {
+    filename: 'demos/demo-page-home.html',
+    template: path.resolve(sourcePath, 'demos', 'demo-page-home.html'),
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'

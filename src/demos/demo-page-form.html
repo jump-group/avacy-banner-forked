@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Demo Block - Privacy Solution</title>
+</head>
+
+<body>
+    <script>
+        document.forms[0].onsubmit = async (e) => {
+            e.preventDefault();
+            const params = new URLSearchParams([...new FormData(e.target).entries()]);
+            // fetch("/path/to/server", {method:"POST", body:params})
+            const response = await new Response(params).text();
+            console.log(response);
+        }
+    </script>
+    <form>
+        <input name="email" value="test@example.com">
+        <input name="password" value="pw">
+        <input type="submit">
+    </form>
+
+    <div class="has-big-bad-background"></div>
+</body>
+
+</html>

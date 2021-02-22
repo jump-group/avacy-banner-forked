@@ -6,11 +6,10 @@ import { getSoiCookie, isBrowserCookieEnabled, isPreviewCookieSet, removePreview
 import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies, gdprApplies } from './core_config';
 import { EVENT_NAME_HAS_OPTED_IN, EVENT_NAME_NO_COOKIES_ALLOWED, OIL_GLOBAL_OBJECT_NAME, ADDITIONAL_CONSENT_VERSION } from './core_constants';
 import { updateTcfApi } from './core_tcf_api';
-import { manageDomElementActivation } from './core_tag_management';
+import { manageDomElementActivation, demoPage } from './core_tag_management';
 import { sendConsentInformationToCustomVendors } from './core_custom_vendors';
 import { getPurposes, clearVendorListCache } from './core_vendor_lists';
-import { observer } from './../element-observer/observer';
-
+import { consentStore } from './core_consent_store';
 /**
  * Initialize Oil on Host Site
  * This functions gets called directly after Oil has loaded
@@ -24,8 +23,9 @@ export function initOilLayer() {
 
   window.PAPYRI = window.AS_OIL;
   registerDomElementActivationManager();
-
   attachUtilityFunctionsToWindowObject();
+  
+  document.documentElement.style.setProperty('--home-demo-bg', `url(${getQueryStringParam('bgUrl') ? getQueryStringParam('bgUrl') : '../assets/images/bi-uk.png' }`);
 
   /**
    * We show OIL depending on the following conditions:
@@ -64,6 +64,7 @@ export function initOilLayer() {
         if(window.AS_OIL.isInCollection('oil-dom-loaded')) {
           manageDomElementActivation();
         }
+
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start with found opt-in finished!'));
       } else {
         /**
@@ -74,15 +75,29 @@ export function initOilLayer() {
             userview_modal.locale(uv_m => uv_m.renderOil({ optIn: false }));
             if (gdprApplies()) {
               updateTcfApi(cookieData, true, ADDITIONAL_CONSENT_VERSION);
+              consentStore().showPanel();
             }
           })
           .catch((e) => {
             logError('Locale could not be loaded.', e);
           });
+        demoPage(cookieData);
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start without found opt-in finished!'));
+      }
+      if (getQueryStringParam('prefcenter') && getQueryStringParam('prefcenter') === '1') {
+        consentStore().showPanel();
+        window.PAPYRI.showPreferenceCenter('absolute');
+      } else if (optin) {
+        consentStore().hidePanel();
       }
     });
   }
+}
+
+function getQueryStringParam(string) {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  return urlParams.get(string);
 }
 
 function registerDomElementActivationManager() {
@@ -154,9 +169,9 @@ function attachUtilityFunctionsToWindowObject() {
     return 'OIL language Changed';
   });
 
-  setGlobalOilObject('status', () => {
-    return getSoiCookie();
-  });
+  // setGlobalOilObject('status', () => {
+  //   return getSoiCookie();
+  // });
 
   setGlobalOilObject('showPreferenceCenter', (mode = 'inline') => {
     loadLocale(userview_modal => {

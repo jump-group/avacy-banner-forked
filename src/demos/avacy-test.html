@@ -1,0 +1,1235 @@
+
+<!DOCTYPE html>
+<html lang="it-IT">
+    <head>
+    <!-- <base href="https://www.easycassa.it/"> -->
+	<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="pingback" href="https://www.easycassa.it/xmlrpc.php" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,800&amp;display=swap" rel="stylesheet">
+
+	<script type="text/javascript">
+		document.documentElement.className = 'js';
+    </script>
+    
+
+    <!-- START AVACY SCRIPTS -->
+    <script id="avacy-blocking">
+
+        PAPYRI_BLACKLIST = [
+            {
+                pattern: /sassy\-social\-share\-public/,
+                rules: {
+                    'data-purposes': [1,2,7,9],
+                    'data-legints':[2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    'data-special-features': [2],
+                }
+            },
+            {
+                pattern: /duracelltomi\-google\-tag\-manager/,
+                rules: {
+                    'data-purposes': [1,2,7,9],
+                    'data-legints':[2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    'data-special-features': [2],
+                }
+            },
+            {
+                pattern: /googletagmanager/,
+                rules: {
+                    'data-purposes': [1,2,7,9],
+                    'data-legints':[2, 3, 4, 5],
+                    'data-special-features': [1,2],
+                }
+            },
+            {
+                pattern: /connect\.facebook\.net/,
+                rules: {
+                    'data-purposes': [1,2,3,4,5,6,7,8,9,10],
+                    'data-legints':[2, 3, 4, 5],
+                    'data-special-features': [1],
+                }
+            },
+            {
+                pattern: /intercom/,
+                rules: {
+                    'data-purposes': [1,2,3,4,5,6,7,8,9,10],
+                    'data-legints':[2, 3, 4, 5],
+                    'data-special-features': [1,2],
+                }
+            },
+            {
+                pattern: /youtube/,
+                rules: {
+                    'data-purposes': [1,3,4,5,9,10],
+                    'data-legints':[2,5],
+                    'data-special-features': [1],
+                }
+            },
+            {
+                pattern: /mc\.yandex\.ru/,
+                rules: {
+                    'data-purposes': [1,3,4,5,9,10],
+                    'data-legints':[2,5],
+                    'data-special-features': [1],
+                }
+            }
+        ]
+    </script>
+        <script id="oil-configuration" type="application/configuration">
+            {
+                "config_version": 1,
+                "policy_version": 2,
+                "advanced_settings": true,
+                "iabVendorListUrl": "https://cdn.jumpgroup.it/assets/",
+                "timeout": -1,
+                "poi_activate_poi": false,
+                "poi_group_name": "GruppoRai",
+                "poi_hub_origin": "https://testrai.jumpgroup.it",
+                "poi_hub_path": "/hub.html",
+                "show_limited_vendors_only": true,
+                "iabVendorWhitelist": [3, 4, 5],
+                "atpWhitelist": [39, 43, 46],
+                "additionalConsentUrl": "https://cdn.jumpgroup.it/assets/additional-consent-providers.json",
+                "publicPath": "/",
+                "cookie_expires_in_days": 15,
+                "language": "it",
+                "languages": {
+                    "it": {
+                        "localeId": "it",
+                        "version": 1,
+                        "texts": {
+                            "label_intro_heading": "Cookie e pubblicità su questo sito",
+                            "label_button_yes": "Acconsento",
+                            "label_intro": "Rai utilizza cookie e strumenti equivalenti, anche di terzi, per misurare il consumo e garantire la fruizione dei contenuti digitali Rai, facilitare la navigazione, proporre pubblicità mirata. Per saperne di più puoi visionare linformativa estesa <a href=\"https://www.rai.it/privacy/CookiePolicy.html\" target=\"_blank\">cliccando qui</a>, per negare il consenso o gestire le tue preferenze usa il pulsante \"ESPRIMO PREFERENZE\". Premendo \"ACCONSENTO\" acconsenti all’uso di cookie e strumenti equivalenti.",
+                            "label_cpc_heading": "Cookie e pubblicità su questo sito",
+                            "label_cpc_text": "Puoi visionare l'Informativa estesa sui Cookie al seguente <a href=\"https://www.rai.it/privacy/CookiePolicy.html\" target=\"_blank\">link</a>.",
+                            "label_cpc_activate_all": "Attivare tutto",
+                            "label_cpc_deactivate_all": "Disattiva tutto",
+                            "label_third_party": "Fornitori Che Aderiscono a IAB TCF",
+                            "label_cpc_purpose_title": "Finalità",
+                            "label_cpc_special_purpose_title": "Finalità Speciali",
+                            "label_cpc_feature_title": "Funzionalità",
+                            "label_cpc_special_feature_title": "Funzionalità Speciali",
+                            "label_cpc_read_less": "Leggi di meno.",
+                            "label_cpc_read_more": "Leggi di più...",
+                            "label_button_back": "Indietro",
+                            "label_button_advanced_settings": "Esprimo preferenze",
+                            "label_custom_thirdparty_heading": "Altri Fornitori",
+                            "label_third_party_object_legint": "Legittimo interesse per i fornitori",
+                            "label_cpc_purpose_optout_confirm_heading": "Sei sicuro?",
+                            "label_cpc_purpose_optout_confirm_text": "Queste impostazioni modificheranno l'esperienza sul sito.",
+                            "label_cpc_purpose_optout_confirm_proceed": "Contina",
+                            "label_cpc_purpose_optout_confirm_cancel": "Cancella",
+                            "label_poi_group_list_heading": "Lista delle unità aziendali",
+                            "label_poi_group_list_text": "Unità aziendali",
+                            "label_thirdparty_list_heading": "Your consent for third party software",
+                            "label_thirdparty_list_text": "Here is a list of third party software.",
+                            "label_nocookie_head": "In order to be able to provide our services in the best possible way, cookies must be activated in your browser.",
+                            "label_nocookie_text": "Please activate cookies in the properties of your browsers. So you can do it in <a href=\"https://support.google.com/chrome/answer/95647?co=GENIE.Platform%3DDesktop&amp;hl=en-GB\" class=\"as-oil__intro-txt--link\" target=\"_blank\">Google Chrome</a> or <a href=\"https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer\" class=\"as-oil__intro-txt--link\" target=\"_blank\">Firefox</a>.\".",
+                            "label_cpc_legal_purpose_consent": "Finalità (Consenso)",
+                            "label_cpc_legal_purpose_leg_int": "Finalità (Legittimo Interesse)",
+                            "label_cpc_legal_special_purposes": "Finalità Speciali",
+                            "label_cpc_legal_features": "Funzionalità",
+                            "label_cpc_legal_special_features": "Funzionalità Speciali",
+                            "label_third_party_description": "Questi servizi aderiscono al <a target=\"_blank\" href=\"https://iabeurope.eu/transparency-consent-framework/\">IAB Transparency and Consent Framework (TCF)</a>.",
+                            "label_cpc_save": "Salva e Continua",
+                            "label_cpc_legint_rejectbox_text": "Legittimo interesse per i fornitori",
+                            "label_cpc_legint_box_text": "Permetti a questo servizio di trattare i tuoi dati sulla base di un interesse legittimo.",
+                            "label_cpc_legint_infobox_title": "Legittimo interesse",
+                            "label_cpc_legint_infobox_description": "Un \"interesse legittimo\" è un interesse che, in base alla legislazione applicabile, giustifica il trattamento di dati personali.<br>I servizi che decidono di fare affidamento su di un interesse legittimo possono processare i tuoi dati a meno che tu non ti opponga a tale trattamento.<br><p><b>Deselezionando questa casella eserciti il tuo diritto di opposizione.</b></p>",
+                            "label_additional_consent_heading": "Google Partner"
+                        }
+                    }
+                },
+                "visual_configuration" : {
+                    "colors": {
+                        "text_color_primary": "#80888c",
+                        "text_color_secondary": "#262628",
+                        "background_color": "#f9f9f9",
+                        "secondary_background_color": "#dedede",
+                        "accent_primary": "#0099f2",
+                        "btn_primary_background": "#0099f2",
+                        "btn_primary_background_hover": "#0d9ef3",
+                        "btn_primary_text_color": "#ffffff",
+                        "btn_secondary_background": "#0099f2",
+                        "btn_secondary_background_hover": "#0d9ef3",
+                        "btn_secondary_text_color": "#ffffff",
+                        "btn_disabled_background": "#dfdfdf",
+                        "btn_disabled_text_color": "#545454",
+                        "slider_background": "#b1b6b8",
+                        "slider_background_circle": "#ffffff",
+                        "third_parties_background": "#eff0f0"
+                    },
+                    "banner_position": "PositionBottom",
+                    "banner_animation": "SlideIn", 
+                    "font_base_scale": 1,
+                    "font_family": "Montserrat"
+                }
+            }
+        </script>
+    <!-- END AVACY SCRIPTS -->
+
+	<style type="text/css">			.heateorSssInstagramBackground{background:radial-gradient(circle at 30% 107%,#fdf497 0,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285aeb 90%)}
+											.heateor_sss_horizontal_sharing .heateorSssSharing,.heateor_sss_standard_follow_icons_container .heateorSssSharing{
+							color: #fff;
+						border-width: 0px;
+			border-style: solid;
+			border-color: transparent;
+		}
+				.heateor_sss_horizontal_sharing .heateorSssTCBackground{
+			color:#666;
+		}
+				.heateor_sss_horizontal_sharing .heateorSssSharing:hover,.heateor_sss_standard_follow_icons_container .heateorSssSharing:hover{
+						border-color: transparent;
+		}
+		.heateor_sss_vertical_sharing .heateorSssSharing,.heateor_sss_floating_follow_icons_container .heateorSssSharing{
+							color: #fff;
+						border-width: 0px;
+			border-style: solid;
+			border-color: transparent;
+		}
+				.heateor_sss_vertical_sharing .heateorSssTCBackground{
+			color:#666;
+		}
+				.heateor_sss_vertical_sharing .heateorSssSharing:hover,.heateor_sss_floating_follow_icons_container .heateorSssSharing:hover{
+						border-color: transparent;
+		}
+		
+						div.heateor_sss_horizontal_sharing .heateor_sss_square_count{display: block}
+								div.heateor_sss_vertical_sharing .heateorSssSharingSvg{height:70%;margin-top:6px}div.heateor_sss_vertical_sharing .heateor_sss_square_count{line-height:15.2px;}
+				@media screen and (max-width:783px) {.heateor_sss_vertical_sharing{display:none!important}}@media screen and (max-width:783px) {.heateor_sss_floating_follow_icons_container{display:none!important}}</style>
+<!-- Google Tag Manager for WordPress by gtm4wp.com -->
+<script data-cfasync="false" data-pagespeed-no-defer>//<![CDATA[
+	var gtm4wp_datalayer_name = "dataLayer";
+	var dataLayer = dataLayer || [];
+//]]>
+</script>
+<!-- End Google Tag Manager for WordPress by gtm4wp.com -->
+	<!-- This site is optimized with the Yoast SEO plugin v15.2.1 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Registratore di cassa telematico in cloud All-In-One | EasyCassa</title>
+	<meta name="description" content="Registratore di Cassa telematico in cloud. Il sistema di cassa fiscale All-in-One per il tuo punto vendita. Hardware, Software di cassa e Assistenza compresa!" />
+	<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+	<link rel="canonical" href="https://www.easycassa.it/" />
+	<meta property="og:locale" content="it_IT" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Registratore di cassa telematico in cloud All-In-One | EasyCassa" />
+	<meta property="og:description" content="Registratore di Cassa telematico in cloud. Il sistema di cassa fiscale All-in-One per il tuo punto vendita. Hardware, Software di cassa e Assistenza compresa!" />
+	<meta property="og:url" content="https://www.easycassa.it/" />
+	<meta property="og:site_name" content="EasyCassa" />
+	<meta property="article:publisher" content="https://www.facebook.com/easycassa/" />
+	<meta property="article:modified_time" content="2020-12-09T16:05:02+00:00" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:label1" content="Scritto da">
+	<meta name="twitter:data1" content="FabioViassone">
+	<meta name="twitter:label2" content="Tempo di lettura stimato">
+	<meta name="twitter:data2" content="19 minuti">
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.easycassa.it/#organization","name":"EasyCassa SisalPay","url":"https://www.easycassa.it/","sameAs":["https://www.facebook.com/easycassa/"],"logo":{"@type":"ImageObject","@id":"https://www.easycassa.it/#logo","inLanguage":"it-IT","url":"https://www.easycassa.it/wp-content/uploads/2019/09/EasyCassa_positivo_EPS.png","width":780,"height":170,"caption":"EasyCassa SisalPay"},"image":{"@id":"https://www.easycassa.it/#logo"}},{"@type":"WebSite","@id":"https://www.easycassa.it/#website","url":"https://www.easycassa.it/","name":"EasyCassa","description":"Sistema di cassa telematico All-in-One in abbonamento","publisher":{"@id":"https://www.easycassa.it/#organization"},"potentialAction":[{"@type":"SearchAction","target":"https://www.easycassa.it/?s={search_term_string}","query-input":"required name=search_term_string"}],"inLanguage":"it-IT"},{"@type":"WebPage","@id":"https://www.easycassa.it/#webpage","url":"https://www.easycassa.it/","name":"Registratore di cassa telematico in cloud All-In-One | EasyCassa","isPartOf":{"@id":"https://www.easycassa.it/#website"},"about":{"@id":"https://www.easycassa.it/#organization"},"datePublished":"2019-08-29T14:11:51+00:00","dateModified":"2020-12-09T16:05:02+00:00","description":"Registratore di Cassa telematico in cloud. Il sistema di cassa fiscale All-in-One per il tuo punto vendita. Hardware, Software di cassa e Assistenza compresa!","inLanguage":"it-IT","potentialAction":[{"@type":"ReadAction","target":["https://www.easycassa.it/"]}]}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="EasyCassa &raquo; Feed" href="https://www.easycassa.it/feed/" />
+<link rel="alternate" type="application/rss+xml" title="EasyCassa &raquo; Feed dei commenti" href="https://www.easycassa.it/comments/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.easycassa.it\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.4.4"}};
+			/*! This file is auto-generated */
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<meta content="Divi-child v." name="generator"/><style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='https://www.easycassa.it/wp-includes/css/dist/block-library/style.min.css?ver=5.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='dica-lightbox-styles-css'  href='https://www.easycassa.it/wp-content/plugins/dg-divi-carousel/styles/light-box-styles.css?ver=5.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='swipe-style-css'  href='https://www.easycassa.it/wp-content/plugins/dg-divi-carousel/styles/swiper.min.css?ver=5.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='custom_style_css-css'  href='https://www.easycassa.it/wp-content/plugins/divi-overlays/assets/css/style.css?ver=5.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='parent-style-css'  href='https://www.easycassa.it/wp-content/themes/Divi/style.css?version=2.0&#038;ver=5.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='child-style-css'  href='https://www.easycassa.it/wp-content/themes/divi-child/style.css?ver=5.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='divi-style-css'  href='https://www.easycassa.it/wp-content/themes/divi-child/style.css?ver=4.5.1' type='text/css' media='all' />
+<link rel='stylesheet' id='divi-carousel-styles-css'  href='https://www.easycassa.it/wp-content/plugins/dg-divi-carousel/styles/style.min.css?ver=2.0.18' type='text/css' media='all' />
+<link rel='stylesheet' id='et-builder-googlefonts-cached-css'  href='https://fonts.googleapis.com/css?family=Roboto%3A100%2C100italic%2C300%2C300italic%2Cregular%2Citalic%2C500%2C500italic%2C700%2C700italic%2C900%2C900italic&#038;subset=latin%2Clatin-ext&#038;display=swap&#038;ver=5.4.4' type='text/css' media='all' />
+<link rel='stylesheet' id='heateor_sss_frontend_css-css'  href='https://www.easycassa.it/wp-content/plugins/sassy-social-share/public/css/sassy-social-share-public.css?ver=3.3.13' type='text/css' media='all' />
+<link rel='stylesheet' id='heateor_sss_sharing_default_svg-css'  href='https://www.easycassa.it/wp-content/plugins/sassy-social-share/admin/css/sassy-social-share-svg.css?ver=3.3.13' type='text/css' media='all' />
+<link rel='stylesheet' id='dashicons-css'  href='https://www.easycassa.it/wp-includes/css/dashicons.min.css?ver=5.4.4' type='text/css' media='all' />
+<script type='text/javascript' src='https://www.easycassa.it/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/plugins/divi-overlays/assets/js/snap.svg-min.js?ver=5.4.4'></script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/plugins/divi-overlays/assets/js/modernizr.custom.js?ver=5.4.4'></script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/plugins/duracelltomi-google-tag-manager/js/gtm4wp-form-move-tracker.js?ver=1.11.5'></script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/themes/Divi/core/admin/js/es6-promise.auto.min.js?ver=5.4.4'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var et_core_api_spam_recaptcha = {"site_key":"","page_action":{"action":"www_easycassa_it"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/themes/Divi/core/admin/js/recaptcha.js?ver=5.4.4'></script>
+<link rel='https://api.w.org/' href='https://www.easycassa.it/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.easycassa.it/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.easycassa.it/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 5.4.4" />
+<link rel='shortlink' href='https://www.easycassa.it/' />
+<link rel="alternate" type="application/json+oembed" href="https://www.easycassa.it/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.easycassa.it%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.easycassa.it/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.easycassa.it%2F&#038;format=xml" />
+                    <script type="text/javascript">
+                        (function () {
+                            window.siqConfig = {
+                                engineKey: "cd365fa6aa76a4d6e62e68b17c805a48"
+                            };
+                            window.siqConfig.baseUrl = "//pub.searchiq.co/";
+                            var script = document.createElement("SCRIPT");
+                            script.src = window.siqConfig.baseUrl + 'js/container/siq-container-2.js?cb=' + (Math.floor(Math.random()*999999)) + '&engineKey=' + siqConfig.engineKey;
+                            script.id = "siq-container";
+                            document.getElementsByTagName("HEAD")[0].appendChild(script);
+                        })();
+                    </script>
+<!-- Google Tag Manager for WordPress by gtm4wp.com -->
+<script data-cfasync="false" data-pagespeed-no-defer>//<![CDATA[
+	var dataLayer_content = {"pagePostType":"frontpage","pagePostType2":"single-page","pagePostAuthor":"FabioViassone"};
+	dataLayer.push( dataLayer_content );//]]>
+</script>
+<script data-cfasync="false">//<![CDATA[
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.'+'js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WW7F7S6');//]]>
+</script>
+<!-- End Google Tag Manager -->
+<!-- End Google Tag Manager for WordPress by gtm4wp.com --><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><meta name="theme-color" content="#d81984"><!-- Google Search Console tag --><meta name="google-site-verification" content="LgJAzkL7sQL7LOsYdZEahWD8zQ2NVSGno02TRwpK_Wg"><!-- Global site tag (gtag.js) - Google Ads: 734979671 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-734979671"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-734979671');
+</script>
+
+
+
+<!-- Facebook Pixel Code NUOVO -->
+
+<script>
+
+  !function(f,b,e,v,n,t,s)
+
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+
+  n.queue=[];t=b.createElement(e);t.async=!0;
+
+  t.src=v;s=b.getElementsByTagName(e)[0];
+
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+
+  'https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', '2514506118809383');
+
+  fbq('track', 'PageView');
+
+</script>
+
+<noscript><img class="lazy" height="1" width="1" style="display:none" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.facebook.com/tr?id=2514506118809383&amp;ev=PageView&amp;noscript=1"></noscript>
+
+<!-- End Facebook Pixel Code -->
+
+
+<!-- INTEGRAZIONE PER SOSTITUIRE I DUE LOGHI ALLO SCROLL DEL MENU IN HOMEPAGE -->
+<script>
+jQuery(document).ready(function () {
+    if (jQuery(window).width() >= 981) {
+        var initialSrc = "/wp-content/uploads/2019/09/EasyCassa_positivo_230_white.png";
+        var scrollSrc = "/wp-content/uploads/2019/08/EasyCassa_positivo_230.png";
+        jQuery(".home #logo").attr("src", "/wp-content/uploads/2019/09/EasyCassa_positivo_230_white.png")
+        jQuery(window).scroll(function () {
+            var value = jQuery(this).scrollTop();
+            if (value > 100) jQuery(".home #logo").attr("src", scrollSrc);
+            else jQuery(".home #logo").attr("src", initialSrc);
+        });
+    }
+});
+</script>
+
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(68094082, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+   });
+</script>
+<noscript><div><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://mc.yandex.ru/watch/68094082" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="icon" href="https://www.easycassa.it/wp-content/uploads/2019/09/favicon.ico" sizes="32x32" />
+<link rel="icon" href="https://www.easycassa.it/wp-content/uploads/2019/09/favicon.ico" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://www.easycassa.it/wp-content/uploads/2019/09/favicon.ico" />
+<meta name="msapplication-TileImage" content="https://www.easycassa.it/wp-content/uploads/2019/09/favicon.ico" />
+<style id="et-divi-customizer-global-cached-inline-styles">.nav li ul{border-color:#d7167f}#top-menu li a{font-size:15px}body.et_vertical_nav .container.et_search_form_container .et-search-form input{font-size:15px!important}#top-menu li a,.et_search_form_container input{font-weight:bold;font-style:normal;text-transform:uppercase;text-decoration:none}.et_search_form_container input::-moz-placeholder{font-weight:bold;font-style:normal;text-transform:uppercase;text-decoration:none}.et_search_form_container input::-webkit-input-placeholder{font-weight:bold;font-style:normal;text-transform:uppercase;text-decoration:none}.et_search_form_container input:-ms-input-placeholder{font-weight:bold;font-style:normal;text-transform:uppercase;text-decoration:none}#top-menu li.current-menu-ancestor>a,#top-menu li.current-menu-item>a,.et_color_scheme_red #top-menu li.current-menu-ancestor>a,.et_color_scheme_red #top-menu li.current-menu-item>a,.et_color_scheme_pink #top-menu li.current-menu-ancestor>a,.et_color_scheme_pink #top-menu li.current-menu-item>a,.et_color_scheme_orange #top-menu li.current-menu-ancestor>a,.et_color_scheme_orange #top-menu li.current-menu-item>a,.et_color_scheme_green #top-menu li.current-menu-ancestor>a,.et_color_scheme_green #top-menu li.current-menu-item>a{color:#d7167f}#footer-widgets .footer-widget a,#footer-widgets .footer-widget li a,#footer-widgets .footer-widget li a:hover{color:#ffffff}.footer-widget{color:#ffffff}.bottom-nav,.bottom-nav a{font-size:13px}.et_slide_in_menu_container,.et_slide_in_menu_container .et-search-field{letter-spacing:px}.et_slide_in_menu_container .et-search-field::-moz-placeholder{letter-spacing:px}.et_slide_in_menu_container .et-search-field::-webkit-input-placeholder{letter-spacing:px}.et_slide_in_menu_container .et-search-field:-ms-input-placeholder{letter-spacing:px}@media only screen and (min-width:981px){.et_header_style_left #et-top-navigation,.et_header_style_split #et-top-navigation{padding:15px 0 0 0}.et_header_style_left #et-top-navigation nav>ul>li>a,.et_header_style_split #et-top-navigation nav>ul>li>a{padding-bottom:15px}.et_header_style_split .centered-inline-logo-wrap{width:30px;margin:-30px 0}.et_header_style_split .centered-inline-logo-wrap #logo{max-height:30px}.et_pb_svg_logo.et_header_style_split .centered-inline-logo-wrap #logo{height:30px}.et_header_style_centered #top-menu>li>a{padding-bottom:5px}.et_header_style_slide #et-top-navigation,.et_header_style_fullscreen #et-top-navigation{padding:6px 0 6px 0!important}.et_header_style_centered #main-header .logo_container{height:30px}.et-fixed-header #top-menu li.current-menu-ancestor>a,.et-fixed-header #top-menu li.current-menu-item>a{color:#d7167f!important}}@media only screen and (min-width:1350px){.et_pb_row{padding:27px 0}.et_pb_section{padding:54px 0}.single.et_pb_pagebuilder_layout.et_full_width_page .et_post_meta_wrapper{padding-top:81px}.et_pb_fullwidth_section{padding:0}}	h1,h2,h3,h4,h5,h6{font-family:'Roboto',Helvetica,Arial,Lucida,sans-serif}body,input,textarea,select{font-family:'Roboto',Helvetica,Arial,Lucida,sans-serif}.siq-powered-by a{visibility:hidden}.siq-powered-by a:after{content:""}a:link{color:#d81983;text-decoration:none}a:hover{color:#d81983;text-decoration:none!important}a:visited{color:#d81983;text-decoration:underline}#link-header a:link{color:#4F4F4f;font-weight:300;line-height:28px;font-size:18px;text-decoration:none}#link-header a:hover{color:#d81983!important;font-weight:300;line-height:28px;font-size:18px;text-decoration:underline!important}#link-header a:visited{color:#4F4F4f;font-weight:300;line-height:28px;font-size:18px;text-decoration:none}#link-footer a:link{color:#e2e3e7;text-decoration:none}#link-footer a:hover{color:#d81983!important;text-decoration:underline!important}#link-footer a:visited{color:#e2e3e7;text-decoration:none}.blog-a-decoration:link{color:#d81983;text-decoration:underline}.blog-a-decoration:hover{color:#e2e3e7;text-decoration:none}.blog-a-decoration:visited{color:#d81983;text-decoration:underline}a:not(.et_pb_button):hover{color:#d81983;text-decoration:underline}.copybase{font-weight:300;color:#4F4F4f;line-height:28px;font-size:18px}.breadcrumb-pagine-interne{font-weight:500;color:#D81983;line-height:28px;font-size:18px}span.mobile_menu_bar:before{color:#4f4f4f!important}.et_mobile_menu{border-top:1px solid #4f4f4f}@media (max-width:980px){.et_header_style_left #et-top-navigation{padding-top:10px}.et_header_style_left .mobile_menu_bar{padding-bottom:10px}}#main-header{box-shadow:none!important}@media screen and (max-width:980px){#et_mobile_nav_menu ul#mobile_menu{padding:0px}#et_mobile_nav_menu ul#mobile_menu li a{padding-left:30px}#et_mobile_nav_menu ul#mobile_menu .cta-button{border-radius:0px}}.underlined_on_hover .et_pb_button:hover{text-decoration:underline!important}.tab_cambiocolori ul.et_pb_tabs_controls{background-color:transparent}.tab_cambiocolori .et_pb_tabs_controls li{border-right:none!important}.tab_cambiocolori ul.et_pb_tabs_controls:after{border-top:0px solid black;z-index:99}.tab_cambiocolori .et_pb_tabs_controls li.et_pb_tab_active{border-bottom:3px solid #d81889;background-color:#fcfcfc}.tab_cambiocolori .et_pb_tabs_controls li{border-bottom:1px solid grey}@media only screen and (min-width:960px){.equaltestimonials .et_pb_testimonial{min-height:350px}}@media (min-width:981px){.home #page-container{padding-top:0!important}.home #main-header:not(.et-fixed-header){background-color:transparent!important;box-shadow:none!important}.home #main-header:not(.et-fixed-header) #top-menu a{color:white}.home #top-menu li.current-menu-item>a{color:#d7167f!important}}#tab-faq .et_pb_tabs_controls li{width:33.333333%;text-align:center}@media (max-width:768px){#tab-faq .et_pb_tabs_controls li{width:100%;text-align:center}}.et_pb_toggle_open .et_pb_toggle_title:before{transform:rotate(180deg)!important}sup{font-size:130%;top:-8px}.et_pb_contact_field select option:first-of-type{display:none}.custom-blog .post-content-inner{min-height:180px}.custom-blog .post-content a.more-link{color:#ffffff!important;border-width:0px!important;border-color:#007a8a;border-radius:100px;letter-spacing:0px;font-size:14px;font-family:'Roboto',Helvetica,Arial,Lucida,sans-serif!important;font-weight:700!important;text-transform:uppercase!important;background-color:#007a8a;padding-top:8px!important;padding-right:28px!important;padding-bottom:8px!important;padding-left:28px!important;text-decoration:none}.custom-blog .post-content a.more-link:hover{border-color:#d81983!important;background-color:#d81983!important;color:#ffffff!important}body .custom-blog .post-content a.more-link{color:#ffffff!important;text-decoration:none!important}.single h1.entry-title{color:#4f4f4f}.custom-blog .et_pb_blog_grid .et_pb_post{min-height:565px}#content-area #sidebar .et_pb_widget ul li:before{content:'- ';color:#d81983;font-size:22px;position:relative;top:2px}.category #content-area article{font-weight:300;color:#4F4F4f;line-height:28px}.category #content-area article p{font-weight:initial}#footer-bottom{display:none}#top-menu{text-transform:uppercase}.epkb-section-body{font-size:16px!important;color:#4f4f4f!important;line-height:1.7em!important}.epkb-cat-name{font-weight:700!important}.epkb-top-category-box{box-shadow:0px 10px 10px #eeeeee!important}</style></head>
+<body class="home page-template-default page page-id-23 et_pb_button_helper_class et_fixed_nav et_show_nav et_primary_nav_dropdown_animation_fade et_secondary_nav_dropdown_animation_fade et_header_style_left et_pb_footer_columns4 et_cover_background et_pb_gutter osx et_pb_gutters3 et_pb_pagebuilder_layout et_smooth_scroll et_no_sidebar et_divi_theme et-db et_minified_js et_minified_css">
+	<div id="page-container">
+
+	
+	
+			<header id="main-header" data-height-onload="30">
+			<div class="container clearfix et_menu_container">
+							<div class="logo_container">
+					<span class="logo_helper"></span>
+					<a href="https://www.easycassa.it/">
+						<img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/08/EasyCassa_positivo_230.png" alt="EasyCassa" id="logo" data-height-percentage="54" />
+					</a>
+				</div>
+							<div id="et-top-navigation" data-height="30" data-fixed-height="40">
+											<nav id="top-menu-nav">
+						<ul id="top-menu" class="nav"><li id="menu-item-86" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-23 current_page_item menu-item-86"><a href="https://www.easycassa.it/" aria-current="page">Home</a></li>
+<li id="menu-item-85" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-85"><a href="https://www.easycassa.it/costo-registratore-cassa/">Quanto Costa</a></li>
+<li id="menu-item-119" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-119"><a href="https://www.easycassa.it/faq/">FAQ</a></li>
+<li id="menu-item-5458" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5458"><a href="https://www.easycassa.it/supporto/">Supporto</a></li>
+<li id="menu-item-157" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-157"><a href="https://www.easycassa.it/blog/">Blog</a></li>
+<li id="menu-item-517" class="cta-button menu-item menu-item-type-custom menu-item-object-custom menu-item-517"><a target="_blank" rel="noopener noreferrer" href="https://web.easycassa.it">Accedi al Cloud</a></li>
+</ul>						</nav>
+					
+					
+					
+					
+					<div id="et_mobile_nav_menu">
+				<div class="mobile_nav closed">
+					<span class="select_page">Seleziona una pagina</span>
+					<span class="mobile_menu_bar mobile_menu_bar_toggle"></span>
+				</div>
+			</div>				</div> <!-- #et-top-navigation -->
+			</div> <!-- .container -->
+			<div class="et_search_outer">
+				<div class="container et_search_form_container">
+					<form role="search" method="get" class="et-search-form" action="https://www.easycassa.it/">
+					<input type="search" class="et-search-field" placeholder="Cerca &hellip;" value="" name="s" title="Cerca:" />					</form>
+					<span class="et_close_search_field"></span>
+				</div>
+			</div>
+		</header> <!-- #main-header -->
+			<div id="et-main-area">
+	
+<div id="main-content">
+
+
+			
+				<article id="post-23" class="post-23 page type-page status-publish hentry">
+
+				
+					<div class="entry-content">
+					<div id="et-boc" class="et-boc">
+			
+		<div class="et-l et-l--post">
+			<div class="et_builder_inner_content et_pb_gutters3">
+		<div class="et_pb_section et_pb_section_7 et_animated et_pb_with_background et_section_regular" >
+				
+				
+				
+				
+					<div class="et_pb_row et_pb_row_16 et_animated">
+				<div class="et_pb_column et_pb_column_2_5 et_pb_column_29  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_32  et_pb_text_align_left et_pb_text_align_center-tablet et_pb_bg_layout_dark">
+				
+				
+				<div class="et_pb_text_inner"><h1 style="font-weight:600">IL REGISTRATORE TELEMATICO PIÙ <br /><span style="font-size:112px; font-weight:500; line-height:1em; color:#D81984">EASY</span></h1></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_text et_pb_text_33 copybase  et_pb_text_align_left et_pb_text_align_center-tablet et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner" data-et-multi-view="{&quot;schema&quot;:{&quot;content&quot;:{&quot;desktop&quot;:&quot;&lt;span style=\&quot;font-weight:500\&quot;&gt;Facile, comodo, sempre aggiornato.&lt;br \/&gt;\nEasyCassa \u00e8 il sistema di cassa &#8220;all-in-one&#8221;&lt;br \/&gt;\n che ti d\u00e0 tutto con un unico abbonamento.&lt;\/span&gt;&quot;,&quot;tablet&quot;:&quot;&quot;,&quot;phone&quot;:&quot;&lt;span style=\&quot;font-weight:500\&quot;&gt;Facile, intuitivo, elegante.&lt;br \/&gt;\nEd \u00e8 tutto incluso da subito:&lt;br \/&gt;\nhardware, software e servizi.&lt;\/span&gt;&lt;br \/&gt;\n&quot;}},&quot;slug&quot;:&quot;et_pb_text&quot;}" data-et-multi-view-load-tablet-hidden="true" data-et-multi-view-load-phone-hidden="true"><span style="font-weight:500">Facile, comodo, sempre aggiornato.<br />
+EasyCassa è il sistema di cassa &#8220;all-in-one&#8221;<br />
+ che ti dà tutto con un unico abbonamento.</span></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_button_module_wrapper et_pb_button_5_wrapper et_pb_button_alignment_left et_pb_button_alignment_tablet_center et_pb_button_alignment_phone_center et_pb_module ">
+				<a class="et_pb_button et_pb_button_5 et_animated et_pb_bg_layout_light" href="/costo-registratore-cassa/">Scopri di più</a>
+			</div>
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_3_5 et_pb_column_30  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_15">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2020/11/EasyCassa-il-registratore-di-cassa-telematico-in-abbonamento.png" alt="EasyCassa il registratore di cassa telematico in abbonamento" title="EasyCassa il registratore di cassa telematico in abbonamento" data-srcset="https://www.easycassa.it/wp-content/uploads/2020/11/EasyCassa-il-registratore-di-cassa-telematico-in-abbonamento.png 700w, https://www.easycassa.it/wp-content/uploads/2020/11/EasyCassa-il-registratore-di-cassa-telematico-in-abbonamento-480x371.png 480w" data-sizes="(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) 700px, 100vw" /></span>
+			</div>
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row -->
+				
+				
+			</div> <!-- .et_pb_section --><div class="et_pb_section et_pb_section_8 et_section_regular" >
+				
+				
+				
+				
+					<div id="pensiamonoiatutto" class="et_pb_row et_pb_row_17">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_31  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_34  et_pb_text_align_left et_pb_text_align_center-tablet et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="color: #df168a; line-height:1.3em"><strong>TUTTO CON UN COMODO ABBONAMENTO</strong></span></h2></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_text et_pb_text_35 copybase  et_pb_text_align_left et_pb_text_align_center-tablet et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p>EasyCassa è il sistema di cassa più conveniente. Sottoscrivi un unico <a href="/costo-registratore-cassa/">abbonamento</a> per avere tutto quello che serve alla tua attività.</p></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --><div class="et_pb_row et_pb_row_18 et_pb_equal_columns">
+				<div class="et_pb_with_border et_pb_column_1_4 et_pb_column et_pb_column_32 et_animated  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_16">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/09/hardware.png" alt="" title="" data-srcset="https://www.easycassa.it/wp-content/uploads/2019/09/hardware.png 200w, https://www.easycassa.it/wp-content/uploads/2019/09/hardware-150x150.png 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_text et_pb_text_36  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h3 style="font-size:18px; color:#4e4e4e; line-height:1.5em"><strong>DISPOSITIVI DI CASSA</strong></h3></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_text et_pb_text_37  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p style="font-weight: 400;">Ti diamo i migliori dispositivi in comodato d&#8217;uso, sempre coperti da garanzia.</p></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column --><div class="et_pb_with_border et_pb_column_1_4 et_pb_column et_pb_column_33 et_animated  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_17">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/09/cloud.png" alt="" title="" data-srcset="https://www.easycassa.it/wp-content/uploads/2019/09/cloud.png 200w, https://www.easycassa.it/wp-content/uploads/2019/09/cloud-150x150.png 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_text et_pb_text_38  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h3 style="font-size: 18px; color: #4e4e4e; line-height: 1.5em;"><strong>CASSA, PORTALE CLOUD E APP</strong></h3></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_text et_pb_text_39  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p style="font-weight: 400;">Non solo hai un software di cassa innovativo, ma anche un portale Cloud e una App. Tutto sempre aggiornato.</p></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column --><div class="et_pb_with_border et_pb_column_1_4 et_pb_column et_pb_column_34 et_animated  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_18">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/09/assistenza.png" alt="" title="" data-srcset="https://www.easycassa.it/wp-content/uploads/2019/09/assistenza.png 200w, https://www.easycassa.it/wp-content/uploads/2019/09/assistenza-150x150.png 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_text et_pb_text_40  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h3 style="font-size:18px; color:#4e4e4e; line-height:1.5em"><strong>GARANZIA E ASSISTENZA</strong></h3></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_text et_pb_text_41  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p style="font-weight: 400;">L&#8217;assistenza tecnica è compresa nell&#8217;abbonamento, con numero verde dedicato e uscite del tecnico incluse.</p></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column --><div class="et_pb_with_border et_pb_column_1_4 et_pb_column et_pb_column_35 et_animated  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_19">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/11/fatturazione-attiva-1.png" alt="Fatturazione elettronica" title="fatturazione elettronica" data-srcset="https://www.easycassa.it/wp-content/uploads/2019/11/fatturazione-attiva-1.png 200w, https://www.easycassa.it/wp-content/uploads/2019/11/fatturazione-attiva-1-150x150.png 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_text et_pb_text_42  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h3 style="font-size: 18px; color: #4e4e4e; line-height: 1.5em;"><strong>FATTURAZIONE ELETTRONICA</strong></h3></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_text et_pb_text_43  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p style="font-weight: 400;">La fatturazione attiva e passiva è inclusa nell&#8217;abbonamento senza alcuna limitazione!</p></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --><div id="nonsolocassamaanchecloud" class="et_pb_row et_pb_row_19">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_36  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_44  et_pb_text_align_left et_pb_text_align_center-phone et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="color: #df168a; line-height: 1.3em;"><strong>MOLTO PIÙ DI UN SEMPLICE PUNTO CASSA</strong></span></h2></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_text et_pb_text_45 copybase  et_pb_text_align_left et_pb_text_align_center-phone et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p>Con l&#8217;<a href="/costo-registratore-cassa/">abbonamento EasyCassa</a> non porti soltanto un registratore di cassa nel tuo locale, ma avrai anche a tua disposizione il portale Cloud e l&#8217;app EasyCassa Go!</p></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --><div class="et_pb_row et_pb_row_20">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_37  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_tabs et_pb_tabs_1 tab_cambiocolori " >
+				
+				
+				<ul class="et_pb_tabs_controls clearfix">
+					<li class="et_pb_tab_3 et_pb_tab_active"><a href="#">LA Cassa</a></li><li class="et_pb_tab_4"><a href="#">IL Cloud</a></li><li class="et_pb_tab_5"><a href="#">LA App</a></li>
+				</ul>
+				<div class="et_pb_all_tabs">
+					<div class="et_pb_tab et_pb_tab_3 clearfix et_pb_active_content">
+				
+				
+				<div class="et_pb_tab_content"><div class="et_pb_row et_pb_row_21">
+				<div class="et_pb_column et_pb_column_1_2 et_pb_column_38  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_46 copybase  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><ul style="list-style-image: url(https://www.easycassa.it/wp-content/uploads/2020/01/EasyCassa_wallet_bulletpoint.png); position: relative; left:10px">
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Gestisci tavoli, sale, coperti e comande</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Personalizza la schermata di vendita</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Emetti fatture elettroniche da cassa come se fossero scontrini</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Registra le anagrafiche dei tuoi clienti velocemente</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">EasyCassa è pronta per Lotteria degli Scontrini!</span></li>
+</ul></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_button_module_wrapper et_pb_button_6_wrapper et_pb_button_alignment_tablet_center et_pb_button_alignment_phone_center et_pb_module ">
+				<a class="et_pb_button et_pb_button_6 et_pb_bg_layout_dark" href="/software-gestionale-cassa/">Scopri il software</a>
+			</div>
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_2 et_pb_column_39  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_20 et_pb_image_sticky">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/09/Terminale-EasyCassa-frontale.jpg" alt="Terminale EasyCassa frontale" title="Terminale EasyCassa frontale" data-srcset="https://www.easycassa.it/wp-content/uploads/2019/09/Terminale-EasyCassa-frontale.jpg 600w, https://www.easycassa.it/wp-content/uploads/2019/09/Terminale-EasyCassa-frontale-480x456.jpg 480w" data-sizes="(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) 600px, 100vw" /></span>
+			</div>
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --></div>
+			</div> <!-- .et_pb_tab --><div class="et_pb_tab et_pb_tab_4 clearfix">
+				
+				
+				<div class="et_pb_tab_content"><div class="et_pb_row et_pb_row_22">
+				<div class="et_pb_column et_pb_column_1_2 et_pb_column_40  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_47 copybase  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><ul style="list-style-image: url(https://www.easycassa.it/wp-content/uploads/2020/01/EasyCassa_wallet_bulletpoint.png); position: relative; left:10px">
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Statistiche di vendita per data, categoria e prodotto</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Gestisci la fatturazione elettronica attiva e passiva</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Codice Destinatario dedicato EasyCassa</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Esporta un riepilogo o le singole fatture in XML o PDF</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Emetti note di credito semplicemente</span></li>
+</ul></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_button_module_wrapper et_pb_button_7_wrapper et_pb_button_alignment_tablet_center et_pb_module ">
+				<a class="et_pb_button et_pb_button_7 et_pb_bg_layout_dark" href="/cassa-cloud/">Scopri il Cloud</a>
+			</div>
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_2 et_pb_column_41  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_21">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/09/EasyCassa-Cloud-3.jpg" alt="" title="" data-srcset="https://www.easycassa.it/wp-content/uploads/2019/09/EasyCassa-Cloud-3.jpg 1126w, https://www.easycassa.it/wp-content/uploads/2019/09/EasyCassa-Cloud-3-980x842.jpg 980w, https://www.easycassa.it/wp-content/uploads/2019/09/EasyCassa-Cloud-3-480x412.jpg 480w" data-sizes="(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) and (max-width: 980px) 980px, (min-width: 981px) 1126px, 100vw" /></span>
+			</div>
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --></div>
+			</div> <!-- .et_pb_tab --><div class="et_pb_tab et_pb_tab_5 clearfix">
+				
+				
+				<div class="et_pb_tab_content"><div class="et_pb_row et_pb_row_23">
+				<div class="et_pb_column et_pb_column_1_2 et_pb_column_42  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_48 copybase  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><ul style="list-style-image: url(https://www.easycassa.it/wp-content/uploads/2020/01/EasyCassa_wallet_bulletpoint.png); position: relative; left:10px">
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Installala su qualsiasi smartphone Android</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Prendi gli ordini dei clienti direttamente al tavolo</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Gestisci tavoli, sale e coperti</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Invia gli ordini alle stampanti comande</span></li>
+<li><span style="position: relative; top:-5px; left:10px; line-height: 1.8em">Prendi nota di variazioni, allergie e preferenze</span></li>
+</ul></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_button_module_wrapper et_pb_button_8_wrapper et_pb_button_alignment_tablet_center et_pb_module ">
+				<a class="et_pb_button et_pb_button_8 et_pb_bg_layout_dark" href="/easycassa-go-app-comande-ordini/">Scopri l&#039;app</a>
+			</div>
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_2 et_pb_column_43  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_22">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2020/07/App-EasyCassa-Go-Home-Page.jpg" alt="App EasyCassa Go" title="App EasyCassa Go Home Page" data-srcset="https://www.easycassa.it/wp-content/uploads/2020/07/App-EasyCassa-Go-Home-Page.jpg 1126w, https://www.easycassa.it/wp-content/uploads/2020/07/App-EasyCassa-Go-Home-Page-980x842.jpg 980w, https://www.easycassa.it/wp-content/uploads/2020/07/App-EasyCassa-Go-Home-Page-480x412.jpg 480w" data-sizes="(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) and (max-width: 980px) 980px, (min-width: 981px) 1126px, 100vw" /></span>
+			</div>
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --></div>
+			</div> <!-- .et_pb_tab -->
+				</div> <!-- .et_pb_all_tabs -->
+			</div> <!-- .et_pb_tabs -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --><div id="unpuntocassacompleto" class="et_pb_row et_pb_row_24">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_44  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_49  et_pb_text_align_left et_pb_text_align_center-phone et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="color: #df168a;line-height:1.3em"><strong>LA MIGLIORE TECNOLOGIA AL TUO SERVIZIO</strong></span></h2></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_text et_pb_text_50 copybase  et_pb_text_align_left et_pb_text_align_center-phone et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p>Con l&#8217;<a href="/costo-registratore-cassa/">abbonamento EasyCassa</a> ti diamo in comodato d&#8217;uso la migliore selezione di dispositivi, sempre coperti da garanzia e assistenza.</p></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --><div class="et_pb_row et_pb_row_25 et_pb_equal_columns">
+				<div class="et_pb_column et_pb_column_1_4 et_pb_column_45 et_animated  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_23">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2020/11/Terminale-di-cassa-EasyCassa.jpg" alt="Terminale di cassa EasyCassa" title="Terminale di cassa EasyCassa" data-srcset="https://www.easycassa.it/wp-content/uploads/2020/11/Terminale-di-cassa-EasyCassa.jpg 200w, https://www.easycassa.it/wp-content/uploads/2020/11/Terminale-di-cassa-EasyCassa-150x150.jpg 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_text et_pb_text_51  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h3 style="text-align: center; font-size:16px; font-weight:600; color:#4e4e4e;">TERMINALE DI CASSA</h3>
+<p><span style="font-weight:400;">15,6 pollici di pura eleganza touch per un utilizzo intuitivo e rapido.</span></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_4 et_pb_column_46 et_animated  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_24">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2020/11/Stampante-fiscale-EasyCassa-1.jpg" alt="Stampante fiscale EasyCassa" title="Stampante fiscale EasyCassa" data-srcset="https://www.easycassa.it/wp-content/uploads/2020/11/Stampante-fiscale-EasyCassa-1.jpg 200w, https://www.easycassa.it/wp-content/uploads/2020/11/Stampante-fiscale-EasyCassa-1-150x150.jpg 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_text et_pb_text_52  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h3 style="text-align: center; font-size:16px; font-weight:600; color:#4e4e4e;">STAMPANTE FISCALE</h3>
+<p><span style="font-weight:400;">Veloce, compatta e abilitata alla trasmissione telematica dei corrispettivi.<span></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_4 et_pb_column_47 et_animated  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_25">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2020/11/Lettore-di-codici-a-barre-EasyCassa.jpg" alt="Lettore di codici a barre EasyCassa" title="Lettore di codici a barre EasyCassa" data-srcset="https://www.easycassa.it/wp-content/uploads/2020/11/Lettore-di-codici-a-barre-EasyCassa.jpg 200w, https://www.easycassa.it/wp-content/uploads/2020/11/Lettore-di-codici-a-barre-EasyCassa-150x150.jpg 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_text et_pb_text_53  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h3 style="text-align: center; font-size:16px; font-weight:600; color:#4e4e4e;">LETTORE DI BARCODE</h3>
+<p> <span style="font-weight: 400;">Usalo per caricare i prodotti o per registrare i clienti per la fatturazione o la lotteria degli scontrini.</span></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_4 et_pb_column_48 et_animated  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_26">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2020/11/Tastiera-qwerty-EasyCassa.jpg" alt="" title="Tastiera qwerty EasyCassa" data-srcset="https://www.easycassa.it/wp-content/uploads/2020/11/Tastiera-qwerty-EasyCassa.jpg 200w, https://www.easycassa.it/wp-content/uploads/2020/11/Tastiera-qwerty-EasyCassa-150x150.jpg 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_text et_pb_text_54  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h3 style="text-align: center; font-size:16px; font-weight:600; color:#4e4e4e;">TASTIERA QWERTY</h3>
+<p><span style="font-weight:400;">Aggiungi velocemente il tuo listino prodotti e le anagrafiche dei tuoi clienti.</span></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --><div class="et_pb_row et_pb_row_26 et_pb_equal_columns">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_49  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_55  et_pb_text_align_left et_pb_text_align_center-phone et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="color: #df168a; line-height: 1.3em;"><strong>DOMANDE E RISPOSTE</strong></span></h2></div>
+			</div> <!-- .et_pb_text --><div id="tab-faq" class="et_pb_module et_pb_accordion et_pb_accordion_1 copybase tab_cambiocolori">
+				
+				
+				<div class="et_pb_toggle et_pb_module et_pb_accordion_item et_pb_accordion_item_4  et_pb_toggle_open">
+				
+				
+				<h5 class="et_pb_toggle_title">Che cos&#039;è EasyCassa?</h5>
+				<div class="et_pb_toggle_content clearfix">EasyCassa è l&#8217;innovativo sistema di cassa telematico fornito con un abbonamento &#8220;tutto incluso&#8221;.</div> <!-- .et_pb_toggle_content -->
+			</div> <!-- .et_pb_toggle --><div class="et_pb_toggle et_pb_module et_pb_accordion_item et_pb_accordion_item_5  et_pb_toggle_close">
+				
+				
+				<h5 class="et_pb_toggle_title">EasyCassa è diversa dalle altre casse?</h5>
+				<div class="et_pb_toggle_content clearfix">EasyCassa è l&#8217;unico sistema di cassa che viene fornito come i servizi di streaming di audio e video a cui sei abituato: sottoscrivi l&#8217;abbonamento e hai tutto, compresi gli aggiornamenti futuri!</div> <!-- .et_pb_toggle_content -->
+			</div> <!-- .et_pb_toggle --><div class="et_pb_toggle et_pb_module et_pb_accordion_item et_pb_accordion_item_6  et_pb_toggle_close">
+				
+				
+				<h5 class="et_pb_toggle_title">Cosa è incluso nell&#039;abbonamento EasyCassa?</h5>
+				<div class="et_pb_toggle_content clearfix">Terminale di cassa e dispositivi in comodato d&#8217;uso, software di cassa evoluto, portale Cloud EasyCassa per analisi, fatturazione elettronica illimitata, App mobile EasyCassa Go, assistenza tecnica con numero verde dedicato e eventuali uscite del tecnico incluse, installazione, formazione, verifiche periodiche.</div> <!-- .et_pb_toggle_content -->
+			</div> <!-- .et_pb_toggle --><div class="et_pb_toggle et_pb_module et_pb_accordion_item et_pb_accordion_item_7  et_pb_toggle_close">
+				
+				
+				<h5 class="et_pb_toggle_title">Quanto costa l&#039;abbonamento?</h5>
+				<div class="et_pb_toggle_content clearfix">Scopri i costi dell&#8217;abbonamento EasyCassa <a href="/costo-registratore-cassa/">qui</a>.</div> <!-- .et_pb_toggle_content -->
+			</div> <!-- .et_pb_toggle -->
+			</div> <!-- .et_pb_accordion -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row -->
+				
+				
+			</div> <!-- .et_pb_section --><div class="et_pb_section et_pb_section_12 et_pb_with_background et_section_regular" >
+				
+				
+				
+				
+					<div class="et_pb_row et_pb_row_27">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_50  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_56  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2>QUANTO VIENE GIÀ USATA EASYCASSA?</h2></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_text et_pb_text_57 copybase  et_pb_text_align_left et_pb_text_align_center-tablet et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner">Oltre 7.800 punti vendita in Italia stanno già usando EasyCassa. Guarda con i tuoi occhi alcuni numeri (aggiornati ogni 24 ore - Ultimo aggiornamento: 21 Dicembre 2020).</div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --><div class="et_pb_row et_pb_row_28 et_pb_equal_columns">
+				<div class="et_pb_column et_pb_column_1_3 et_pb_column_51  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_27">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/11/magazzino-1.png" alt="Prodotti venduti con EasyCassa" title="" data-srcset="https://www.easycassa.it/wp-content/uploads/2019/11/magazzino-1.png 200w, https://www.easycassa.it/wp-content/uploads/2019/11/magazzino-1-150x150.png 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_code et_pb_code_5">
+				
+				
+				<div class="et_pb_code_inner"><div class="et_pb_module et_pb_number_counter et_pb_number_counter_3  et_pb_text_align_center et_pb_bg_layout_dark et_pb_with_title" data-number-value="238.154.339" data-number-separator="">
+				
+				
+				<div class="percent"  style="color:#4f4f4f"><p><span class="percent-value"></span><span class="percent-sign"></span></p></div>
+				<h3 class="title">PRODOTTI VENDUTI CON EASYCASSA</h3>
+			</div><!-- .et_pb_number_counter --></div>
+			</div> <!-- .et_pb_code --><div class="et_pb_module et_pb_text et_pb_text_58  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p style="font-weight: 300; text-align: center;">Con EasyCassa i nostri clienti stanno vendendo milioni di prodotti in tutta Italia.</p></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_3 et_pb_column_52  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_28">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/11/fatture-come-scontrini.png" alt="Scontrini emessi con EasyCassa" title="fatture-come-scontrini" data-srcset="https://www.easycassa.it/wp-content/uploads/2019/11/fatture-come-scontrini.png 200w, https://www.easycassa.it/wp-content/uploads/2019/11/fatture-come-scontrini-150x150.png 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_code et_pb_code_6  et_pb_text_align_left">
+				
+				
+				<div class="et_pb_code_inner"><div class="et_pb_module et_pb_number_counter et_pb_number_counter_4  et_pb_text_align_center et_pb_bg_layout_dark et_pb_with_title" data-number-value="154.759.977" data-number-separator="">
+				
+				
+				<div class="percent"  style="color:#d81984"><p><span class="percent-value"></span><span class="percent-sign"></span></p></div>
+				<h3 class="title">SCONTRINI EMESSI</h3>
+			</div><!-- .et_pb_number_counter -->
+<style>
+  .percent-value{
+    font-size:42px;
+    font-weight:500;
+  }
+</style></div>
+			</div> <!-- .et_pb_code --><div class="et_pb_module et_pb_text et_pb_text_59  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p style="font-weight: 300; text-align: center;">Quanti scontrini sono stati emessi in Italia con EasyCassa? Diversi milioni!</p></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_3 et_pb_column_53  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_29">
+				
+				
+				<span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/11/fatturazione-attiva.png" alt="Fatture emesse con EasyCassa" title="fatturazione-attiva" data-srcset="https://www.easycassa.it/wp-content/uploads/2019/11/fatturazione-attiva.png 200w, https://www.easycassa.it/wp-content/uploads/2019/11/fatturazione-attiva-150x150.png 150w" data-sizes="(max-width: 200px) 100vw, 200px" /></span>
+			</div><div class="et_pb_module et_pb_code et_pb_code_7">
+				
+				
+				<div class="et_pb_code_inner"><div class="et_pb_module et_pb_number_counter et_pb_number_counter_5  et_pb_text_align_center et_pb_bg_layout_dark et_pb_with_title" data-number-value="94.223" data-number-separator="">
+				
+				
+				<div class="percent"  style="color:#007a8a"><p><span class="percent-value"></span><span class="percent-sign"></span></p></div>
+				<h3 class="title">FATTURE GESTITE</h3>
+			</div><!-- .et_pb_number_counter --></div>
+			</div> <!-- .et_pb_code --><div class="et_pb_module et_pb_text et_pb_text_60  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p style="font-weight: 300; text-align: center;">Con EasyCassa i nostri clienti stanno emettendo e ricevendo fatture elettroniche!</p></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row -->
+				
+				
+			</div> <!-- .et_pb_section --><div class="et_pb_section et_pb_section_13 et_section_regular" >
+				
+				
+				
+				
+					<div class="et_pb_row et_pb_row_29 et_pb_equal_columns">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_54  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_61  et_pb_text_align_left et_pb_text_align_center-phone et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="color: #df168a; line-height: 1.3em;"><strong>UN VIDEO PER SCOPRIRE EASYCASSA</strong></span></h2></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --><div id="unpuntocassacompleto" class="et_pb_row et_pb_row_30">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_55  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_video et_pb_video_1">
+				
+				
+				<div class="et_pb_video_box"><iframe title="EasyCassa - La soluzione di cassa All in One per il vostro Punto Vendita" width="1080" height="608" src="https://www.youtube.com/embed/iQmCJaiLnPc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+				<div data-bg="url(https://www.easycassa.it/wp-content/uploads/2020/10/anteprima-video-EasyCassa.jpg)" class="et_pb_video_overlay lazy"><div class="et_pb_video_overlay_hover"><a href="#" class="et_pb_video_play"></a></div></div>
+			</div>
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row --><div class="et_pb_row et_pb_row_31">
+				<div class="et_pb_column et_pb_column_2_3 et_pb_column_56  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_62  et_pb_text_align_left et_pb_text_align_center-phone et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="color: #df168a; line-height: 1.3em;"><strong>UNISCITI ALLE 7.800 ATTIVITÀ CHE STANNO GIÀ USANDO EASYCASSA</strong></span></h2></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_text et_pb_text_63 copybase  et_pb_text_align_left et_pb_text_align_center-tablet et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p>Scopri subito perché l&#8217;abbonamento EasyCassa è un&#8217;offerta unica!</p></div>
+			</div> <!-- .et_pb_text --><div class="et_pb_module et_pb_countdown_timer et_pb_countdown_timer_1 copybase et_pb_bg_layout_dark" data-end-timestamp="1609459140">
+				
+				
+				<div class="et_pb_countdown_timer_container clearfix">
+					<h4 class="title">In promozione fino al 31/12/2020!</h4>
+					<div class="days section values" data-short="Giorno" data-full="Giorno(s)">
+						<p class="value"></p>
+						<p class="label">Giorno(s)</p>
+					</div><div class="sep section">
+						<p>:</p>
+					</div><div class="hours section values" data-short="H" data-full="Ore(s)">
+						<p class="value"></p>
+						<p class="label">Ore(s)</p>
+					</div><div class="sep section">
+						<p>:</p>
+					</div><div class="minutes section values" data-short="Min." data-full="Minuto(i)">
+						<p class="value"></p>
+						<p class="label">Minuto(i)</p>
+					</div><div class="sep section">
+						<p>:</p>
+					</div><div class="seconds section values" data-short="Sec." data-full="Second(s)">
+						<p class="value"></p>
+						<p class="label">Second(s)</p>
+					</div>
+				</div>
+			</div><div class="et_pb_module et_pb_code et_pb_code_8">
+				
+				
+				<div class="et_pb_code_inner"><script>
+jQuery(function($){
+	
+	var olddays = $('.et_pb_countdown_timer .days .value');
+	
+	// Clone the days and hide the original. 
+	// - Wraps new days element in a span to prevent Divi from updating it
+	olddays.each(function(){
+		var oldday = $(this);
+		oldday.after(oldday.clone());
+		oldday.next().wrap('<span></span>');
+	}).hide();
+	
+	// Update the clone each second, removing the trailing zero
+	(function update_days() {
+		olddays.each(function(){
+			var oldday = $(this);
+			var days = oldday.html();
+			if (days.substr(0,1) == '0') { days = days.slice(1); }
+			oldday.next().find('.value').html(days);
+		});
+		setTimeout(function(){ update_days(); }, 1000);
+	})()
+
+});
+</script>
+
+<script>
+jQuery(function($){
+	
+	setTimeout(function(){
+	
+		// Get the timers
+		var timers = $('.et_pb_countdown_timer');
+		
+		timers.each(function(){
+			
+			var timer = $(this);
+			
+			// Get the label objects
+			var days = timer.find('.days');
+			var hours = timer.find('.hours');
+			var mins = timer.find('.minutes');
+			var secs = timer.find('.seconds');
+			
+			// Change labels on desktop
+			days.data('full', 'Giorni');
+			hours.data('full', 'Ore');
+			mins.data('full', 'Minuti');
+			secs.data('full', 'Secondi');
+			
+			// Change labels on mobile
+			days.data('short', 'G');
+			hours.data('short', 'H');
+			mins.data('short', 'M');
+			secs.data('short', 'S');
+			
+			// Apply changes
+			window.et_countdown_timer_labels(timer);
+		});
+		
+	}, 0);
+	
+});
+</script></div>
+			</div> <!-- .et_pb_code --><div class="et_pb_module et_pb_code et_pb_code_9">
+				
+				
+				<div class="et_pb_code_inner"><script>
+  window.intercomSettings = {
+    app_id: "tn8erc2s"
+  };
+</script>
+
+<script>
+// We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/tn8erc2s'
+(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/tn8erc2s';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+</script></div>
+			</div> <!-- .et_pb_code -->
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_3 et_pb_column_57  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_button_module_wrapper et_pb_button_9_wrapper et_pb_button_alignment_center et_pb_button_alignment_phone_center et_pb_module ">
+				<a class="et_pb_button et_pb_button_9 et_animated et_pb_bg_layout_light" href="/costo-registratore-cassa/">Scopri tutto</a>
+			</div>
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row -->
+				
+				
+			</div> <!-- .et_pb_section -->		</div><!-- .et_builder_inner_content -->
+	</div><!-- .et-l -->
+	
+			
+		</div><!-- #et-boc -->
+							</div> <!-- .entry-content -->
+
+				
+				</article> <!-- .et_pb_post -->
+
+			
+
+</div> <!-- #main-content -->
+
+
+			<footer id="main-footer">
+                <div class="et_pb_section et_pb_section_15 et_pb_with_background et_section_regular" >
+				
+				
+				
+				
+					<div class="et_pb_row et_pb_row_32">
+				<div class="et_pb_column et_pb_column_1_4 et_pb_column_58  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_image et_pb_image_30">
+				
+				
+				<a href="https://www.easycassa.it"><span class="et_pb_image_wrap "><img class="lazy" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201%201'%3E%3C/svg%3E" data-src="https://www.easycassa.it/wp-content/uploads/2019/08/EasyCassa_monochromatic-negative_RGB.png" alt="" title="" data-srcset="https://www.easycassa.it/wp-content/uploads/2019/08/EasyCassa_monochromatic-negative_RGB.png 1567w, https://www.easycassa.it/wp-content/uploads/2019/08/EasyCassa_monochromatic-negative_RGB-1280x291.png 1280w, https://www.easycassa.it/wp-content/uploads/2019/08/EasyCassa_monochromatic-negative_RGB-980x223.png 980w, https://www.easycassa.it/wp-content/uploads/2019/08/EasyCassa_monochromatic-negative_RGB-480x109.png 480w" data-sizes="(min-width: 0px) and (max-width: 480px) 480px, (min-width: 481px) and (max-width: 980px) 980px, (min-width: 981px) and (max-width: 1280px) 1280px, (min-width: 1281px) 1567px, 100vw" /></span></a>
+			</div><div class="et_pb_module et_pb_text et_pb_text_64  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p><span style="color: #ffffff;"><strong>© SisalPay Servizi S.p.A.</strong></span><br /><span style="color: #ffffff;"><strong>Codice Fiscale e Partita IVA:</strong></span><br /><span style="color: #ffffff;"><strong> 10387150963</strong></span></p></div>
+			</div> <!-- .et_pb_text --><ul class="et_pb_module et_pb_social_media_follow et_pb_social_media_follow_0 clearfix  et_pb_text_align_left et_pb_text_align_center-phone et_pb_bg_layout_light">
+				
+				
+				<li
+            class='et_pb_with_border et_pb_social_media_follow_network_0 et_pb_social_icon et_pb_social_network_link  et-social-facebook et_pb_social_media_follow_network_0'><a
+              href='https://www.facebook.com/easycassa/'
+              class='icon et_pb_with_border'
+              title='Segui su Facebook'
+               target="_blank"><span
+                class='et_pb_social_media_follow_network_name'
+                aria-hidden='true'
+                >Segui</span></a></li>
+			</ul> <!-- .et_pb_counters -->
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_4 et_pb_column_59  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_65  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="color: #ffffff;">SCOPRI</span></h2></div>
+			</div> <!-- .et_pb_text --><div id="link-footer" class="et_pb_module et_pb_text et_pb_text_66  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><a href="/supporto/">Supporto</a><br />
+<a href="/blog/">Blog</a><br />
+<a href="/eventi-e-news/">Eventi e News</a><br />
+<a href="/newsletter/">Newsletter</a><br />
+<a href="/faq/">FAQ</a></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_4 et_pb_column_60  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_67  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="color: #ffffff;">INFO</span></h2></div>
+			</div> <!-- .et_pb_text --><div id="link-footer" class="et_pb_module et_pb_text et_pb_text_68  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><a href="/chi-siamo/">Chi Siamo</a><br />
+<a href="https://www.emiliopetrone.it/" target="_blank" rel="noopener noreferrer">CEO SisalPay</a><br />
+<a href="/privacy/">Web Privacy Policy</a><br />
+<a href="/informativa-cookie/">Cookie</a></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_4 et_pb_column_61  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_69  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="color: #ffffff;">CONTATTI</span></h2></div>
+			</div> <!-- .et_pb_text --><div id="link-footer" class="et_pb_module et_pb_text et_pb_text_70  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><a href="mailto:info@easycassa.it" target="_blank" style="text-decoration:none; color:#FFFFFF" rel="noopener noreferrer">info@easycassa.it</a></div>
+			</div> <!-- .et_pb_text -->
+			</div> <!-- .et_pb_column -->
+				
+				
+			</div> <!-- .et_pb_row -->
+				
+				
+			</div> <!-- .et_pb_section -->				
+
+		
+				<div id="footer-bottom">
+					<div class="container clearfix">
+									</div>	<!-- .container -->
+				</div>
+			</footer> <!-- #main-footer -->
+		</div> <!-- #et-main-area -->
+
+
+	</div> <!-- #page-container -->
+
+	<style id="divioverlay-styles" type="text/css"></style><div id="divioverlay-links"></div><div id="sidebar-overlay"></div>		<script type="text/javascript">
+		var divioverlays_ajaxurl = "https://www.easycassa.it/"
+		, divioverlays_us = "095dfb693e"
+		, divioverlays_loadingimg = "https://www.easycassa.it/wp-content/plugins/divi-overlays/assets/img/divilife-loader.svg";
+		</script>
+		
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WW7F7S6"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/plugins/dg-divi-carousel/scripts/swiper.min.js?ver=1.0.0'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var DIVI = {"item_count":"%d Item","items_count":"%d Items"};
+var et_shortcodes_strings = {"previous":"Precedente","next":"Avanti"};
+var et_pb_custom = {"ajaxurl":"https:\/\/www.easycassa.it\/wp-admin\/admin-ajax.php","images_uri":"https:\/\/www.easycassa.it\/wp-content\/themes\/Divi\/images","builder_images_uri":"https:\/\/www.easycassa.it\/wp-content\/themes\/Divi\/includes\/builder\/images","et_frontend_nonce":"29eee1ae06","subscription_failed":"Si prega di verificare i campi di seguito per assicurarsi di aver inserito le informazioni corrette.","et_ab_log_nonce":"f7fbf23ef3","fill_message":"Compila i seguenti campi:","contact_error_message":"Per favore, correggi i seguenti errori:","invalid":"E-mail non valido","captcha":"Captcha","prev":"Indietro","previous":"Precedente","next":"Accanto","wrong_captcha":"Hai inserito un numero errato nei captcha.","wrong_checkbox":"Checkbox","ignore_waypoints":"no","is_divi_theme_used":"1","widget_search_selector":".widget_search","ab_tests":[],"is_ab_testing_active":"","page_id":"23","unique_test_id":"","ab_bounce_rate":"5","is_cache_plugin_active":"no","is_shortcode_tracking":"","tinymce_uri":""}; var et_frontend_scripts = {"builderCssContainerPrefix":"#et-boc","builderCssLayoutPrefix":"#et-boc .et-l"};
+var et_pb_box_shadow_elements = [];
+var et_pb_motion_elements = {"desktop":[],"tablet":[],"phone":[]};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/themes/Divi/js/custom.unified.js?ver=4.5.1'></script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/plugins/dg-divi-carousel/scripts/frontend-bundle.min.js?ver=2.0.18'></script>
+<script type='text/javascript'>
+function heateorSssLoadEvent(e) {var t=window.onload;if (typeof window.onload!="function") {window.onload=e}else{window.onload=function() {t();e()}}};	var heateorSssSharingAjaxUrl = 'https://www.easycassa.it/wp-admin/admin-ajax.php', heateorSssCloseIconPath = 'https://www.easycassa.it/wp-content/plugins/sassy-social-share/public/../images/close.png', heateorSssPluginIconPath = 'https://www.easycassa.it/wp-content/plugins/sassy-social-share/public/../images/logo.png', heateorSssHorizontalSharingCountEnable = 1, heateorSssVerticalSharingCountEnable = 0, heateorSssSharingOffset = -10; var heateorSssMobileStickySharingEnabled = 0;var heateorSssCopyLinkMessage = "Link copied.";var heateorSssReduceVerticalSvgHeight = true;var heateorSssUrlCountFetched = [], heateorSssSharesText = 'Shares', heateorSssShareText = 'Share';function heateorSssPopup(e) {window.open(e,"popUpWindow","height=400,width=600,left=400,top=100,resizable,scrollbars,toolbar=0,personalbar=0,menubar=no,location=no,directories=no,status")};var heateorSssWhatsappShareAPI = "web";
+</script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/plugins/sassy-social-share/public/js/sassy-social-share-public.js?ver=3.3.13'></script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/themes/Divi/core/admin/js/common.js?ver=4.5.1'></script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-includes/js/wp-embed.min.js?ver=5.4.4'></script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/plugins/divi-overlays/assets/js/jquery.exitintent.js?ver=5.4.4'></script>
+<script type='text/javascript' src='https://www.easycassa.it/wp-content/plugins/divi-overlays/assets/js/custom.js?ver=5.4.4'></script>
+		<script type="text/javascript">
+			if(typeof jQuery != "undefined") {
+					jQuery('.siq-expsearch-icon').each(function(){
+					var searchBox = (jQuery(this).parents('.siq-icon-searchbox-wrap').size() > 0) ? jQuery(this).parents('.siq-icon-searchbox-wrap') : jQuery('.siq-menu-searchbox-wrap') ;
+					var inputBox = searchBox.find('.siq-expsearch-input');
+					
+					jQuery(this).on('click', function () {
+						if (!searchBox.hasClass('siq-search-open')) {
+							searchBox.addClass('siq-search-open');
+							inputBox.focus();
+						} else {
+							searchBox.removeClass('siq-search-open');
+							inputBox.focusout();
+						}
+					});
+					jQuery('body').click(function (evt) {
+						if (evt.target.id == "siq-menu-searchbox-wrap")
+							return;
+						if (jQuery(evt.target).closest('#siq-menu-searchbox-wrap').length || jQuery(evt.target).closest('.siq-icon-searchbox-wrap').length)
+							return;
+
+						if (searchBox.hasClass('siq-search-open')) {
+							searchBox.removeClass('siq-search-open');
+						}
+					});
+				});
+			}
+		</script>
+</html>

@@ -4,6 +4,8 @@ import { getSoiCookie } from './core_cookies';
 import { arrayContainsArray, sendEventToHostSite } from './core_utils';
 import { getPurposeIds, getSpecialFeatureIds, getLegintIds } from './core_vendor_lists';
 import { getCustomPurposeIds, gdprApplies } from './core_config';
+import { backupIframes } from './../element-observer/variables';
+import { observer } from './../element-observer/observer';
 
 export function manageDomElementActivation() {
   // NON RITORNA
@@ -111,6 +113,7 @@ function manageNonScriptElement(element, cookie) {
 
 function manageElementWithConsent(element, managedAttribute) {
   let managedAttributeValue = element.getAttribute('data-' + managedAttribute);
+
   if (managedAttribute === 'display') {
     element.style.display = managedAttributeValue ? managedAttributeValue : '';
   } else {
@@ -256,4 +259,24 @@ function setScriptsStatus(purposes) {
       }
     });
   }
+}
+
+function injectIframe(el) {
+  let iframeId = el.dataset.avacyIframeId;
+  let backupList = backupIframes.blacklisted;
+  //cerco l'indice dell mio array dove ho salvato il mio iframe;
+  let index = backupList.findIndex(item => item[0] === iframeId);
+  let iframe = backupList[index][1];
+  iframe.setAttribute('data-purposes', el.dataset.purposes);
+  iframe.setAttribute('data-legints', el.dataset.legints);
+  iframe.setAttribute('data-special-features', el.dataset.specialFeatures);
+  iframe.setAttribute('data-managed', el.dataset.managed);
+
+  //cerco il placeholder associato al mio iframe -> lo uso per inserire il mio iframe -> lo rimuovo
+  let placeholder = document.querySelector(`span[data-avacy-iframe-id=${iframeId}]`);
+  placeholder.parentElement.insertBefore(iframe, placeholder);
+  placeholder.parentElement.removeChild(placeholder);
+
+  //rimuovo dal mio array l'elemento all'indice trovato inizialmente
+  backupIframes.blacklisted.splice(index);
 }

@@ -146,7 +146,7 @@ module.exports = {
     template: path.resolve(sourcePath, 'demos', 'rai-b.html'),
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
-    inject: 'head'
+    inject: false
   }, {
     filename: 'demos/rai-sdk.html',
     template: path.resolve(sourcePath, 'demos', 'rai-sdk.html'),
@@ -172,6 +172,12 @@ module.exports = {
     chunksSortMode: 'dependency',
     inject: 'head'
   }, {
+    filename: 'demos/avacy-test.html',
+    template: path.resolve(sourcePath, 'demos', 'avacy-test.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
+  },{
     filename: 'demos/direct-integration.dark.html',
     template: path.resolve(sourcePath, 'demos', 'direct-integration-dark.html'),
     chunks: ['oilstub', 'oil'],

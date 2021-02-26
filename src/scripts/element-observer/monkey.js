@@ -3,6 +3,7 @@ import { checkOnBlacklist } from './checks'
 import { setRules, checkAndSetDataAttribute } from './utils'
 
 export const monkey = () => {
+    console.log('START MONKEY')
     const createElementBackup = document.createElement
     
     const originalDescriptors = {
@@ -35,6 +36,7 @@ export const monkey = () => {
                     },
                     set(value) {
                         let data = checkOnBlacklist(scriptElt.src, scriptElt.type);
+                        console.log('monkey data', data)
                         let typeValue = value;
                         if (data[0]) {
                             checkAndSetDataAttribute(scriptElt, 'src');
@@ -63,6 +65,8 @@ export const monkey = () => {
                 'A likely cause would be because you are using a third-party browser extension that monkey patches the "document.createElement" function.'
             )
         }
+
+        console.log('Returning Script Elt', scriptElt);
 
         return scriptElt
     }

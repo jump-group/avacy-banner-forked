@@ -361,6 +361,8 @@ function injectOilWrapperInDOM(wrapper) {
   // Insert OIL into DOM
   document.body.insertBefore(wrapper, document.body.firstElementChild);
   addOilHandlers(getOilDOMNodes());
+  // if(window.AS_OIL.isInCollection('oil-dom-loaded')) {
+  // }
 }
 
 /**

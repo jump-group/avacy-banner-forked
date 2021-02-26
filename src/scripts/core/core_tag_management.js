@@ -5,6 +5,7 @@ import { arrayContainsArray, sendEventToHostSite } from './core_utils';
 import { getPurposeIds, getSpecialFeatureIds, getLegintIds } from './core_vendor_lists';
 import { getCustomPurposeIds, gdprApplies } from './core_config';
 import { backupIframes } from './../element-observer/variables';
+import { observer } from './../element-observer/observer';
 
 export function manageDomElementActivation() {
   // NON RITORNA
@@ -96,25 +97,6 @@ function manageScriptElement(element, cookie) {
   parent.insertBefore(newElement, element);
   parent.removeChild(element);
 }
-
-// function manageNonScriptElement2(element, cookie) {
-//   if (!hasConsent(element, cookie)) {
-//     let rules = {
-//       'data-purposes': element.dataset.purposes,
-//       'data-legints': element.dataset.legints,
-//       'data-special-features': element.dataset.specialFeatures
-//     }
-
-//     transformElement(element, rules);
-
-//   } else {
-//     if (element.hasAttribute('data-avacy-iframe-id')) {
-//       injectIframe(element);
-//     }
-//   }
-
-//   observer.disconnect();
-// }
 
 function manageNonScriptElement(element, cookie) {
   let managedAttributes = ['href', 'src', 'title', 'display'];

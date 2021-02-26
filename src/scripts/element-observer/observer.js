@@ -9,6 +9,9 @@ export const observer = new MutationObserver(mutations => {
             const node = addedNodes[i]
 
             if (node.nodeType === 1) {
+                if (node.tagName === 'IFRAME' && window.CLIENT_SIDE_BLOCKING.iframes !== true) {
+                    return
+                }
                 const src = node.src;
                 const type = node.type
                 // If the src is inside the blacklist and is not inside the whitelist

@@ -57,11 +57,28 @@ class ConsentStore {
             && window.webkit.messageHandlers
             && window.webkit.messageHandlers.CMPWebInterface) {
             // Call iOS interface
-            let message = {
-                command: 'readAll',
-                callbackFunction: 'callbackFunction'
-            };
-            result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
+            return new Promise((resolve, reject) => {
+                let message = {
+                    command: 'readAll',
+                    callback: 'callbackFunction'
+                };
+                window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
+                window.myResolve = resolve;
+            }).then(res => {
+                let result = JSON.parse(res);
+
+                return new Promise((resolve, reject) => {
+                    let cookie;
+                    if (cookieName in result) {
+                        cookie = JSON.parse(result[cookieName].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent));
+                    } else {
+                        cookie = undefined;
+                    }
+                    resolve(cookie);
+                })
+            })
+            
+
         } else {
             // No Android or iOS interface found
             console.log('No native APIs found. true');
@@ -130,9 +147,9 @@ class ConsentStore {
             let message = {
                 command: 'writeAll',	
                 values: JSON.stringify(objToWrite),
-                callbackFunction: 'callbackFunction'
+                callback: 'callbackFunction'
             };
-            result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
+            window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
         } else {
             // No Android or iOS interface found
             console.log('No native APIs found. true');
@@ -213,7 +230,7 @@ class ConsentStore {
             let message = {
                 command: 'show'
             };
-            result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
+            window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
         } else {
             // No Android or iOS interface found
             console.log('No native APIs found. true');
@@ -246,7 +263,7 @@ class ConsentStore {
             let message = {
                 command: 'destroy'
             };
-            result = window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
+            window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
         } else {
             // No Android or iOS interface found
             console.log('No native APIs found. true');

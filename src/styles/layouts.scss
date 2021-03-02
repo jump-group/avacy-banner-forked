@@ -19,6 +19,24 @@
     &__heading {
         width: 100%;
         margin-bottom: 0.5rem;
+        padding-right: 1.5rem;
+    }
+
+    &__close-banner {
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: 0;
+        &::after {
+            content: '\00D7';
+            font-size: 2rem;
+            font-weight: 500;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
 
     @include media('>desktop') {

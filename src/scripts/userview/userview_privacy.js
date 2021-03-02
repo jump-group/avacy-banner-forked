@@ -19,14 +19,13 @@ import { replace } from 'core-js/fn/symbol';
  *  "1": if all checkboxes are marked or if
  *  "{}": if there are multiple checkboxes
  */
-export function getPrivacySettings() {
+export function getPrivacySettings(no_settings) {
   //TODO: prendere i dati corretti dal pannello 
+  let purpose = {};
+  let specialFeature = {}
+  let vendor = {}
+  let addtlConsent = [];
   if (document.querySelector('.as-oil-cpc-wrapper')) {
-    let purpose = {};
-    let specialFeature = {}
-    let vendor = {}
-    let addtlConsent = [];
-
     const purposeSliders = document.querySelectorAll('.as-js-purpose-slider');
     purposeSliders && forEach(purposeSliders, (element) => {
       let element_id = element.dataset ? element.dataset.id : element.getAttribute('data-id');
@@ -97,6 +96,14 @@ export function getPrivacySettings() {
       specialFeature: specialFeature,
       vendor: vendor,
       addtlConsent: addtlConsentString
+    };
+  }
+  if (no_settings) {
+    return {
+      purpose: purpose,
+      specialFeature: specialFeature,
+      vendor: vendor,
+      addtlConsent: ADDITIONAL_CONSENT_VERSION
     };
   }
   return PRIVACY_FULL_TRACKING;

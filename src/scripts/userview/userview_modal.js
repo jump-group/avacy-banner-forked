@@ -7,12 +7,15 @@ import {
   EVENT_NAME_AS_PRIVACY_SELECTED,
   EVENT_NAME_BACK_TO_MAIN,
   EVENT_NAME_COMPANY_LIST,
-  EVENT_NAME_OIL_SHOWN, EVENT_NAME_OPT_IN_BUTTON_CLICKED,
+  EVENT_NAME_OIL_SHOWN, 
+  EVENT_NAME_OPT_IN_BUTTON_CLICKED,
+  EVENT_NAME_CLOSE_BANNER_BUTTON_CLICKED,
   EVENT_NAME_POI_OPT_IN,
   EVENT_NAME_SOI_OPT_IN,
   EVENT_NAME_THIRD_PARTY_LIST,
   EVENT_NAME_TIMEOUT,
   JS_CLASS_BUTTON_ADVANCED_SETTINGS,
+  JS_CLASS_BUTTON_CLOSE_BANNER,
   JS_CLASS_BUTTON_OILBACK,
   JS_CLASS_BUTTON_OPTIN,
   OIL_CONFIG_CPC_TYPES,
@@ -117,20 +120,26 @@ export function oilShowPreferenceCenter(mode) {
     .catch((error) => logError(error));
 }
 
+function handleCloseBannerBtn() {
+  sendEventToHostSite(EVENT_NAME_CLOSE_BANNER_BUTTON_CLICKED);
+  handleOptIn(true);
+  console.log('CHIUSO')
+}
+
 function handleOptInBtn() {
   sendEventToHostSite(EVENT_NAME_OPT_IN_BUTTON_CLICKED);
   handleOptIn();
 }
-export function handleOptIn() {
+export function handleOptIn( no_settings = false) {
   stopTimeOut();
   if (isPoiActive()) {
     import('../poi-list/poi.group.list.js').then(poi_group_list => {
       poi_group_list.getGroupList().then(() => {
-        (handlePoiOptIn()).then(onOptInComplete);
+        (handlePoiOptIn(no_settings)).then(onOptInComplete);
       });
     });
   } else {
-    (handleSoiOptIn()).then(onOptInComplete);
+    (handleSoiOptIn(no_settings)).then(onOptInComplete);
   }
   animateOptInButton();
 }
@@ -374,6 +383,7 @@ function getOilDOMNodes() {
   return {
     oilWrapper: document.querySelectorAll('.as-oil'),
     btnOptIn: document.querySelectorAll(`.${JS_CLASS_BUTTON_OPTIN}`),
+    btnCloseBanner: document.querySelectorAll(`.${JS_CLASS_BUTTON_CLOSE_BANNER}`),
     btnPoiOptIn: document.querySelectorAll('.as-js-optin-poi'),
     companyList: document.querySelectorAll('.as-js-companyList'),
     thirdPartyList: document.querySelectorAll('.as-js-thirdPartyList'),
@@ -420,8 +430,8 @@ function animateOptInButton() {
   }
 }
 
-function handleSoiOptIn() {
-  let privacySetting = getPrivacySettings();
+function handleSoiOptIn(no_settings) {
+  let privacySetting = getPrivacySettings(no_settings);
   logInfo('Handling SOI with settings: ', privacySetting);
   trackPrivacySettings(privacySetting);
 
@@ -439,8 +449,8 @@ function handleSoiOptIn() {
   }
 }
 
-function handlePoiOptIn() {
-  let privacySetting = getPrivacySettings();
+function handlePoiOptIn(no_settings) {
+  let privacySetting = getPrivacySettings(no_settings);
   logInfo('Handling POI with settings: ', privacySetting);
   trackPrivacySettings(privacySetting);
 
@@ -483,6 +493,7 @@ function addEventListenersToDOMList(listOfDoms, listener) {
 }
 
 function addOilHandlers(nodes) {
+  addEventListenersToDOMList(nodes.btnCloseBanner, handleCloseBannerBtn);
   addEventListenersToDOMList(nodes.btnOptIn, handleOptInBtn);
   addEventListenersToDOMList(nodes.btnAdvancedSettings, handleAdvancedSettings);
   addEventListenersToDOMList(nodes.btnBack, handleBackToMainDialog);

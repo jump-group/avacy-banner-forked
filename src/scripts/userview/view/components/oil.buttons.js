@@ -53,6 +53,10 @@ export const BackButton = () => {
   `
 };
 
+export const closeWithoutConsents = (closeWithoutConsents) => {
+  return closeWithoutConsents === true ? '<span class="as-oil__close-banner as-js-close-banner"></span>' : '';
+}
+
 
 /**
  * OIL advanced settings button

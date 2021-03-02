@@ -177,7 +177,7 @@ function oilListTemplate(list, heading, text) {
         </div>
         <div class="as-oil-l-row as-oil-l-buttons">
             <div class="as-oil-l-item">
-              ${YesButton(`as-oil__btn-optin ${JS_CLASS_BUTTON_OPTIN}`, 'first_layer')}
+              ${YesButton(`as-oil__btn-primary ${JS_CLASS_BUTTON_OPTIN}`, 'first_layer')}
             </div>
         </div>
     </div>

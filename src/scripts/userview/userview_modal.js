@@ -310,7 +310,7 @@ function setColorVariables(wrapper) {
   Object.entries(default_colors).forEach(([key, value]) => {
     if (config_colors[key] !== undefined) {
       wrapper.style.setProperty(`--avacy_${key}`,config_colors[key])
-    } else {
+    } else if (value) {
       wrapper.style.setProperty(`--avacy_${key}`,value)
     }
   });

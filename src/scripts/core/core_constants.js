@@ -26,6 +26,7 @@ export const OIL_CONFIG = {
   ATTR_POI_GROUP_NAME: 'poi_group_name',
   ATTR_ADVANCED_SETTINGS: 'close_without_contsents',
   ATTR_CLOSE_WITHOUT_CONSENTS: 'advanced_settings',
+  ATTR_LOGO_URL: 'logo_url',
   ATTR_PERSIST_MINIMUM_TRACKING: 'persist_min_tracking',
   ATTR_LOCALE: 'locale',
   ATTR_CPC_TYPE: 'cpc_type',

@@ -17,9 +17,12 @@
     }
 
     &__heading {
-        width: 100%;
+        min-width: 90%;
+        flex: 1;
         margin-bottom: 0.5rem;
         padding-right: 1.5rem;
+        display: flex;
+        align-items: center;
     }
 
     &__close-banner {
@@ -39,6 +42,23 @@
         }
     }
 
+    &__banner-logo {
+        margin: 1rem auto;
+        padding-right: 1rem;
+        
+        img {
+            max-width: 3rem;
+            max-height: 3rem;
+            object-fit: contain;
+        }
+    }
+
+    @include media('<phone') {
+        &__banner-logo {
+            padding-right: 0;
+        }
+    }
+
     @include media('>desktop') {
         &__intro-txt {
             width: 75%;
@@ -48,6 +68,11 @@
             //CUSTOM RULE ON DEMAND
             max-height:none;
             overflow:hidden;
+        }
+
+        &__banner-logo {
+            padding-right: 0;
+            margin: 0rem 1rem 0 0;
         }
     }
 }

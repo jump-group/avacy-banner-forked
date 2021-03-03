@@ -1,13 +1,15 @@
 import { JS_CLASS_BUTTON_OPTIN } from '../../core/core_constants.js';
-import { getLabel, isAdvancedSettings, isCloseWithoutConsentsEnabled } from '../userview_config.js';
+import { getLabel, isAdvancedSettings, isCloseWithoutConsentsEnabled, logoUrl } from '../userview_config.js';
 import { OIL_LABELS } from '../userview_constants.js';
-import { AdvancedSettingsButton, YesButton, closeWithoutConsents } from './components/oil.buttons.js';
+import { closeWithoutConsents, bannerLogo } from './components/oil.additional_elements.js';
+import { AdvancedSettingsButton, YesButton } from './components/oil.buttons.js';
 
 export function oilDefaultTemplate() {
   return `
     <div class="as-oil-content-overlay" data-qa="oil-full">
         <div class="as-oil-l-wrapper-layout-max-width">
             ${closeWithoutConsents(isCloseWithoutConsentsEnabled())}
+            ${bannerLogo(logoUrl())}
             <div class="as-oil__heading">
                 ${getLabel(OIL_LABELS.ATTR_LABEL_INTRO_HEADING)}
             </div>

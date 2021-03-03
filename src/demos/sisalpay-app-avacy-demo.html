@@ -10,6 +10,7 @@
     <style>
         body {
             margin: 0;
+            height: 100vh;
         }
 
         .ShowPrefcenter {
@@ -20,35 +21,65 @@
             box-sizing: border-box;
         }
 
+
+        /* REGOLE EXTRA PER BANNER */
+
         .as-oil-l-buttons .as-oil-l-item .as-oil__btn-primary,
         .as-oil-cpc__row-btn-all .as-oil__btn-secondary {
-            border: 1px solid var(--avacy_text_color_primary);
-            border-radius: 0;
+            border: 1px solid #b9b9b9;
             text-transform: uppercase;
+            padding: 0;
+            color: var(--avacy_accent_primary)
         }
 
         .as-oil-l-buttons .as-oil-l-item .as-oil__btn-tertiary {
-            border-radius: 0;
             text-transform: uppercase;
+            width: 100%;
+            max-width: none;
         }
 
-        #as-oil-cpc .as-oil-cpc__category-link {
-            font-weight: 400;
-        }
-
-        #as-oil-cpc .as-oil-cpc__category-link--active {
-            font-weight: 600;
+        #oil-preference-center {
+            padding: 1rem;
+            max-height: 100%;
         }
 
 
         @media (max-width: 767px) {
             .as-oil__banner-logo {
+                align-self: center;
+            }
+            .as-oil__banner-logo img {
+                max-width: 4rem !important;
+                max-height: 4rem !important;
+            }
+
+            .as-oil-cpc-wrapper .as-oil-cpc__middle {
+                height: auto;
+            }
+
+            .as-oil-cpc-wrapper .as-oil-cpc__left {
                 display: none;
+            }
+
+            .as-oil-cpc-wrapper .as-oil-cpc__purpose {
+                padding: 1rem;
+            }
+
+            .as-oil-cpc-wrapper .LegintBlock {
+                padding: 1rem 0.5rem;
+            }
+
+            .as-oil .as-oil-content-overlay[data-qa='oil-full'] .as-oil__heading {
+                margin-top: 1rem;
+                margin-bottom: 2rem;
+                padding: 0;
+                text-align: center;
+                line-height: 1.4;
+                color: var(--avacy_text_color_primary);
             }
 
             .as-oil .as-oil-content-overlay[data-qa='oil-full'] .as-oil-l-buttons {
                 flex-direction: column;
-                /* justify-content: flex-start; */
             }
 
             .as-oil .as-oil-content-overlay[data-qa='oil-full'] .as-oil-l-buttons .as-oil-l-item {
@@ -170,8 +201,9 @@
 
 <body>
     <div class="ShowPrefcenter">
-        <button onclick="window.AS_OIL.showPreferenceCenter('absolute')">Modifica Consenso</button>
+        <button onclick="window.AS_OIL.showPreferenceCenter()">Modifica Consenso</button>
     </div>
+    <div id="oil-preference-center"></div>
 </body>
 
 </html>

@@ -11,6 +11,64 @@
         body {
             margin: 0;
         }
+
+        .as-oil-l-buttons .as-oil-l-item .as-oil__btn-primary,
+        .as-oil-cpc__row-btn-all .as-oil__btn-secondary {
+            border: 1px solid var(--avacy_text_color_primary);
+            border-radius: 0;
+            text-transform: uppercase;
+        }
+
+        .as-oil-l-buttons .as-oil-l-item .as-oil__btn-tertiary {
+            border-radius: 0;
+            text-transform: uppercase;
+        }
+
+        #as-oil-cpc .as-oil-cpc__category-link {
+            font-weight: 400;
+        }
+
+        #as-oil-cpc .as-oil-cpc__category-link--active {
+            font-weight: 600;
+        }
+
+
+        @media (max-width: 767px) {
+            .as-oil__banner-logo {
+                display: none;
+            }
+
+            .as-oil .as-oil-content-overlay[data-qa='oil-full'] .as-oil-l-buttons {
+                flex-direction: column;
+                /* justify-content: flex-start; */
+            }
+
+            .as-oil .as-oil-content-overlay[data-qa='oil-full'] .as-oil-l-buttons .as-oil-l-item {
+                width: 100%;
+                min-width: 120px;
+            }
+            .as-oil .as-oil-content-overlay[data-qa='oil-full'] .as-oil-l-buttons .as-oil-l-item > * {
+                width: 100%;
+                max-width: none;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .as-oil .as-oil-content-overlay[data-qa='oil-full'] .as-oil__intro-txt,
+            .as-oil .as-oil-content-overlay[data-qa='oil-full'] .as-oil-l-buttons {
+                width: 100%;
+            }
+
+            .as-oil .as-oil-content-overlay[data-qa='oil-full'] .as-oil-l-buttons {
+                flex-direction: row-reverse;
+                justify-content: flex-start;
+            }
+
+            .as-oil .as-oil-content-overlay[data-qa='oil-full'] .as-oil-l-buttons .as-oil-l-item {
+                width: auto;
+                min-width: 120px;
+            }
+        }
     </style>
     <script id="oil-configuration" type="application/configuration">
         {
@@ -18,6 +76,7 @@
             "policy_version": 2,
             "advanced_settings": true,
             "close_without_contsents": true,
+            "logo_url": "https://icons-for-free.com/iconfiles/png/512/cookie-1319971784454690183.png",
             "iabVendorListUrl": "https://cdn.jumpgroup.it/assets/",
             "customVendorListUrl": "https://cdn.jumpgroup.it/assets/custom-vendor-list.json",
             "timeout": -1,
@@ -80,12 +139,12 @@
                     "secondary_background_color": "#ffffff",
                     "accent_primary": "#fec626",
                     "accent_secondary": "#fec626",
-                    "btn_primary_background": "#fec626",
-                    "btn_primary_background_hover": "#e8b930",
+                    "btn_primary_background": "#ffffff",
+                    "btn_primary_background_hover": "#fefefe",
                     "btn_primary_text_color": "#4f4f4f",
-                    "btn_secondary_background": "#0099f2",
-                    "btn_secondary_background_hover": "#0d9ef3",
-                    "btn_secondary_text_color": "#ffffff",
+                    "btn_tertiary_background": "#fec626",
+                    "btn_tertiary_background_hover": "#f7c32e",
+                    "btn_tertiary_text_color": "#4f4f4f",
                     "btn_disabled_background": "#dfdfdf",
                     "btn_disabled_text_color": "#545454",
                     "slider_background": "#b9b9b9",

@@ -166,8 +166,8 @@ module.exports = {
     chunksSortMode: 'dependency',
     inject: 'head'
   }, {
-    filename: 'demos/sisalpay-avacy-demo.html',
-    template: path.resolve(sourcePath, 'demos', 'sisalpay-avacy-demo.html'),
+    filename: 'demos/sisalpay-web-avacy-demo.html',
+    template: path.resolve(sourcePath, 'demos', 'sisalpay-web-avacy-demo.html'),
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'

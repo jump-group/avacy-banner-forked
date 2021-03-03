@@ -28,6 +28,26 @@
             // min-width: 220px;
         }
     }
+
+    &__btn-primary {
+        @include btn-primary;
+        transition: opacity 0.8s ease 0s;
+
+        &-clicked {
+            opacity: 0.3;
+        }
+
+        @include media('<=phone') {
+            width: auto;
+            padding: 0;
+        }
+    }
+    &__btn-secondary {
+        @include btn-secondary;
+    }
+    &__btn-tertiary {
+        @include btn-tertiary;
+    }
 }
 
 .as-oil-l-buttons {

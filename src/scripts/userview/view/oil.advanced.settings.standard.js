@@ -124,7 +124,7 @@ const ContentSnippet = () => {
   <div class="as-oil-cpc__right">
     <div class="as-oil-l-row as-oil-l-buttons">
       <div class="as-oil-l-item">
-        ${YesButton(`as-oil__btn-optin ${JS_CLASS_BUTTON_OPTIN}`)}
+        ${YesButton(`as-oil__btn-tertiary ${JS_CLASS_BUTTON_OPTIN}`)}
       </div>
     </div>
   </div>
@@ -404,8 +404,8 @@ const categoryList = (list, index) => {
 const ActivateButtonSnippet = () => {
   return `
   <div class="as-oil-cpc__row-btn-all">
-        <span class="as-js-btn-deactivate-all as-oil__btn-grey">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DEACTIVATE_ALL)}</span>
-        <span class="as-js-btn-activate-all as-oil__btn-blue">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_ACTIVATE_ALL)}</span>
+        <span class="as-js-btn-deactivate-all as-oil__btn-secondary">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DEACTIVATE_ALL)}</span>
+        <span class="as-js-btn-activate-all as-oil__btn-secondary">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_ACTIVATE_ALL)}</span>
       </div>
   `
 };

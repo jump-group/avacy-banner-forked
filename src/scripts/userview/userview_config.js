@@ -16,6 +16,14 @@ export function isAdvancedSettings() {
   return getConfigValue(OIL_CONFIG.ATTR_ADVANCED_SETTINGS, false);
 }
 
+export function logoUrl() {
+  return getConfigValue(OIL_CONFIG.ATTR_LOGO_URL, false);
+}
+
+export function isCloseWithoutConsentsEnabled() {
+  return getConfigValue(OIL_CONFIG.ATTR_CLOSE_WITHOUT_CONSENTS, false);
+}
+
 export function getTimeOutValue() {
   return getConfigValue(OIL_CONFIG.ATTR_TIMEOUT, defaultTimeoutInSeconds);
 }

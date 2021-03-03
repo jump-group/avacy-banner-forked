@@ -67,7 +67,7 @@ const ContentSnippet = () => {
     </div>
     <hr>
       <div class="as-oil-l-item">
-        ${YesButton(`as-oil__btn-optin ${JS_CLASS_BUTTON_OPTIN}`, 'second_layer')}
+        ${YesButton(`as-oil__btn-tertiary ${JS_CLASS_BUTTON_OPTIN}`, 'second_layer')}
       </div>
   `;
 };

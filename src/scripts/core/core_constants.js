@@ -25,6 +25,8 @@ export const OIL_CONFIG = {
   ATTR_PRIVACY_PAGE_URL: 'privacy_page_url',
   ATTR_POI_GROUP_NAME: 'poi_group_name',
   ATTR_ADVANCED_SETTINGS: 'advanced_settings',
+  ATTR_CLOSE_WITHOUT_CONSENTS: 'close_without_consents',
+  ATTR_LOGO_URL: 'logo_url',
   ATTR_PERSIST_MINIMUM_TRACKING: 'persist_min_tracking',
   ATTR_LOCALE: 'locale',
   ATTR_CPC_TYPE: 'cpc_type',
@@ -62,6 +64,7 @@ export const OIL_POLICY_DEFAULT_VERSION = 0;
 
 // Main Click events
 export const EVENT_NAME_OPT_IN = 'oil_optin_done';
+export const EVENT_NAME_CLOSE_BANNER_BUTTON_CLICKED = 'oil_close_banner_button_clicked';
 export const EVENT_NAME_OPT_IN_BUTTON_CLICKED = 'oil_optin_done_button_clicked';
 export const EVENT_NAME_SOI_OPT_IN = 'oil_soi_optin_done';
 export const EVENT_NAME_POI_OPT_IN = 'oil_poi_optin_done';
@@ -104,6 +107,7 @@ export const OIL_PAYLOAD_ADDITIONAL_CONSENT_STRING = 'atp';
 export const DATAQA_PRIVACY_PAGE = 'oil-PrivacyPage';
 
 // Button labels
+export const JS_CLASS_BUTTON_CLOSE_BANNER = 'as-js-close-banner';
 export const JS_CLASS_BUTTON_OPTIN = 'as-js-optin';
 export const JS_CLASS_BUTTON_OILBACK = 'as-js-oilback';
 export const JS_CLASS_BUTTON_PROCEED = 'as-js-proceed';

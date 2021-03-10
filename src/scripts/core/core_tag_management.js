@@ -131,7 +131,7 @@ function manageElementWithoutConsent(element, managedAttribute) {
   }
 }
 
-function hasConsent(element, cookie) {
+export function hasConsent(element, cookie) {
   if(gdprApplies() === false) {
     return true;
   }

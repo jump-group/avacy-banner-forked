@@ -1,6 +1,6 @@
 {
   "name": "@ideasio/oil.js",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "description": "oil.js Opt-In Layer for consent management based on the IAB TCF Standard",
   "keywords": [
     "IAB Europe",
@@ -14,6 +14,7 @@
   "main": "http_server.js",
   "scripts": {
     "start": "node http_server.js",
+    "build:test": "npm run build && rm -rf dist/demos && rm -rf dist/docs && rm -rf dist/release",
     "build:rai": "npm run build && rm -rf dist/demos && rm -rf dist/docs && rm -rf dist/release && rm dist/index.html",
     "build": "npm run build:clean && npm run build:check && npm run build:prod && npm run build:docs",
     "build:prod": "cross-env-shell SNAPSHOT=${SNAPSHOT} NODE_ENV=production webpack --config etc/webpack.config.js",

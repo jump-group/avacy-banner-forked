@@ -102,22 +102,25 @@ export function oilShowPreferenceCenter(mode) {
             return;
           }
           getSoiCookie().then(soiCookie => {
-
-            let consentData = soiCookie.opt_in ? soiCookie.consentData : undefined;
-            let addtlConsent = soiCookie.opt_in ? soiCookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
-  
-            let currentPrivacySettings;
-            if (consentData && addtlConsent) {
-              currentPrivacySettings = getAllPreferences(consentData, addtlConsent);
-            } else {
-              currentPrivacySettings = [];
-            }
-            applyPrivacySettings(currentPrivacySettings);
+            applyPrivacySettings(getCurrentPrivacySettings(soiCookie));
           });
         });
       });
     })
     .catch((error) => logError(error));
+}
+
+export function getCurrentPrivacySettings(cookie) {
+  let consentData = cookie.opt_in ? cookie.consentData : undefined;
+  let addtlConsent = cookie.opt_in ? cookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
+
+  let currentPrivacySettings;
+  if (consentData && addtlConsent) {
+    currentPrivacySettings = getAllPreferences(consentData, addtlConsent);
+  } else {
+    currentPrivacySettings = [];
+  }
+  return currentPrivacySettings;
 }
 
 function handleCloseBannerBtn() {

@@ -315,13 +315,19 @@ module.exports = {
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'
-  }, , {
+  }, {
+    filename: 'demos/demo-page-block-monkey.html',
+    template: path.resolve(sourcePath, 'demos', 'demo-page-block-monkey.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: false
+  }, {
     filename: 'demos/demo-page-block.html',
     template: path.resolve(sourcePath, 'demos', 'demo-page-block.html'),
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'
-  }, , {
+  },{
     filename: 'demos/demo-page-form.html',
     template: path.resolve(sourcePath, 'demos', 'demo-page-form.html'),
     chunks: ['oilstub', 'oil'],

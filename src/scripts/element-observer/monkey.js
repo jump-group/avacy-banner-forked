@@ -1,9 +1,9 @@
-import { TYPE_ATTRIBUTE } from './variables'
-import { checkOnBlacklist } from './checks'
-import { setRules, checkAndSetDataAttribute } from './utils'
+import { TYPE_ATTRIBUTE } from './variables';
+import { checkOnBlacklist } from './checks';
+import { setRules, checkAndSetDataAttribute } from './utils';
+import { hasConsent } from './../core/core_tag_management';
 
-export const monkey = () => {
-    console.log('START MONKEY')
+export const monkey = (cookie) => {
     const createElementBackup = document.createElement
     
     const originalDescriptors = {
@@ -27,7 +27,21 @@ export const monkey = () => {
                         return originalDescriptors.src.get.call(this)
                     },
                     set(value) {
-                        originalDescriptors.src.set.call(this, value)
+                        let data = checkOnBlacklist(value, scriptElt.type);
+                        
+                        originalDescriptors.src.set.call(this, value);
+                        if (data[0]){
+                            if (!hasConsent(scriptElt, cookie)) {
+                                scriptElt.setAttribute('data-managed', TYPE_ATTRIBUTE);
+                                checkAndSetDataAttribute(scriptElt, 'title');
+                                checkAndSetDataAttribute(scriptElt, 'display');
+                                checkAndSetDataAttribute(scriptElt, 'href');
+                                checkAndSetDataAttribute(scriptElt, 'src');
+                                setRules(scriptElt, data[1]);
+                            } else {
+                                originalDescriptors.src.set.call(this, value);
+                            }
+                        }
                     }
                 },
                 'type': {
@@ -35,18 +49,14 @@ export const monkey = () => {
                         return originalDescriptors.type.get.call(this)
                     },
                     set(value) {
-                        let data = checkOnBlacklist(scriptElt.src, scriptElt.type);
-                        console.log('monkey data', data)
+                        let data = checkOnBlacklist(scriptElt.src, scriptElt.type)
                         let typeValue = value;
                         if (data[0]) {
-                            checkAndSetDataAttribute(scriptElt, 'src');
-                            checkAndSetDataAttribute(scriptElt, 'title');
-                            checkAndSetDataAttribute(scriptElt, 'display');
-                            checkAndSetDataAttribute(scriptElt, 'href');
-                            setRules(scriptElt, data[1]);
-                            scriptElt.setAttribute('data-managed', TYPE_ATTRIBUTE);
+                            if (!hasConsent(scriptElt, cookie)) {
+                                typeValue = TYPE_ATTRIBUTE;
+                            }
                         }
-                        originalDescriptors.type.set.call(this, typeValue)
+                        originalDescriptors.type.set.call(this, typeValue);
                     }
                 }
             })
@@ -65,8 +75,6 @@ export const monkey = () => {
                 'A likely cause would be because you are using a third-party browser extension that monkey patches the "document.createElement" function.'
             )
         }
-
-        console.log('Returning Script Elt', scriptElt);
 
         return scriptElt
     }

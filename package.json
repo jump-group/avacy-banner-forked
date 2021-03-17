@@ -1,6 +1,6 @@
 {
   "name": "@jumpgroup/avacy",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "description": "oil.js Opt-In Layer for consent management based on the IAB TCF Standard",
   "keywords": [
     "IAB Europe",
@@ -157,7 +157,7 @@
     "npm": ">= 6.9.0"
   },
   "files": [
-    "release/current",
+    "dist",
     "CONTRIBUTING.md"
   ],
   "bugs": {

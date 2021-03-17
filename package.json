@@ -1,6 +1,6 @@
 {
-  "name": "@ideasio/oil.js",
-  "version": "2.7.0",
+  "name": "@jumpgroup/avacy",
+  "version": "2.7.1",
   "description": "oil.js Opt-In Layer for consent management based on the IAB TCF Standard",
   "keywords": [
     "IAB Europe",
@@ -31,8 +31,8 @@
     "browserstack:full": "bash ./etc/runFullBrowserstackSeq.sh",
     "browserstack:remote-localhost": "bash ./etc/runBrowserstackLocal.sh",
     "pree2e": "mkdirp target/reports && node etc/nightwatch.local.conf.js",
-    "e2e": "./node_modules/.bin/nightwatch -c etc/nightwatch.local.conf.js -e chrome",
-    "e2esafari": "./node_modules/.bin/nightwatch -c etc/nightwatch.local.conf.js -e safari",
+    "e2e": "nightwatch -c etc/nightwatch.local.conf.js -e chrome",
+    "e2esafari": "nightwatch -c etc/nightwatch.local.conf.js -e safari",
     "test:node": "mocha 3000 --exit test/node",
     "test:security": "npm audit --json | npm-audit-helper --prod-only",
     "test:selenium": "node etc/nightwatch.jenkins.conf.js && ./node_modules/.bin/nightwatch -c etc/nightwatch.jenkins.conf.js -e chrome",
@@ -149,7 +149,7 @@
   "peerDependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/as-ideas/oil.git"
+    "url": "git+https://github.com/as-ideas/oil.git"
   },
   "engine-strict": true,
   "engines": {
@@ -159,5 +159,12 @@
   "files": [
     "release/current",
     "CONTRIBUTING.md"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/as-ideas/oil/issues"
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  }
 }

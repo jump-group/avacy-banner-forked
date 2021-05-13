@@ -113,20 +113,21 @@ export function oilShowPreferenceCenter(mode) {
 export function getCurrentPrivacySettings(cookie) {
   let consentData = cookie.opt_in ? cookie.consentData : undefined;
   let addtlConsent = cookie.opt_in ? cookie.addtlConsent : ADDITIONAL_CONSENT_VERSION;
+  let customVendor = cookie.opt_in ? cookie.customVendorList : [];
 
   let currentPrivacySettings;
-  if (consentData && addtlConsent) {
-    currentPrivacySettings = getAllPreferences(consentData, addtlConsent);
+  if (consentData && addtlConsent && customVendor) {
+    currentPrivacySettings = getAllPreferences(consentData, addtlConsent, customVendor);
   } else {
     currentPrivacySettings = [];
   }
+
   return currentPrivacySettings;
 }
 
 function handleCloseBannerBtn() {
   sendEventToHostSite(EVENT_NAME_CLOSE_BANNER_BUTTON_CLICKED);
   handleOptIn(true);
-  console.log('CHIUSO')
 }
 
 function handleOptInBtn() {

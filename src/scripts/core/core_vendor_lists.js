@@ -160,6 +160,10 @@ export function getSpecialFeatureIds() {
   return Object.entries(getSpecialFeatures()).map(([index, value]) => value.id);
 }
 
+export function getCustomVendorIds() {
+  return Object.entries(getCustomVendorList().vendors).map(item => item);
+}
+
 export function getVendors() {
   //REVIEW: need changes? @tcf2a
   return cachedVendorList ? Object.values(cachedVendorList.vendors) : expandIdsToObjects(buildDefaultVendorIdList());

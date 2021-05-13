@@ -2,7 +2,7 @@
 import { MANAGED_TAG_IDENTIFIER, MANAGED_TAG_IDENTIFIER_ATTRIBUTE, MANAGED_TAG__ATTRIBUTES } from './core_constants';
 import { getSoiCookie } from './core_cookies';
 import { arrayContainsArray, sendEventToHostSite } from './core_utils';
-import { getPurposeIds, getSpecialFeatureIds, getLegintIds } from './core_vendor_lists';
+import { getPurposeIds, getSpecialFeatureIds, getLegintIds, getCustomVendorIds } from './core_vendor_lists';
 import { getCustomPurposeIds, gdprApplies } from './core_config';
 import { backupIframes } from './../element-observer/variables';
 import { observer } from './../element-observer/observer';
@@ -48,6 +48,27 @@ function getNecessarySpecialFeature(element) {
   if (dataSpecialFeaturesString) {
     let specialFeaturesString = element.getAttribute(MANAGED_TAG__ATTRIBUTES.SPECIAL_FEATURES_ATTRIBUTE);
     return specialFeaturesString.length ? specialFeaturesString.split(/,\s*/) : getSpecialFeatureIds();
+  }
+
+  return [];
+}
+
+function getNecessaryIabVendors(element) {
+  let dataIabVendorString = element.hasAttribute(MANAGED_TAG__ATTRIBUTES.IAB_VENDOR_ATTRIBUTE);
+  if (dataIabVendorString) {
+    let iabVendorString = element.getAttribute(MANAGED_TAG__ATTRIBUTES.IAB_VENDOR_ATTRIBUTE);
+    return iabVendorString.length ? iabVendorString.split(/,\s*/).map(x => +x) : [];
+  }
+
+  return [];
+}
+
+function getNecessaryCustomVendors(element) {
+  let dataCustomVendorString = element.hasAttribute(MANAGED_TAG__ATTRIBUTES.CUSTOM_VENDOR_ATTRIBUTE);
+  if (dataCustomVendorString) {
+    let customVendorString = element.getAttribute(MANAGED_TAG__ATTRIBUTES.CUSTOM_VENDOR_ATTRIBUTE);
+    // TODO: in prececenza era getCustomVendorIds() e non [] .. capire se funziona effettivamente
+    return customVendorString.length ? customVendorString.split(/,\s*/) : [];
   }
 
   return [];
@@ -140,6 +161,8 @@ export function hasConsent(element, cookie) {
     let necessaryPurposes = getNecessaryPurposes(element);
     let necessaryLegint = getNecessaryLegint(element);
     let necessarySpecialFeatures = getNecessarySpecialFeature(element);
+    let necessaryCustomVendors = getNecessaryCustomVendors(element);
+    let necessaryIabVendors = getNecessaryIabVendors(element);
 
     let allowedPurposes = [];
     cookie.consentData.purposeConsents.set_.forEach(element => {
@@ -158,11 +181,23 @@ export function hasConsent(element, cookie) {
 
     allowedPurposes = allowedPurposes ? allowedPurposes.concat(cookie.customPurposes) : cookie.customPurposes;
 
+    let allowedCustomVendors = [];
+    cookie.customVendorList.forEach(element => {
+      allowedCustomVendors.push(element)
+    });
+
+    let allowedIabVendors = [];
+    cookie.consentData.vendorConsents.set_.forEach(element => {
+      allowedIabVendors.push(element)
+    });
+
     let purposesResult = arrayContainsArray(allowedPurposes, necessaryPurposes);
     let legintResult = arrayContainsArray(allowedLegint, necessaryLegint);
     let specialFeaturesResult = arrayContainsArray(allowedSpecialFeature, necessarySpecialFeatures);
+    let customVendorsResult = arrayContainsArray(allowedCustomVendors, necessaryCustomVendors);
+    let iabVendorsResult = arrayContainsArray(allowedIabVendors, necessaryIabVendors);
 
-    return purposesResult && legintResult && specialFeaturesResult;
+    return purposesResult && legintResult && specialFeaturesResult && customVendorsResult && iabVendorsResult;
   } else {
     return false;
   }

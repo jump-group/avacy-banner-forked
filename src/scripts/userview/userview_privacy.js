@@ -24,6 +24,7 @@ export function getPrivacySettings(no_settings) {
   let purpose = {};
   let specialFeature = {}
   let vendor = {}
+  let customVendor = {}
   let addtlConsent = [];
   if (document.querySelector('.as-oil-cpc-wrapper')) {
     const purposeSliders = document.querySelectorAll('.as-js-purpose-slider');
@@ -70,6 +71,17 @@ export function getPrivacySettings(no_settings) {
       }
     }, this);
 
+    const customVendorSliders = document.querySelectorAll('.as-js-custom-vendor-slider');
+    customVendorSliders && forEach(customVendorSliders, (element) => {
+      let element_id = element.dataset ? element.dataset.id : element.getAttribute('data-id');
+      if (customVendor[element_id] !== undefined) {
+        customVendor[element_id].consent = element.checked;
+      } else {
+        customVendor[element_id] = {};
+        customVendor[element_id].consent = element.checked;
+      }
+    }, this);
+
     const vendorLegintSliders = document.querySelectorAll('.as-js-vendor-legint-slider');
     vendorLegintSliders && forEach(vendorLegintSliders, (element) => {
       let element_id = element.dataset ? element.dataset.id : element.getAttribute('data-id');
@@ -95,6 +107,7 @@ export function getPrivacySettings(no_settings) {
       purpose: purpose,
       specialFeature: specialFeature,
       vendor: vendor,
+      customVendor: customVendor,
       addtlConsent: addtlConsentString
     };
   }
@@ -103,6 +116,7 @@ export function getPrivacySettings(no_settings) {
       purpose: purpose,
       specialFeature: specialFeature,
       vendor: vendor,
+      customVendor: customVendor,
       addtlConsent: ADDITIONAL_CONSENT_VERSION
     };
   }
@@ -119,6 +133,7 @@ export function applyPrivacySettings(privacySettings) {
   applyPurposesSettings(privacySettings.purpose);
   applySpecialFeaturesSettings(privacySettings.specialFeature);
   applyVendorsSettings(privacySettings.vendor);
+  applyCustomVendorsSettings(privacySettings.customVendor);
   applyAdditionalConsent(privacySettings.addtlConsent);
 }
 
@@ -128,6 +143,19 @@ function applyAdditionalConsent(addtlConsentString) {
 
   addtlConsentSliders.forEach(element => {
     if (providerList.includes(element.dataset.id)) {
+      element.checked = true;
+    } else {
+      element.checked = false;
+    }
+  });
+}
+
+function applyCustomVendorsSettings(vendors) {
+
+  const customVendorSliders = document.querySelectorAll('.as-js-custom-vendor-slider');
+  
+  customVendorSliders.forEach(element => {
+    if (vendors.includes(element.dataset.id)) {
       element.checked = true;
     } else {
       element.checked = false;

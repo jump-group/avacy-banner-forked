@@ -1,7 +1,7 @@
 import { OIL_LABELS, OPTIONAL_LABEL_PREFIX } from '../userview_constants';
 import { logError, logWarn } from '../../core/core_log';
 import { fetchJsonData } from '../../core/core_utils';
-import { getLocale, getLocaleUrl, setLocale } from '../../core/core_config';
+import { getLocale, getLocaleUrl, setLocale, autoChangeLanguage, autoLanguage } from '../../core/core_config';
 // TODO add texts for label values with underscores...
 import DEFAULT_LOCALE from './userview_default_locale';
 

@@ -45,6 +45,7 @@ export const OIL_CONFIG = {
   ATTR_REQUIRE_OPTOUT_CONFIRM: 'require_optout_confirm',
   ATTR_INFO_BANNER_ONLY: 'info_banner_only',
   ATTR_SUPPRESS_COOKIES: 'suppress_cookies',
+  ATTR_AUTO_LANGUAGE: 'auto_language',
   ATTR_LANGUAGE: 'language',
   ATTR_LANGUAGES_LIST: 'languages',
   ATTR_VISUAL_CONFIGURATION: 'visual_configuration',

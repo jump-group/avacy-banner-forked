@@ -198,6 +198,18 @@ export function getLocaleVariantName() {
   return localeVariantName;
 }
 
+export function autoChangeLanguage() {
+  let bannerLang = document.documentElement.lang;
+  if (bannerLang && AS_OIL) {
+    return bannerLang.substring(0, 2);
+  }
+  return 'en';
+}
+
+export function autoLanguage() {
+  return getConfigValue(OIL_CONFIG.ATTR_AUTO_LANGUAGE, false);
+}
+
 export function getLanguage() {
   return getLanguageFromLocale(getLocaleVariantName());
 }
@@ -207,7 +219,14 @@ export function getLanguageFromLocale(localeVariantName = 'en') {
 }
 
 export function getLanguageFromConfigObject() {
-    return getConfigValue(OIL_CONFIG.ATTR_LANGUAGE, 'en')
+    if (autoLanguage()) {
+      return autoChangeLanguage(); 
+    }
+
+    let languages_list = getConfigValue(OIL_CONFIG.ATTR_LANGUAGES_LIST, undefined);
+    let lang = getConfigValue(OIL_CONFIG.ATTR_LANGUAGE, 'en')
+
+    return checkLanguage(languages_list, lang);
 }
 
 /**
@@ -264,13 +283,18 @@ export function getDefaultToOptin() {
 }
 
 export function getLocale() {
-  if (getConfigValue(OIL_CONFIG.ATTR_LANGUAGES_LIST, undefined)) {
+  let languages_list = getConfigValue(OIL_CONFIG.ATTR_LANGUAGES_LIST, undefined);
+  if (languages_list) {
     let lang = getLanguageFromConfigObject();
-    let languages_list = getConfigValue(OIL_CONFIG.ATTR_LANGUAGES_LIST, undefined);
+    lang = checkLanguage(languages_list, lang);  
     setConfigValue(OIL_CONFIG.ATTR_LOCALE, languages_list[lang]);
   }
 
   return getConfigValue(OIL_CONFIG.ATTR_LOCALE, undefined);
+}
+
+function checkLanguage(list, lang) {
+  return Object.keys(list).includes(lang) ? lang : 'en';
 }
 
 export function setLocale(localeObject) {

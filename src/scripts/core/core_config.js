@@ -200,7 +200,7 @@ export function getLocaleVariantName() {
 
 export function autoChangeLanguage() {
   let bannerLang = document.documentElement.lang;
-  if (bannerLang && AS_OIL) {
+  if (bannerLang) {
     return bannerLang.substring(0, 2);
   }
   return 'en';

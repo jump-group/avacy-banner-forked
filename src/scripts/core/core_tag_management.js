@@ -152,7 +152,7 @@ function manageElementWithoutConsent(element, managedAttribute) {
   }
 }
 
-export function hasConsent(element, cookie) {
+export function hasConsent(element, cookie, from = 'oil') {
   if(gdprApplies() === false) {
     return true;
   }

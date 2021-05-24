@@ -12,6 +12,7 @@ export const transformElement = (node, rules) => {
     if(newNode.tagName === 'SCRIPT') {
         newNode.type = TYPE_ATTRIBUTE;
 
+
         // Firefox has this additional event which prevents scripts from beeing executed
         const beforeScriptExecuteListener = function (event) {
             // Prevent only marked scripts from executing

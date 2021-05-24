@@ -1,7 +1,6 @@
 import '../../../styles/cpc_standard.scss';
 import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl } from '../../core/core_config'
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../../core/core_constants';
-import { setGlobalOilObject } from '../../core/core_utils';
 import { getCustomVendorList, getAdditionalConsentList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay } from '../../core/core_vendor_lists';
 import { getLabel, getLabelWithDefault } from '../userview_config';
 import { OIL_LABELS } from '../userview_constants';

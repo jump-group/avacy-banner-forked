@@ -14,8 +14,9 @@ export const monkey = (cookie) => {
     // Monkey patch the createElement method to prevent dynamic scripts from executing
     document.createElement = function(...args) {
         // If this is not a script tag, bypass
-        if(args[0].toLowerCase() !== 'script')
+        if(args[0].toLowerCase() !== 'script') {
             return createElementBackup.bind(document)(...args)
+        }
     
         const scriptElt = createElementBackup.bind(document)(...args)
     
@@ -52,7 +53,7 @@ export const monkey = (cookie) => {
                         let data = checkOnBlacklist(scriptElt.src, scriptElt.type)
                         let typeValue = value;
                         if (data[0]) {
-                            if (!hasConsent(scriptElt, cookie)) {
+                            if (!hasConsent(scriptElt, cookie, 'monkey_type')) {
                                 typeValue = TYPE_ATTRIBUTE;
                             }
                         }

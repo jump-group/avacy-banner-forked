@@ -1,6 +1,6 @@
 {
   "name": "@jumpgroup/avacy-banner",
-  "version": "2.7.4",
+  "version": "2.7.5",
   "description": "oil.js Opt-In Layer for consent management based on the IAB TCF Standard",
   "keywords": [
     "IAB Europe",
@@ -11,7 +11,7 @@
   "homepage": "https://www.oiljs.org",
   "author": "Axel Springer Ideas Engineering GmbH",
   "license": "GPL-2.0",
-  "main": "http_server.js",
+  "main": "dist/oil.2.7.5-SNAPSHOT.min.js",
   "scripts": {
     "start": "node http_server.js",
     "build:test": "npm run build && rm -rf dist/demos && rm -rf dist/docs && rm -rf dist/release",

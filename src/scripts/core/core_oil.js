@@ -82,7 +82,7 @@ export function initOilLayer() {
           .catch((e) => {
             logError('Locale could not be loaded.', e);
           });
-        demoPage(cookieData);
+        // demoPage(cookieData);
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start without found opt-in finished!'));
       }
       if (getQueryStringParam('prefcenter') && getQueryStringParam('prefcenter') === '1') {

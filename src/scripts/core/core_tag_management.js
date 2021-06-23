@@ -21,7 +21,7 @@ export function manageDomElementActivation() {
         manageElement(managedElements[i], cookie);
       }
     }
-    demoPage(cookie);
+    // demoPage(cookie);
   });
   
 }

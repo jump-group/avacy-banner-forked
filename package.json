@@ -1,6 +1,6 @@
 {
   "name": "@jumpgroup/avacy-banner",
-  "version": "2.7.5",
+  "version": "2.8.0",
   "description": "oil.js Opt-In Layer for consent management based on the IAB TCF Standard",
   "keywords": [
     "IAB Europe",

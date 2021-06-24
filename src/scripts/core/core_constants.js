@@ -45,6 +45,7 @@ export const OIL_CONFIG = {
   ATTR_REQUIRE_OPTOUT_CONFIRM: 'require_optout_confirm',
   ATTR_INFO_BANNER_ONLY: 'info_banner_only',
   ATTR_SUPPRESS_COOKIES: 'suppress_cookies',
+  ATTR_AUTO_LANGUAGE: 'auto_language',
   ATTR_LANGUAGE: 'language',
   ATTR_LANGUAGES_LIST: 'languages',
   ATTR_VISUAL_CONFIGURATION: 'visual_configuration',
@@ -99,6 +100,7 @@ export const OIL_PAYLOAD_LOCALE_VARIANT_NAME = 'lvn';
 export const OIL_PAYLOAD_LOCALE_VARIANT_VERSION = 'lvv';
 export const OIL_PAYLOAD_CUSTOM_PURPOSES = 'cp';
 export const OIL_PAYLOAD_CUSTOM_VENDORLIST_VERSION = 'cvl';
+export const OIL_PAYLOAD_CUSTOM_VENDORLIST = 'cvlist';
 export const OIL_PAYLOAD_CONFIG_VERSION = 'cv';
 export const OIL_PAYLOAD_POLICY_VERSION = 'pv';
 export const OIL_PAYLOAD_ADDITIONAL_CONSENT_STRING = 'atp';
@@ -131,5 +133,7 @@ export const MANAGED_TAG_IDENTIFIER_ATTRIBUTE = 'data-managed';
 export const MANAGED_TAG__ATTRIBUTES = {
   PURPOSES_ATTRIBUTE: 'data-purposes',
   LEGINT_ATTRIBUTE: 'data-legints',
-  SPECIAL_FEATURES_ATTRIBUTE: 'data-special-features'
+  SPECIAL_FEATURES_ATTRIBUTE: 'data-special-features',
+  CUSTOM_VENDOR_ATTRIBUTE: 'data-custom-vendor',
+  IAB_VENDOR_ATTRIBUTE: 'data-iab-vendor'
 }

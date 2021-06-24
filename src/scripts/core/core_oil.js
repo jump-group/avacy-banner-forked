@@ -109,7 +109,7 @@ function onDomContentLoaded() {
   document.removeEventListener('DOMContentLoaded', onDomContentLoaded);
   sendEventToHostSite('oil-dom-loaded');
   if (window.CLIENT_SIDE_BLOCKING && window.CLIENT_SIDE_BLOCKING.active) {
-    observer.disconnect();
+    window.CLIENT_SIDE_BLOCKING.observer.disconnect();
   }
   if(window.AS_OIL.isInCollection('oil-checked-optin')) {
     manageDomElementActivation();

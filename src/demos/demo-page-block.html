@@ -141,7 +141,15 @@
     <script id="avacy-blocking">
         CLIENT_SIDE_BLOCKING = {
             active: true,
-            blacklist: [],
+            blacklist: [
+                {
+                    pattern: /platform-api.sharethis.com/,
+                    rules: {
+                        'data-purposes': [1,6,8],
+                        'data-iab-vendor': 33
+                    }
+                },
+            ],
         }
     </script>
     <script id="oil-configuration" type="application/configuration">
@@ -151,9 +159,10 @@
             "advanced_settings": true,
             "iabVendorListUrl": "https://cdn.jumpgroup.it/assets/",
             "timeout": -1,
-            "poi_activate_poi": true,
+            "poi_activate_poi": false,
             "poi_group_name": "GroupCookieName",
-            "poi_hub_origin": "https://demo-cookiebuster.jumpgroup.it",
+            "poi_hub_origin": "http://localhost:5000",
+            "customVendorListUrl": "https://cdn.jumpgroup.it/assets/configurations/test/custom-vendor-list.json",
             "poi_hub_path": "/hub.html",
             "show_limited_vendors_only": true,
             "iabVendorWhitelist": [11, 21, 25, 33, 50, 52, 60, 66, 77, 92, 243, 264, 323, 373, 385, 394, 450, 553, 565, 573, 584, 613, 615, 620, 628, 647, 755, 788, 793, 804],
@@ -282,7 +291,8 @@
                 </ul>
             </div>
             <div class="SectionBlock__Script">
-                <script data-managed="as-oil" type="as-oil" data-type="text/javascript" data-purposes="1,6,8" data-src="https://platform-api.sharethis.com/js/sharethis.js#property=602fe27649da5b00114efa08&product=inline-share-buttons" async="async"></script>  
+                <!-- <script data-iab-vendor="33" data-managed="as-oil" type="as-oil" data-type="text/javascript" data-purposes="1,6,8" data-src="https://platform-api.sharethis.com/js/sharethis.js#property=602fe27649da5b00114efa08&product=inline-share-buttons" async="async"></script>   -->
+                <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=602fe27649da5b00114efa08&product=inline-share-buttons"></script>  
                 <div class="sharethis-inline-share-buttons"></div>
             </div>
         </section>

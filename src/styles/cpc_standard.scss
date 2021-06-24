@@ -16,6 +16,10 @@
 
   button {
     cursor: pointer;
+
+    &:hover {
+      background-color: transparent;
+    }
   }
 
   .as-oil {

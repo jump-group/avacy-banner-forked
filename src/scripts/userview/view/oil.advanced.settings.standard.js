@@ -1,7 +1,6 @@
 import '../../../styles/cpc_standard.scss';
 import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl } from '../../core/core_config'
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../../core/core_constants';
-import { setGlobalOilObject } from '../../core/core_utils';
 import { getCustomVendorList, getAdditionalConsentList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay } from '../../core/core_vendor_lists';
 import { getLabel, getLabelWithDefault } from '../userview_config';
 import { OIL_LABELS } from '../userview_constants';
@@ -39,9 +38,6 @@ export function attachCpcHandlers() {
   });
   forEach(document.querySelectorAll('.as-js-btn-object-all'), (domNode) => {
     domNode && domNode.addEventListener('change', objectAllLegint, false);
-  });
-  forEach(document.querySelectorAll('.as-js-vendor-legint-slider'), (domNode) => {
-    domNode && domNode.addEventListener('change', legintObjectStatus, false);
   });
   forEach(document.querySelectorAll('.js-legint-info'), (domNode) => {
     domNode && domNode.addEventListener('click', triggerInfoPanel, false);
@@ -277,7 +273,7 @@ const buildCustomVendorEntries = () => {
       customVendors = Object.values(customVendors)
     }
     customVendors = customVendors.map((element) => {
-      return buildVendorListEntry(element);
+      return buildCustomVendorListEntry(element);
     });
     return `<div class="as-oil-poi-group-list">${customVendors.join('')}</div>`;
   } else {
@@ -314,6 +310,34 @@ const buildVendorListEntry = (element) => {
                   <span class='as-oil-third-party-name'>${element.name}</span>
               </span>
                 ${snippetVendorConsent(element.id)}
+              <div class='as-oil-third-party-toggle-part' style='display: none;'>
+                <a class='as-oil-third-party-link' href='${element.policyUrl}'>${element.policyUrl}</a>  
+                ${snippetLegalDescription(element.purposes, 'purposes', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_CONSENT))}
+                ${snippetLegalDescription(element.legIntPurposes, 'purposes', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_LEG_INT))}
+                ${snippetLegalDescription(element.specialPurposes, 'specialPurposes', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_SPECIAL_PURPOSES))}
+                ${snippetLegalDescription(element.features, 'features', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_FEATURES))}
+                ${snippetLegalDescription(element.specialFeatures, 'specialFeatures', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_SPECIAL_FEATURES))}
+              </div>
+              ${element.legIntPurposes.length > 0 ? snippetLengint(element.id) : ''}
+            </div>
+          `;
+  }
+};
+
+const buildCustomVendorListEntry = (element) => {
+  if (element.name) {
+    return `
+          <div class="as-oil-third-party-list-element Vendor">
+              <span class="Vendor__Heading" onclick='${OIL_GLOBAL_OBJECT_NAME}._toggleViewElements(this)'>
+                  <svg class='as-oil-icon-plus' width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.675 4.328H10v1.344H5.675V10h-1.35V5.672H0V4.328h4.325V0h1.35z" fill="#0068FF" fill-rule="evenodd" fill-opacity=".88"/>
+                  </svg>
+                  <svg class='as-oil-icon-minus' style='display: none;' width="10" height="5" viewBox="0 0 10 5" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0h10v1.5H0z" fill="#3B7BE2" fill-rule="evenodd" opacity=".88"/>
+                  </svg>
+                  <span class='as-oil-third-party-name'>${element.name}</span>
+              </span>
+                ${snippetCustomVendorConsent(element.id)}
               <div class='as-oil-third-party-toggle-part' style='display: none;'>
                 <a class='as-oil-third-party-link' href='${element.policyUrl}'>${element.policyUrl}</a>  
                 ${snippetLegalDescription(element.purposes, 'purposes', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_CONSENT))}
@@ -385,6 +409,15 @@ const snippetVendorConsent = (id) => {
   `;
 }
 
+const snippetCustomVendorConsent = (id) => {
+  return `
+    <label class="as-oil-cpc__switch">
+      <input data-id="${id}" id="as-js-custom-vendor-slider-${id}" class="as-js-custom-vendor-slider" type="checkbox" name="oil-cpc-purpose" value=""/>
+      <span class="as-oil-cpc__slider"></span>
+    </label>
+  `;
+}
+
 const snippetAdditionalConsent = (id) => {
   return `
     <label class="as-oil-cpc__switch">
@@ -432,17 +465,19 @@ const formatPurposeId = (id) => {
 };
 
 function activateAll() {
-  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider, .as-js-additional-consent-slider');
+  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-purpose-legint-slider, .as-js-specialFeature-slider, .as-js-vendor-slider, .as-js-custom-vendor-slider, .as-js-additional-consent-slider, .as-js-vendor-legint-slider');
   forEach(elements, (domNode) => {
     domNode && (domNode.checked = true);
   });
+  legintObjectStatus();
 }
 
 export function deactivateAll() {
-  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-specialFeature-slider, .as-js-vendor-slider, .as-js-additional-consent-slider');
+  let elements = document.querySelectorAll('.as-js-purpose-slider, .as-js-purpose-legint-slider, .as-js-specialFeature-slider, .as-js-vendor-slider, .as-js-custom-vendor-slider, .as-js-additional-consent-slider, .as-js-vendor-legint-slider');
   forEach(elements, (domNode) => {
     domNode && (domNode.checked = false);
   });
+  legintObjectStatus();
 }
 
 export function objectAllLegint() {

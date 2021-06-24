@@ -11,11 +11,12 @@ export function getSpecialFeaturesAllowed(TCModel) {
   return getOptinsPreferences(TCModel, 'specialFeature');
 }
 
-export function getAllPreferences(TCModel, addtlConsent) {
+export function getAllPreferences(TCModel, addtlConsent, customVendor) {
   return {
     addtlConsent: addtlConsent,
     purpose: getPurposesAllowed(TCModel),
     vendor: getVendorsAllowed(TCModel),
+    customVendor: customVendor,
     specialFeature: getSpecialFeaturesAllowed(TCModel)
   }
 }

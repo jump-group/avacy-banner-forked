@@ -13,7 +13,7 @@ import {
 import { getAllPreferences } from './core_consents';
 import { getLocaleVariantVersion } from './core_utils';
 import { ADDITIONAL_CONSENT_VERSION, OIL_SPEC } from './core_constants';
-import { getCustomVendorListVersion, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders } from './core_vendor_lists';
+import { getCustomVendorListVersion, getCustomVendorList, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders } from './core_vendor_lists';
 import { OilVersion } from './core_utils';
 import { TCModel, TCString } from 'didomi-iabtcf-core';
 import { consentStore } from './core_consent_store';
@@ -91,6 +91,7 @@ export function setSoiCookieWithPoiCookieData(poiCookieJson) {
         localeVariantName: cookieConfig.defaultCookieContent.localeVariantName,
         localeVariantVersion: cookieConfig.defaultCookieContent.localeVariantVersion,
         customVendorListVersion: poiCookieJson.customVendorListVersion,
+        customVendorList: poiCookieJson.customVendorList,
         customPurposes: poiCookieJson.customPurposes,
         consentString: !isInfoBannerOnly() ? consentString : '',
         configVersion: configVersion,
@@ -184,6 +185,7 @@ export function buildSoiCookie(privacySettings) {
         localeVariantName: cookieConfig.defaultCookieContent.localeVariantName,
         localeVariantVersion: cookieConfig.defaultCookieContent.localeVariantVersion,
         customVendorListVersion: getCustomVendorListVersion(),
+        customVendorList: getCustomVendorsWithConsent(privacySettings),
         customPurposes: getCustomPurposesWithConsent(privacySettings),
         consentString: !isInfoBannerOnly() ? TCString.encode(consentData) : '',
         configVersion: cookieConfig.defaultCookieContent.configVersion,
@@ -206,7 +208,7 @@ export function setSoiCookie(privacySettings) {
       //TODO: da rivedere, ma ho bisogno di fare l'update prima di settare il cookie.
       updateTcfApi(cookie, false, cookie.addtlConsent);
       setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays());
-      consentStore().writeDecodedRaiConsentSDK(getAllPreferences(consentData, cookie.addtlConsent));
+      consentStore().writeDecodedRaiConsentSDK(getAllPreferences(consentData, cookie.addtlConsent, cookie.customVendor));
 
       resolve(cookie);
     }).catch(error => reject(error));
@@ -284,6 +286,14 @@ export function getStandardPurposesWithConsent(privacySettings) {
     return getPurposes().map(({ id }) => id).filter(purposeId => privacySettings[purposeId]);
   } else {
     return privacySettings === 1 ? getPurposes().map(({ id }) => id) : [];
+  }
+}
+
+export function getCustomVendorsWithConsent(privacySettings) {
+  if (typeof privacySettings === 'object') {
+    return Object.entries(privacySettings.customVendor).filter(item => item[1].consent).map(item => item[0]);
+  } else {
+    return privacySettings === 1 ? Object.entries(getCustomVendorList().vendors).map(item => item[0]) : [];
   }
 }
 

@@ -23,6 +23,7 @@ export function initOilLayer() {
   }
 
   window.PAPYRI = window.AS_OIL;
+  window.AVACY = window.AS_OIL;
   registerDomElementActivationManager();
   attachUtilityFunctionsToWindowObject();
   

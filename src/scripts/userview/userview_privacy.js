@@ -141,26 +141,25 @@ function applyAdditionalConsent(addtlConsentString) {
   let providerList = addtlConsentString.replace(ADDITIONAL_CONSENT_VERSION, '').split('.');
   const addtlConsentSliders = document.querySelectorAll('.as-js-additional-consent-slider');
 
-  addtlConsentSliders.forEach(element => {
+  addtlConsentSliders && forEach(addtlConsentSliders, (element)=> {
     if (providerList.includes(element.dataset.id)) {
       element.checked = true;
     } else {
       element.checked = false;
     }
-  });
+  }, this);
 }
 
 function applyCustomVendorsSettings(vendors) {
 
   const customVendorSliders = document.querySelectorAll('.as-js-custom-vendor-slider');
-  
-  customVendorSliders.forEach(element => {
+  customVendorSliders && forEach(customVendorSliders, (element) => {
     if (vendors.includes(element.dataset.id)) {
       element.checked = true;
     } else {
       element.checked = false;
     }
-  });
+  }, this);
 }
 
 function applyPurposesSettings(purposes) {

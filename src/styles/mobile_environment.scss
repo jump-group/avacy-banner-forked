@@ -4,6 +4,7 @@
 
         .as-oil-content-overlay {
             overflow: scroll;
+            max-height: 100vh;
             max-height: var(--vh);
             position: initial;
 
@@ -34,6 +35,7 @@
         }
 
         .as-oil-cpc__middle {
+            max-height: calc(100vh / 3);
             max-height: calc(var(--vh) / 3);
             height: auto;
         }

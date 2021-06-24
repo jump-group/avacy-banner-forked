@@ -31,11 +31,11 @@
             margin: 0 1px;
             text-decoration: none;
             font-weight: 600;
-            color: $accent-color;
+            color: $accent-primary;
             color: var(--avacy_accent_primary);
 
             &:hover {
-                color: $accent-color;
+                color: $accent-primary;
                 color: var(--avacy_accent_primary);
             }
         }
@@ -85,7 +85,7 @@
         color: var(--avacy_text_color_primary);
 
         a {
-            color: $accent-color;
+            color: $accent-primary;
             color: var(--avacy_accent_primary);
             font-weight: 600;
             text-decoration: none;
@@ -104,8 +104,10 @@
         font-weight: 600;
         color: $text-color-primary;
         color: var(--avacy_text_color_primary);
+        min-width: 110px;
+
         &--active {
-            color: $accent_primary;
+            color: $accent-primary;
             color: var(--avacy_accent_secondary, var(--avacy_text_color_secondary));
         }
     }

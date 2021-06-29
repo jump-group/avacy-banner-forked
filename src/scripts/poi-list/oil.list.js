@@ -107,6 +107,26 @@ function toggleMoreText(element) {
 
 setGlobalOilObject('_toggleMoreText', toggleMoreText);
 
+function toggleMoreStack(element) {
+  let item = element.parentElement;
+  let stackDetail = item.querySelector('.as-oil-cpc__stack-detail');
+  let moreBtn = item.querySelector('.as-oil-cpc__stack-more')
+
+  const styleDisplayInlineBlock = 'display: block; animation: fadein 0.5s';
+  const styleDisplayNone = 'display: none';
+
+  if (stackDetail.style.display === 'none') {
+    stackDetail.setAttribute('style', styleDisplayInlineBlock);
+    moreBtn.innerText = getLabel(OIL_LABELS.ATTR_LABEL_CPC_LESS_STACK);
+  } else {
+    stackDetail.setAttribute('style', styleDisplayNone);
+    moreBtn.innerText = getLabel(OIL_LABELS.ATTR_LABEL_CPC_MORE_STACK);
+  }
+}
+
+setGlobalOilObject('_toggleMoreStack', toggleMoreStack);
+
+
 function attachCssToHtmlAndDocument() {
   if (window.matchMedia && window.matchMedia('(max-width: 600px)').matches) {
     setGlobalOilObject('oilCache', {

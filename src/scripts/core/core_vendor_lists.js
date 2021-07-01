@@ -1,5 +1,5 @@
 //REVIEW: changes in todo comments @tcf2
-import { getCustomVendorListUrl, getAdditionalConsentListUrl, getIabVendorBlacklist, getIabVendorListDomain, getIabVendorWhitelist, getShowLimitedVendors, getLanguageFromConfigObject, getAtpWhitelist } from './core_config';
+import { getCustomVendorListUrl, getAdditionalConsentListUrl, getIabVendorBlacklist, getIabVendorListDomain, getIabVendorWhitelist, getShowLimitedVendors, getLanguageFromConfigObject, getAtpWhitelist, getRequiredStacks } from './core_config';
 import { logError, logInfo } from './core_log';
 import { fetchJsonData } from './core_utils';
 import { GVL } from 'didomi-iabtcf-core';
@@ -126,6 +126,10 @@ async function getGlobalVendorListPromise() {
     return iabGvl;
   });
 
+}
+
+export function getFullPurposes() {
+  return cachedVendorList ? cachedVendorList.purposes : expandIdsToObjects(DEFAULT_VENDOR_LIST.purposeIds);
 }
 
 export function getPurposes() {

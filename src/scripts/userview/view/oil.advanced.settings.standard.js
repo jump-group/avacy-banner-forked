@@ -1,7 +1,7 @@
 import '../../../styles/cpc_standard.scss';
 import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl } from '../../core/core_config'
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../../core/core_constants';
-import { getCustomVendorList, getAdditionalConsentList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay } from '../../core/core_vendor_lists';
+import { getCustomVendorList, getAdditionalConsentList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay, getStacks, getFullStacks } from '../../core/core_vendor_lists';
 import { getLabel, getLabelWithDefault } from '../userview_config';
 import { OIL_LABELS } from '../userview_constants';
 import { forEach } from '../userview_modal';
@@ -36,8 +36,14 @@ export function attachCpcHandlers() {
   forEach(document.querySelectorAll('.as-js-btn-deactivate-all'), (domNode) => {
     domNode && domNode.addEventListener('click', deactivateAll, false);
   });
+  forEach(document.querySelectorAll('.as-js-stack-slider'), (domNode) => {
+    domNode && domNode.addEventListener('change', stacksToggles, false);
+  });
   forEach(document.querySelectorAll('.as-js-btn-object-all'), (domNode) => {
-    domNode && domNode.addEventListener('change', objectAllLegint, false);
+    domNode && domNode.addEventListener('change', objectAllLegint(domNode), false);
+  });
+  forEach(document.querySelectorAll('.js-stack .as-js-purpose-slider'), (domNode) => {
+    domNode && domNode.addEventListener('change', stacksObjectStatus, false);
   });
   forEach(document.querySelectorAll('.js-legint-info'), (domNode) => {
     domNode && domNode.addEventListener('click', triggerInfoPanel, false);
@@ -86,6 +92,7 @@ const ContentSnippet = () => {
       <div class="as-oil-cpc__row-title" id="as-oil-cpc-purposes">
       ${getLabel(OIL_LABELS.ATTR_LABEL_CPC_PURPOSE_TITLE)}
       </div>
+      ${getFullStacks() ? buildStackEntries(getFullStacks(), 'stack') : ''}
       ${buildPurposeEntries(getPurposes(), 'purpose')}
       ` : ''}
 
@@ -125,6 +132,29 @@ const ContentSnippet = () => {
     </div>
   </div>
 </div>`;
+};
+
+const StackContainerSnippet = ({ id, header, text, purposes, value, key }) => {
+  return `
+    <div class="as-oil-cpc__purpose Purpose js-stack">
+        <div class="as-oil-cpc__purpose-container Purpose__Container js-stack-container">
+            <div class="Purpose__Heading">
+              <div class="as-oil-cpc__purpose-header Purpose__Title">${header}</div>
+              <div class="Purpose__Switches">
+                <label class="as-oil-cpc__switch Purpose__Switch Purpose__Switch--Consent">
+                    <input data-id="${id}" id="as-js-${key}-slider-${id}" class="as-js-${key}-slider" type="checkbox" name="oil-cpc-${key}-${id}" value="${value}"/>
+                    <span class="as-oil-cpc__slider Purpose__SwitchSlider"></span>
+                </label>
+              </div>
+            </div>
+            <div class="as-oil-cpc__purpose-text">${text}</div>
+            ${snippetStackMore()}
+
+            <div class="as-oil-cpc__stack-detail" style="display: none">
+              ${buildPurposeEntries(purposes, 'purpose')}
+            </div> 
+        </div>
+    </div>`
 };
 
 const PurposeContainerSnippet = ({ id, header, text, legalText, value, key }) => {
@@ -175,6 +205,12 @@ const snippetPurposeLengint = (id, key, value) => {
 const snippetTextMore = () => {
   return `
     <span class="as-oil-cpc__purpose-more" onClick='${OIL_GLOBAL_OBJECT_NAME}._toggleMoreText(this)'>${getLabel(OIL_LABELS.ATTR_LABEL_CPC_READ_MORE)}</span>
+  `;
+}
+
+const snippetStackMore = () => {
+  return `
+    <span class="as-oil-cpc__stack-more" onClick='${OIL_GLOBAL_OBJECT_NAME}._toggleMoreStack(this)'>${getLabel(OIL_LABELS.ATTR_LABEL_CPC_MORE_STACK)}</span>
   `;
 }
 
@@ -460,6 +496,23 @@ const buildPurposeEntries = (list, key = undefined) => {
   }).join('');
 };
 
+const buildStackEntries = (list, key = undefined) => {
+  if (typeof (list) === 'object') {
+    list = Object.values(list)
+  }
+
+  return list.map(stack => {
+    return StackContainerSnippet({
+      id: stack.id,
+      header: getLabelWithDefault(`label_cpc_purpose_${formatPurposeId(stack.id)}_text`, stack.name || `Error: Missing text for purpose with id ${purpose.id}!`),
+      text: getLabelWithDefault(`label_cpc_purpose_${formatPurposeId(stack.id)}_desc`, stack.description || ''),
+      purposes: stack.fullPurposes,
+      value: false,
+      key: key
+    })
+  }).join('');
+};
+
 const formatPurposeId = (id) => {
   return id < 10 ? `0${id}` : id;
 };
@@ -470,6 +523,7 @@ function activateAll() {
     domNode && (domNode.checked = true);
   });
   legintObjectStatus();
+  stacksObjectStatus();
 }
 
 export function deactivateAll() {
@@ -478,6 +532,7 @@ export function deactivateAll() {
     domNode && (domNode.checked = false);
   });
   legintObjectStatus();
+  stacksObjectStatus();
 }
 
 export function objectAllLegint() {

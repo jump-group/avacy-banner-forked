@@ -129,7 +129,8 @@
         margin: 1rem 0;
     }
 
-    &__purpose-more {
+    &__purpose-more,
+    &__stack-more {
         font-size: 14px;
         font-size: calc(14px * var(--avacy_font_base_scale));
     }

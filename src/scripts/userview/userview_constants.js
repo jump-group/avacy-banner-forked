@@ -64,6 +64,10 @@ export const OIL_LABELS = {
   ATTR_LABEL_CPC_READ_MORE: 'label_cpc_read_more',
   ATTR_LABEL_CPC_READ_LESS: 'label_cpc_read_less',
 
+  // READ MORE
+  ATTR_LABEL_CPC_MORE_STACK: 'label_cpc_more_stack',
+  ATTR_LABEL_CPC_LESS_STACK: 'label_cpc_less_stack',
+
   // CPC TOGGLE
   ATTR_LABEL_CPC_CONSENT_TOGGLE: 'label_cpc_consent_toggle',
   ATTR_LABEL_CPC_LEGINT_TOGGLE: 'label_cpc_legint_toggle',

@@ -185,7 +185,7 @@ function applySpecialFeaturesSettings(specialFeatures) {
 }
 
 function applyVendorsSettings(vendors) {
-  getVendorIds().forEach(id => {
+  forEach(getVendorIds(), id => {
     if (vendors[id]) {
       document.querySelector(`#as-js-vendor-legint-slider-${id}`) && (document.querySelector(`#as-js-vendor-legint-slider-${id}`).checked = vendors[id].legint);
       document.querySelector(`#as-js-vendor-slider-${id}`) && (document.querySelector(`#as-js-vendor-slider-${id}`).checked = vendors[id].consent);

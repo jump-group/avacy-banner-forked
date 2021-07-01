@@ -3,6 +3,7 @@ import { getCustomVendorList, loadVendorListAndCustomVendorList } from './core_v
 import { logError } from './core_log';
 import { getSoiCookie } from './core_cookies';
 import { getPurposesAllowed } from './core_consents';
+import { forEach } from '../userview/userview_modal';
 
 // TODO: CAPIRE SE SERVE
 export function sendConsentInformationToCustomVendors() {
@@ -19,9 +20,9 @@ export function sendConsentInformationToCustomVendors() {
         // TODO getSoiCookie is not sufficient - possibly required information is in poi cookie and soi cookie does not exist (see OIL-336)
         let cookie = results[1];
         if (cookie && cookie.consentData) {
-          customVendors.forEach(customVendor => {
+          forEach(customVendors, customVendor => {
             sendConsentInformationToCustomVendor(customVendor, cookie.consentData)
-          });
+          })
         }
       }
     });

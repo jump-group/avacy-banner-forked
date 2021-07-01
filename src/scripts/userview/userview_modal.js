@@ -320,13 +320,13 @@ function setColorVariables(wrapper) {
   let default_colors = getDefaultVisualConfig().colors;
   let config_colors = getVisualConfig().colors;
 
-  Object.entries(default_colors).forEach(([key, value]) => {
+  forEach(Object.entries(default_colors), ([key, value]) => {
     if (config_colors[key] !== undefined) {
       wrapper.style.setProperty(`--avacy_${key}`,config_colors[key])
     } else if (value) {
       wrapper.style.setProperty(`--avacy_${key}`,value)
     }
-  });
+  })
 }
 
 function setFontBaseSize(wrapper) {

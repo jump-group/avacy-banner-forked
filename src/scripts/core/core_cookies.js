@@ -18,6 +18,7 @@ import { OilVersion } from './core_utils';
 import { TCModel, TCString } from 'didomi-iabtcf-core';
 import { consentStore } from './core_consent_store';
 import { updateTcfApi } from '../core/core_tcf_api';
+import { forEach } from './../userview/userview_modal';
 
 const COOKIE_PREVIEW_NAME = 'oil_preview';
 const COOKIE_VERBOSE_NAME = 'oil_verbose';
@@ -110,8 +111,8 @@ export function updateTCModel(privacySettings, tcModel) {
   tcModel.supportOOB = OIL_SPEC.SUPPORT_OOB;
   tcModel.isServiceSpecific = OIL_SPEC.IS_SERVICE_SPECIFIC;
   if (privacySettings !== 1) {
-    ['purpose', 'vendor'].forEach((category) => {
-      privacySettings[category] && Object.entries(privacySettings[category]).forEach((value) => {
+    forEach(['purpose', 'vendor'], (category) => {
+      privacySettings[category] && forEach(Object.entries(privacySettings[category]),(value) => {
         let id = Math.trunc(value[0]);
         let settings = value[1];
         let consentMethod = category + 'Consents';
@@ -129,10 +130,10 @@ export function updateTCModel(privacySettings, tcModel) {
           tcModel[legintMethod].unset(id);
         }
 
-      });
-    });
+      })
+    })
 
-    privacySettings.specialFeature && Object.entries(privacySettings.specialFeature).forEach((value) => {
+    privacySettings.specialFeature && forEach(Object.entries(privacySettings.specialFeature), (value) => {
       let id = Math.trunc(value[0]);
       let settings = value[1];
 
@@ -142,7 +143,7 @@ export function updateTCModel(privacySettings, tcModel) {
         tcModel.specialFeatureOptins.unset(id);
       }
 
-    });
+    })
 
     tcModel.addtlConsent = privacySettings.addtlConsent;
 

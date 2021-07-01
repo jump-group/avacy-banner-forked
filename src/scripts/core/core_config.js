@@ -165,6 +165,10 @@ export function getAtpWhitelist() {
   return getConfigValue(OIL_CONFIG.ATTR_ATP_WHITELIST, undefined);
 }
 
+export function getRequiredStacks() {
+  return getConfigValue(OIL_CONFIG.ATTR_USE_STACKS, undefined);
+}
+
 export function getIabVendorWhitelist() {
   return getConfigValue(OIL_CONFIG.ATTR_IAB_VENDOR_WHITELIST, undefined);
 }

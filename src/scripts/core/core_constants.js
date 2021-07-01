@@ -52,7 +52,8 @@ export const OIL_CONFIG = {
   ATTR_ADDITIONAL_CONSENT_LIST_URL: 'additionalConsentUrl',
   ATTR_ATP_WHITELIST: 'atpWhitelist',
   ATTR_DEVICE_ENVIRONMENT: 'deviceEnvironment',
-  ATTR_NATIVE_PUBLISHER: 'publisher'
+  ATTR_NATIVE_PUBLISHER: 'publisher',
+  ATTR_USE_STACKS: 'useStacks'
 };
 
 export const OIL_CONFIG_CPC_TYPES = {

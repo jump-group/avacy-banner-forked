@@ -3,6 +3,7 @@ import { getCustomVendorListUrl, getAdditionalConsentListUrl, getIabVendorBlackl
 import { logError, logInfo } from './core_log';
 import { fetchJsonData } from './core_utils';
 import { GVL } from 'didomi-iabtcf-core';
+import { forEach } from '../userview/userview_modal';
 
 export const DEFAULT_VENDOR_LIST = {
   vendorListVersion: 36, //TODO: @tcf2 @tc2soi
@@ -128,8 +129,56 @@ async function getGlobalVendorListPromise() {
 }
 
 export function getPurposes() {
+  let purposes = cachedVendorList ? cachedVendorList.purposes : expandIdsToObjects(DEFAULT_VENDOR_LIST.purposeIds);
   //REVIEW: need changes? @tcf2
-  return cachedVendorList ? cachedVendorList.purposes : expandIdsToObjects(DEFAULT_VENDOR_LIST.purposeIds);
+  if (getStacks()) {
+    let mergedStackPurposes = []
+    let filteredPurposes = {}
+
+    forEach(Object.entries(getStacks()), ([key, value]) => {
+      mergedStackPurposes = [...new Set([...mergedStackPurposes,...value.purposes])];
+    })
+
+    Object.keys(purposes).filter( (key) => {
+      if (!mergedStackPurposes.sort().includes(+key)) {
+        filteredPurposes[key] = purposes[key];
+      }
+    } );
+
+    return filteredPurposes;
+  }
+  return purposes;
+}
+
+export function getStacks() {
+  //REVIEW: need changes? @tcf2
+  let vendorListStacks = cachedVendorList ? cachedVendorList.stacks : undefined;
+  if (getRequiredStacks() && getRequiredStacks().length > 0) {
+    let filteredStacks = {};
+    Object.entries(vendorListStacks).filter(([key, value]) => {
+      if (getRequiredStacks().includes(+key)) {
+        filteredStacks[key] = value;
+      }
+    })
+
+    return Object.fromEntries(Object.entries(filteredStacks).sort((a,b) => b[1]-a[1]));
+  }
+
+  return undefined;
+}
+
+export function getFullStacks() {
+  if(getStacks() === undefined ) {
+    return undefined;
+  }
+  return Object.entries(getStacks()).map(([key, value]) => {
+    value.fullPurposes = {};
+    forEach(value.purposes, el => {
+      value.fullPurposes[el] = getFullPurposes()[el];
+    })
+
+    return value;
+  });
 }
 
 export function getSpecialPurposes() {
@@ -191,12 +240,12 @@ export function getAdditionalConsentList() {
   let wholeAdditionalConsent = cachedAdditionalConsent ? cachedAdditionalConsent : DEFAULT_ADDITIONAL_CONSENT_LIST;
   let additionalConsentList = wholeAdditionalConsent.providers;
   let atpWhitelist = [];
-  if (getAtpWhitelist() && getAtpWhitelist().length > 0) {      
-    getAtpWhitelist().forEach(element => {
+  if (getAtpWhitelist() && getAtpWhitelist().length > 0) {     
+    forEach(getAtpWhitelist(), element => {
       if (additionalConsentList[element] !== undefined ) {
         atpWhitelist[element] = additionalConsentList[element];
       }
-    });
+    }) 
     return atpWhitelist;
   }
   return additionalConsentList;

@@ -10,6 +10,7 @@ import { manageDomElementActivation, demoPage } from './core_tag_management';
 import { sendConsentInformationToCustomVendors } from './core_custom_vendors';
 import { getPurposes, clearVendorListCache } from './core_vendor_lists';
 import { consentStore } from './core_consent_store';
+import { forEach } from '../userview/userview_modal';
 import { observer } from './../element-observer/observer';
 /**
  * Initialize Oil on Host Site
@@ -290,11 +291,11 @@ function attachUtilityFunctionsToWindowObject() {
     let count = 0;
     let collection = window.AS_OIL.eventCollection;
     if (collection) {
-      collection.forEach(element => {
+      forEach(collection, element => {
         if (element.name === event_name) {
           count = count + 1;
         }
-      });
+      })
     }
     return count;
   })

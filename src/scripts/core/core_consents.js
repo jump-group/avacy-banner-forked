@@ -1,3 +1,5 @@
+import { forEach } from './../userview/userview_modal';
+
 //function to get purposes from TCModel
 export function getPurposesAllowed(TCModel) {
   return getLegalBasisPreferences(TCModel, 'purpose');
@@ -28,16 +30,16 @@ function getLegalBasisPreferences(TCModel, category) {
 
   let categoryLegalBasis = {};
 
-  TCModel[consentMethod].forEach((checked, id) => {
+  forEach(TCModel[consentMethod], (checked, id) => {
     if (checked) {
       if (!categoryLegalBasis[id]) {
         categoryLegalBasis[id] = {}
       }
       categoryLegalBasis[id].consent = true;
     }
-  });
+  })
 
-  TCModel[legintMethod].forEach((checked, id) => {
+  forEach(TCModel[legintMethod], (checked, id) => {
     if (checked) {
       if (!categoryLegalBasis[id]) {
         categoryLegalBasis[id] = {}
@@ -45,6 +47,7 @@ function getLegalBasisPreferences(TCModel, category) {
       categoryLegalBasis[id].legint = true;
     }
   });
+
   return categoryLegalBasis;
 }
 
@@ -55,14 +58,14 @@ function getOptinsPreferences(TCModel, category) {
 
   let categoryOptins = {};
 
-  TCModel[consentMethod].forEach((checked, id) => {
+  forEach(TCModel[consentMethod], (checked, id) => {
     if (checked) {
       if (!categoryOptins[id]) {
         categoryOptins[id] = {}
       }
       categoryOptins[id].optin = true;
     }
-  });
+  })
 
   return categoryOptins;
 }

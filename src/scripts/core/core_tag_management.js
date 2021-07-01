@@ -5,6 +5,7 @@ import { arrayContainsArray, sendEventToHostSite } from './core_utils';
 import { getPurposeIds, getSpecialFeatureIds, getLegintIds, getCustomVendorIds } from './core_vendor_lists';
 import { getCustomPurposeIds, gdprApplies } from './core_config';
 import { backupIframes } from './../element-observer/variables';
+import { forEach } from './../userview/userview_modal';
 import { observer } from './../element-observer/observer';
 
 export function manageDomElementActivation() {
@@ -165,31 +166,31 @@ export function hasConsent(element, cookie, from = 'oil') {
     let necessaryIabVendors = getNecessaryIabVendors(element);
 
     let allowedPurposes = [];
-    cookie.consentData.purposeConsents.set_.forEach(element => {
+    forEach(cookie.consentData.purposeConsents.set_, element => {
       allowedPurposes.push(element)
-    });
+    })
 
     let allowedLegint = [];
-    cookie.consentData.purposeLegitimateInterests.set_.forEach(element => {
+    forEach(cookie.consentData.purposeLegitimateInterests.set_, element => {
       allowedLegint.push(element)
-    });
+    })
 
     let allowedSpecialFeature = [];
-    cookie.consentData.specialFeatureOptins.set_.forEach(element => {
+    forEach(cookie.consentData.specialFeatureOptins.set_, element => {
       allowedSpecialFeature.push(element)
-    });
+    })
 
     allowedPurposes = allowedPurposes ? allowedPurposes.concat(cookie.customPurposes) : cookie.customPurposes;
 
     let allowedCustomVendors = [];
-    cookie.customVendorList.forEach(element => {
+    forEach(cookie.customVendorList, element => {
       allowedCustomVendors.push(element)
-    });
+    })
 
     let allowedIabVendors = [];
-    cookie.consentData.vendorConsents.set_.forEach(element => {
+    forEach(cookie.consentData.vendorConsents.set_, element => {
       allowedIabVendors.push(element)
-    });
+    })
 
     let purposesResult = arrayContainsArray(allowedPurposes, necessaryPurposes);
     let legintResult = arrayContainsArray(allowedLegint, necessaryLegint);
@@ -203,96 +204,96 @@ export function hasConsent(element, cookie, from = 'oil') {
   }
 }
 
-export function demoPage(cookie) {
-  let purposes = [
-    {
-        name: 'Archiviare e/o accedere a informazioni su un dispositivo',
-        status: false
-    },
-    {
-        name: 'Selezionare annunci basici (basic ads)',
-        status: false
-    },
-    {
-        name: 'Creare un profilo di annunci personalizzati',
-        status: false
-    },
-    {
-        name: 'Selezionare annunci personalizzati',
-        status: false
-    },
-    {
-        name: 'Creare un profilo di contenuto personalizzato',
-        status: false
-    },
-    {
-        name: 'Selezionare contenuti personalizzati',
-        status: false
-    },
-    {
-        name: 'Valutare le performance degli annunci',
-        status: false
-    },
-    {
-        name: 'Valutare le performance dei contenuti',
-        status: false
-    },
-    {
-        name: 'Applicare ricerche di mercato per generare approfondimenti sul pubblico',
-        status: false
-    },
-    {
-        name: 'Sviluppare e perfezionare i prodotti',
-        status: false
-    }
-  ];
-  if (cookie.opt_in === true) {
-    cookie.consentData.purposeConsents.set_.forEach(element => {
-      purposes[element-1].status = true;
-
-    });
-  }
-  setConsentsStatus(purposes);
-  setScriptsStatus(purposes)
-}
+// export function demoPage(cookie) {
+//   let purposes = [
+//     {
+//         name: 'Archiviare e/o accedere a informazioni su un dispositivo',
+//         status: false
+//     },
+//     {
+//         name: 'Selezionare annunci basici (basic ads)',
+//         status: false
+//     },
+//     {
+//         name: 'Creare un profilo di annunci personalizzati',
+//         status: false
+//     },
+//     {
+//         name: 'Selezionare annunci personalizzati',
+//         status: false
+//     },
+//     {
+//         name: 'Creare un profilo di contenuto personalizzato',
+//         status: false
+//     },
+//     {
+//         name: 'Selezionare contenuti personalizzati',
+//         status: false
+//     },
+//     {
+//         name: 'Valutare le performance degli annunci',
+//         status: false
+//     },
+//     {
+//         name: 'Valutare le performance dei contenuti',
+//         status: false
+//     },
+//     {
+//         name: 'Applicare ricerche di mercato per generare approfondimenti sul pubblico',
+//         status: false
+//     },
+//     {
+//         name: 'Sviluppare e perfezionare i prodotti',
+//         status: false
+//     }
+//   ];
+//   if (cookie.opt_in === true) {
+//     forEach(cookie.consentData.purposeConsents.set_, element => {
+//       purposes[element-1].status = true;
+//     })
+//   }
+//   setConsentsStatus(purposes);
+//   setScriptsStatus(purposes)
+// }
 
 function setConsentsStatus(purposes) {
   let consentsListElement = document.querySelector('.ConsentStatus__List');
   if (consentsListElement) {
         consentsListElement.innerHTML = '';
-        purposes.forEach((el, index) => {
-            let newLi = document.createElement('li');
-            let name = el.name;
-            let status = !!el.status;
-            newLi.classList.add('ConsentStatus__PurposeItem');
-            if (status === true) {
-                newLi.classList.add('is-active');
-            }
-            let statusLabel = status ? 'Attivo' : 'Disattivo'
-            newLi.innerHTML = index+1 + '. ' + name + '<span class="ConsentStatus__PurposeStatus">'+ statusLabel +'</span>';
-            consentsListElement.appendChild(newLi);
-        });
+
+        forEach(purposes, (el, index) => {
+          let newLi = document.createElement('li');
+          let name = el.name;
+          let status = !!el.status;
+          newLi.classList.add('ConsentStatus__PurposeItem');
+          if (status === true) {
+              newLi.classList.add('is-active');
+          }
+          let statusLabel = status ? 'Attivo' : 'Disattivo'
+          newLi.innerHTML = index+1 + '. ' + name + '<span class="ConsentStatus__PurposeStatus">'+ statusLabel +'</span>';
+          consentsListElement.appendChild(newLi);
+      })
   }
 }
 
 function setScriptsStatus(purposes) {
   let sectionBlocks = document.querySelectorAll('.SectionBlock');
   if (sectionBlocks) {
-    sectionBlocks.forEach(block => {
+    forEach(sectionBlocks, block => {
       let blockConsents = block.querySelectorAll('.SectionBlock__ConsentListItem');
       let sectionBlockStatus = block.querySelector('.SectionBlock__Status');
       let count = 0;
-      blockConsents.forEach(element => {
+      forEach(blockConsents, element => {
         if (purposes[element.dataset.purpose-1].status) {
           element.classList.add('is-active');
           count +=1
         }
-      });
+      })
       if (count === blockConsents.length) {
         block.classList.add('is-active');
         sectionBlockStatus.innerText = 'Abilitato';
       }
-    });
+    })
   }
 }
 

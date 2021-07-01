@@ -488,6 +488,21 @@ export function objectAllLegint() {
   });
 }
 
+export function stacksToggles(domNode) {
+  let purposesInStack = domNode.srcElement.closest('.js-stack-container').querySelectorAll('.as-js-purpose-slider');
+  forEach(purposesInStack, element => {
+    element.checked = domNode.srcElement.checked ? true : false;
+  });
+}
+
+export function stacksObjectStatus() {
+  let stackPanels = document.querySelectorAll('.js-stack');
+  forEach(stackPanels, panel => {
+    let stackPurposes = panel.querySelectorAll('.as-js-purpose-slider');
+    panel.querySelector('.as-js-stack-slider').checked = Array.prototype.slice.call(stackPurposes).every(x => x.checked);
+  })
+}
+
 export function legintObjectStatus() {
   let elements = document.querySelectorAll('.as-js-vendor-legint-slider');
   document.querySelector('.as-js-btn-object-all').checked = Array.prototype.slice.call(elements).some(x => x.checked);

@@ -41,7 +41,7 @@
     "label_additional_consent_heading": "Google Partner",
     "label_cpc_read_more": "Leggi di più...",
     "label_cpc_read_less": "Leggi di meno.",
-    "label_cpc_more_stack": "Apri Stack",
-    "label_cpc_less_stack": "Chiudi Stack"
+    "label_cpc_more_stack": "Apri Dettaglio",
+    "label_cpc_less_stack": "Chiudi Dettaglio"
   }
 }

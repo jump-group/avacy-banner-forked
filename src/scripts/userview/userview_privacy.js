@@ -2,7 +2,7 @@ import { getSoiCookie } from '../core/core_cookies';
 import { PRIVACY_FULL_TRACKING, ADDITIONAL_CONSENT_VERSION } from '../core/core_constants';
 import { logInfo } from '../core/core_log';
 import { forEach } from './userview_modal';
-import { getPurposes, getSpecialFeatures, getVendorIds, getAdditionalConsentList } from '../core/core_vendor_lists';
+import { getPurposes, getSpecialFeatures, getVendorIds, getAdditionalConsentList, getFullPurposes } from '../core/core_vendor_lists';
 import { replace } from 'core-js/fn/symbol';
 
 // export function getSoiConsentData() {
@@ -163,7 +163,7 @@ function applyCustomVendorsSettings(vendors) {
 }
 
 function applyPurposesSettings(purposes) {
-  for (let i = 1; i <= Object.keys(getPurposes()).length; i++) {
+  for (let i = 1; i <= Object.keys(getFullPurposes()).length; i++) {
     if (purposes[i]) {
       document.querySelector(`#as-js-purpose-slider-${i}`) && (document.querySelector(`#as-js-purpose-slider-${i}`).checked = purposes[i].consent);
       document.querySelector(`#as-js-legint-slider-${i}`) && (document.querySelector(`#as-js-legint-slider-${i}`).checked = purposes[i].legint);

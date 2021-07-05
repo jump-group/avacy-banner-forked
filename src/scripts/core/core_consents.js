@@ -1,5 +1,3 @@
-import { forEach } from './../userview/userview_modal';
-
 //function to get purposes from TCModel
 export function getPurposesAllowed(TCModel) {
   return getLegalBasisPreferences(TCModel, 'purpose');
@@ -30,7 +28,7 @@ function getLegalBasisPreferences(TCModel, category) {
 
   let categoryLegalBasis = {};
 
-  forEach(TCModel[consentMethod], (checked, id) => {
+  TCModel[consentMethod].forEach((checked, id) => {
     if (checked) {
       if (!categoryLegalBasis[id]) {
         categoryLegalBasis[id] = {}
@@ -39,7 +37,7 @@ function getLegalBasisPreferences(TCModel, category) {
     }
   })
 
-  forEach(TCModel[legintMethod], (checked, id) => {
+  TCModel[legintMethod].forEach((checked, id) => {
     if (checked) {
       if (!categoryLegalBasis[id]) {
         categoryLegalBasis[id] = {}
@@ -58,7 +56,7 @@ function getOptinsPreferences(TCModel, category) {
 
   let categoryOptins = {};
 
-  forEach(TCModel[consentMethod], (checked, id) => {
+  TCModel[consentMethod].forEach((checked, id) => {
     if (checked) {
       if (!categoryOptins[id]) {
         categoryOptins[id] = {}

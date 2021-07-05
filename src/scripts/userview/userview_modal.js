@@ -103,6 +103,7 @@ export function oilShowPreferenceCenter(mode) {
           }
           getSoiCookie().then(soiCookie => {
             applyPrivacySettings(getCurrentPrivacySettings(soiCookie));
+            AdvancedSettingsStandard.stacksObjectStatus();
           });
         });
       });

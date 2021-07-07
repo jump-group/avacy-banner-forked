@@ -11,7 +11,7 @@ import { sendConsentInformationToCustomVendors } from './core_custom_vendors';
 import { getPurposes, clearVendorListCache } from './core_vendor_lists';
 import { consentStore } from './core_consent_store';
 import { forEach } from '../userview/userview_modal';
-import { observer } from './../element-observer/observer';
+import Cookie from 'js-cookie';
 /**
  * Initialize Oil on Host Site
  * This functions gets called directly after Oil has loaded
@@ -172,9 +172,9 @@ function attachUtilityFunctionsToWindowObject() {
     return 'OIL language Changed';
   });
 
-  // setGlobalOilObject('status', () => {
-  //   return getSoiCookie();
-  // });
+  setGlobalOilObject('status', () => {
+    return getSoiCookie();
+  });
 
   setGlobalOilObject('showPreferenceCenter', (mode = 'inline') => {
     loadLocale(userview_modal => {
@@ -298,5 +298,32 @@ function attachUtilityFunctionsToWindowObject() {
       })
     }
     return count;
+  })
+
+  setGlobalOilObject('getOilConsent', () => {
+    return getSoiCookie().then(cookie => {
+      let created = cookie.consentData.created;
+      let lastUpdated = cookie.consentData.lastUpdated;
+      let expires = window[OIL_GLOBAL_OBJECT_NAME].CONFIG.cookie_expires_in_days;
+      let expirationDate = new Date( lastUpdated.getTime() + (expires * 1000 * 60 * 60 * 24));
+      delete cookie.consentData
+
+      if (cookie.opt_in) {        
+        return {
+          cookie: cookie,
+          created: created,
+          lastUpdated: lastUpdated,
+          expiresInDays: expires,
+          expirationDate: expirationDate
+        }
+      }
+
+      return undefined
+    
+    });
+  })
+
+  setGlobalOilObject('getOilDataCookie', () => {
+    return Cookie.get('oil_data');
   })
 }

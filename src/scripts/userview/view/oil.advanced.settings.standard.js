@@ -355,6 +355,7 @@ const buildVendorListEntry = (element) => {
                 ${snippetLegalDescription(element.specialFeatures, 'specialFeatures', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_SPECIAL_FEATURES))}
               </div>
               ${element.legIntPurposes.length > 0 ? snippetLengint(element.id) : ''}
+              ${snippetCookieRetention(element)}
             </div>
           `;
   }
@@ -422,6 +423,41 @@ const snippetLegalDescription = (list, index ,category) => {
   } else {
     return '';
   }
+}
+
+const snippetCookieRetention = (element) => {
+  let cookieMaxAgeSeconds = element.cookieMaxAgeSeconds;
+  let usesCookies = element.usesCookies;
+  let usesNonCookieAccess = element.usesNonCookieAccess;
+  let deviceStorageDisclosureUrl = element.deviceStorageDisclosureUrl;
+
+  // console.log('-------')
+  // console.log('cookieMaxAgeSeconds', cookieMaxAgeSeconds)
+  // console.log('usesCookies', usesCookies)
+  // console.log('usesNonCookieAccess', usesNonCookieAccess)
+  // console.log('deviceStorageDisclosureUrl', deviceStorageDisclosureUrl)
+  if (!cookieMaxAgeSeconds || !usesCookies || !usesNonCookieAccess || !deviceStorageDisclosureUrl) {
+    
+    if (!cookieMaxAgeSeconds) {
+      if (condition) {
+        
+      }
+    }
+
+    if (!cookieMaxAgeSeconds && !usesCookies && !usesNonCookieAccess && !deviceStorageDisclosureUrl) {
+      console.log('Tutto NULL')
+      return;
+    }
+  }
+
+  // if (element.cookieMaxAgeSeconds) {
+    
+  // }
+  // return `
+  //   <div class="LegintCookieRetention">
+      
+  //   </div>
+  // `;
 }
 
 const snippetLengint = (id) => {

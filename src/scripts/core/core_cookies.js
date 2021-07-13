@@ -8,7 +8,8 @@ import {
   getDefaultToOptin,
   isInfoBannerOnly,
   getLocaleVariantName,
-  getIabVendorWhitelist
+  getIabVendorWhitelist,
+  getLoginStatus
 } from './core_config';
 import { getAllPreferences } from './core_consents';
 import { getLocaleVariantVersion } from './core_utils';
@@ -22,9 +23,13 @@ import { forEach } from './../userview/userview_modal';
 
 const COOKIE_PREVIEW_NAME = 'oil_preview';
 const COOKIE_VERBOSE_NAME = 'oil_verbose';
-
 const OIL_DOMAIN_COOKIE_NAME = 'oil_data';
+
 const OIL_SESSION_COOKIE_NAME = 'oil_data_session';
+
+export function getOilDomainCookieName() {
+  return cookieAccordingToLoginStatus();
+}
 
 export function setSessionCookie(name, value) {
   Cookie.set(name, value);
@@ -208,7 +213,7 @@ export function setSoiCookie(privacySettings) {
       let consentData = results[1];
       //TODO: da rivedere, ma ho bisogno di fare l'update prima di settare il cookie.
       updateTcfApi(cookie, false, cookie.addtlConsent);
-      setDomainCookie(OIL_DOMAIN_COOKIE_NAME, cookie, getCookieExpireInDays());
+      setDomainCookie(cookieAccordingToLoginStatus(), cookie, getCookieExpireInDays());
       consentStore().writeDecodedRaiConsentSDK(getAllPreferences(consentData, cookie.addtlConsent, cookie.customVendor));
 
       resolve(cookie);
@@ -241,8 +246,8 @@ export function isVerboseCookieSet() {
 }
 
 export function removeSubscriberCookies() {
-  Cookie.remove(OIL_DOMAIN_COOKIE_NAME);
-  Cookie.remove(OIL_DOMAIN_COOKIE_NAME, { expires: getCookieExpireInDays(), secure: true, sameSite: 'none' });
+  Cookie.remove(cookieAccordingToLoginStatus());
+  Cookie.remove(cookieAccordingToLoginStatus(), { expires: getCookieExpireInDays(), secure: true, sameSite: 'none' });
   
   Cookie.remove(OIL_SESSION_COOKIE_NAME);
 }
@@ -250,8 +255,8 @@ export function removeSubscriberCookies() {
 export function removeHubCookie(poiGroup) {
   removeSubscriberCookies();
   if (poiGroup) {
-    Cookie.remove(`${poiGroup}_${OIL_DOMAIN_COOKIE_NAME}`);
-    Cookie.remove(`${poiGroup}_${OIL_DOMAIN_COOKIE_NAME}`, { expires: getCookieExpireInDays(), secure: true, sameSite: 'none' });
+    Cookie.remove(`${poiGroup}_${cookieAccordingToLoginStatus()}`);
+    Cookie.remove(`${poiGroup}_${cookieAccordingToLoginStatus()}`, { expires: getCookieExpireInDays(), secure: true, sameSite: 'none' });
   }
 }
 
@@ -366,7 +371,7 @@ function getOilCookieConfig() {
   let consentData;
   let consentString;
   
-  return getOilCookie({name: OIL_DOMAIN_COOKIE_NAME}).then(cookie => {
+  return getOilCookie({name: cookieAccordingToLoginStatus()}).then(cookie => {
 
     if (cookie) {
       consentData = cookie.consentData;
@@ -379,7 +384,7 @@ function getOilCookieConfig() {
     }
   
     return {
-      name: OIL_DOMAIN_COOKIE_NAME,
+      name: cookieAccordingToLoginStatus(),
       expires: getCookieExpireInDays(),
       defaultCookieContent: {
         opt_in: false,
@@ -397,4 +402,8 @@ function getOilCookieConfig() {
     };
   });
 
+}
+
+function cookieAccordingToLoginStatus() {
+  return (!getLoginStatus() || getLoginStatus() === false || getLoginStatus() === undefined || getLoginStatus() === null) ? OIL_DOMAIN_COOKIE_NAME : 'oil_data_be';
 }

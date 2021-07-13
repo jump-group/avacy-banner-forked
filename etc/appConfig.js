@@ -345,6 +345,12 @@ module.exports = {
     chunks: ['oilstub', 'oil'],
     chunksSortMode: 'dependency',
     inject: 'head'
+  },{
+    filename: 'demos/demo-backend-consent.html',
+    template: path.resolve(sourcePath, 'demos', 'demo-backend-consent.html'),
+    chunks: ['oilstub', 'oil'],
+    chunksSortMode: 'dependency',
+    inject: 'head'
   }, {
     filename: 'demos/vendor-integration-with-iframe.html',
     template: path.resolve(sourcePath, 'demos', 'vendor-integration-with-iframe.html'),

@@ -29,6 +29,7 @@ export const OIL_CONFIG = {
   ATTR_LOGO_URL: 'logo_url',
   ATTR_PERSIST_MINIMUM_TRACKING: 'persist_min_tracking',
   ATTR_LOCALE: 'locale',
+  ATTR_LOGIN_STATUS: 'login_status',
   ATTR_CPC_TYPE: 'cpc_type',
   ATTR_TIMEOUT: 'timeout',
   ATTR_LOCALE_URL: 'locale_url',

@@ -2,11 +2,11 @@ import { OilVersion, sendEventToHostSite, setGlobalOilObject } from './core_util
 import { handleOptOut } from './core_optout';
 import { logError, logInfo, logPreviewInfo } from './core_log';
 import { checkOptIn } from './core_optin';
-import { getSoiCookie, isBrowserCookieEnabled, isPreviewCookieSet, removePreviewCookie, removeVerboseCookie, setPreviewCookie, setVerboseCookie } from './core_cookies';
-import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies, gdprApplies } from './core_config';
+import { getSoiCookie, isBrowserCookieEnabled, isPreviewCookieSet, removePreviewCookie, removeVerboseCookie, setPreviewCookie, setVerboseCookie, setDomainCookie, getOilDomainCookieName } from './core_cookies';
+import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies, gdprApplies, setLoginStatus, getLoginStatus } from './core_config';
 import { EVENT_NAME_HAS_OPTED_IN, EVENT_NAME_NO_COOKIES_ALLOWED, OIL_GLOBAL_OBJECT_NAME, ADDITIONAL_CONSENT_VERSION } from './core_constants';
 import { updateTcfApi } from './core_tcf_api';
-import { manageDomElementActivation, demoPage } from './core_tag_management';
+import { manageDomElementActivation } from './core_tag_management';
 import { sendConsentInformationToCustomVendors } from './core_custom_vendors';
 import { getPurposes, clearVendorListCache } from './core_vendor_lists';
 import { consentStore } from './core_consent_store';
@@ -308,22 +308,42 @@ function attachUtilityFunctionsToWindowObject() {
       let expirationDate = new Date( lastUpdated.getTime() + (expires * 1000 * 60 * 60 * 24));
       delete cookie.consentData
 
-      if (cookie.opt_in) {        
-        return {
-          cookie: cookie,
-          created: created,
-          lastUpdated: lastUpdated,
-          expiresInDays: expires,
-          expirationDate: expirationDate
-        }
+      return {
+        cookie: cookie,
+        created: created,
+        lastUpdated: lastUpdated,
+        expiresInDays: expires,
+        expirationDate: expirationDate
       }
-
-      return undefined
-    
     });
   })
 
-  setGlobalOilObject('getOilDataCookie', () => {
-    return Cookie.get('oil_data');
+  setGlobalOilObject('getOilDataCookie', (name) => {
+    return Cookie.get(name);
+  })
+
+  setGlobalOilObject('getLoginStatus', () => {
+    return getLoginStatus();
+  })
+
+  setGlobalOilObject('setLoginStatus', (status) => {
+    setLoginStatus(status);
+    initOilLayer();
+  })
+
+  setGlobalOilObject('getOilDataName', () => {
+    return getOilDomainCookieName();
+  })
+
+  setGlobalOilObject('setOilCookieBE', (cookieBE) => {
+    let cookie = cookieBE.cookie;
+    // let created = new Date(cookieBE.created);
+    // let lastUpdated = new Date(cookieBE.lastUpdated);
+    // let expiresInDays = cookieBE.expiresInDays;
+    let expirationDate = new Date(cookieBE.expirationDate);
+    let now = new Date();
+    let elapsedMilliseconds = (expirationDate.getTime() - now.getTime());
+    let elapsedDays = elapsedMilliseconds > 0 ? elapsedMilliseconds / (1000*60*60*24) : -1;
+    setDomainCookie(getOilDomainCookieName(), cookie, elapsedDays);
   })
 }

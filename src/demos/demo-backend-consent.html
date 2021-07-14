@@ -31,7 +31,9 @@
         }
     </style>
     <script>
-        window.is_avacy_logged = true;
+        window.AS_OIL = {
+            login_status: !!((new URLSearchParams(window.location.search)).get('logged') ?? false)
+        }
     </script>
     <script id="oil-configuration" type="application/configuration">
         {
@@ -190,10 +192,11 @@
         let logoutBtn = document.querySelector('.logoutBtn');
 
         loginBtn && loginBtn.addEventListener('click', () => {
-            doLogin()
+            AS_OIL.setLoginStatus(true);
+            doLogin();
         })
         logoutBtn && logoutBtn.addEventListener('click', () => {
-            doLogout()
+            AS_OIL.setLoginStatus(false)
         })
         
         function doLogin() {
@@ -201,7 +204,7 @@
             if (db_consent) {
                 AS_OIL.getOilConsent().then(consent => {
                     if (!consent.opt_in) {
-                        cookieFromDB = JSON.parse(localStorage.getItem('db_consent'));
+                        cookieFromDB = JSON.parse(db_consent);
                         AS_OIL.setOilCookieBE(cookieFromDB);
                     }
                 });
@@ -216,8 +219,7 @@
         }, false);
         }
 
-
-        if (window.is_avacy_logged) {
+        if (AS_OIL.getLoginStatus()) {
             doLogin();
         }
     </script>

@@ -359,7 +359,7 @@ function setMobileStyle(wrapper) {
   }
 }
 
-function removeOilWrapperFromDOM() {
+export function removeOilWrapperFromDOM() {
   let domNodes = getOilDOMNodes();
   // For every render cycle our OIL main DOM node gets removed, in case it already exists in DOM
   if (domNodes.oilWrapper) {

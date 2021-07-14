@@ -10,7 +10,7 @@ import { manageDomElementActivation } from './core_tag_management';
 import { sendConsentInformationToCustomVendors } from './core_custom_vendors';
 import { getPurposes, clearVendorListCache } from './core_vendor_lists';
 import { consentStore } from './core_consent_store';
-import { forEach } from '../userview/userview_modal';
+import { forEach, removeOilWrapperFromDOM } from '../userview/userview_modal';
 import Cookie from 'js-cookie';
 /**
  * Initialize Oil on Host Site
@@ -327,8 +327,11 @@ function attachUtilityFunctionsToWindowObject() {
   })
 
   setGlobalOilObject('setLoginStatus', (status) => {
-    setLoginStatus(status);
-    initOilLayer();
+    if (getLoginStatus() !== status) {      
+      window[OIL_GLOBAL_OBJECT_NAME].login_status = status;
+      removeOilWrapperFromDOM();
+      initOilLayer();
+    }
   })
 
   setGlobalOilObject('getOilDataName', () => {

@@ -1,4 +1,4 @@
-import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFAULT_VERSION } from './core_constants';
+import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, OIL_GLOBAL_OBJECT_NAME, OIL_POLICY_DEFAULT_VERSION } from './core_constants';
 import { logError, logInfo } from './core_log.js';
 import { getGlobalOilObject, isObject, OilVersion, setGlobalOilObject, sendEventToHostSite } from './core_utils';
 
@@ -302,16 +302,8 @@ export function getLocale() {
 function checkLanguage(list, lang) {
   return Object.keys(list).includes(lang) ? lang : 'en';
 }
-
-export function setLoginStatus(status) {
-  // setConfigValue(OIL_CONFIG.ATTR_LOGIN_STATUS, status);
-  window.is_avacy_logged = status;
-  sendEventToHostSite(`oil-login-${status}`)
-}
-
 export function getLoginStatus() {
-  return window.is_avacy_logged;
-  // return getConfigValue(OIL_CONFIG.ATTR_LOGIN_STATUS);
+  return window[OIL_GLOBAL_OBJECT_NAME].login_status;
 }
 
 export function setLocale(localeObject) {

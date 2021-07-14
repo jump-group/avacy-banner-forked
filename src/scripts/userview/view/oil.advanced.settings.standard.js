@@ -431,33 +431,51 @@ const snippetCookieRetention = (element) => {
   let usesNonCookieAccess = element.usesNonCookieAccess;
   let deviceStorageDisclosureUrl = element.deviceStorageDisclosureUrl;
 
-  // console.log('-------')
-  // console.log('cookieMaxAgeSeconds', cookieMaxAgeSeconds)
-  // console.log('usesCookies', usesCookies)
-  // console.log('usesNonCookieAccess', usesNonCookieAccess)
-  // console.log('deviceStorageDisclosureUrl', deviceStorageDisclosureUrl)
-  if (!cookieMaxAgeSeconds || !usesCookies || !usesNonCookieAccess || !deviceStorageDisclosureUrl) {
-    
-    if (!cookieMaxAgeSeconds) {
-      if (condition) {
-        
-      }
+  if (cookieMaxAgeSeconds && usesCookies) {
+    if (deviceStorageDisclosureUrl) {
+      // Se c'è un DisclosureURL
+      logCookieRetention(`fino a ${cookieMaxAgeSeconds} secondi - Maggiori Informazioni`)
+      return
     }
 
-    if (!cookieMaxAgeSeconds && !usesCookies && !usesNonCookieAccess && !deviceStorageDisclosureUrl) {
-      console.log('Tutto NULL')
-      return;
+    if (deviceStorageDisclosureUrl) {
+      // Se c'è un DisclosureURL
+      logCookieRetention(`fino a ${cookieMaxAgeSeconds} secondi - Maggiori Informazioni`)
+      return
+    }
+
+    if (cookieMaxAgeSeconds <= 3600 ) {
+      // Se c'è una durata entro 1 ora 3600 secondi
+      logCookieRetention('fino a 1 ora')
+      return
+    }
+
+    // Se c'è una durata
+    logCookieRetention(`fino a ${cookieMaxAgeSeconds} secondi`)
+    return
+  } else {
+    if (cookieMaxAgeSeconds === 0 ) {
+      // Durata di Sessione
+      logCookieRetention('durata della sessione')
+      return
     }
   }
 
-  // if (element.cookieMaxAgeSeconds) {
-    
-  // }
-  // return `
-  //   <div class="LegintCookieRetention">
-      
-  //   </div>
-  // `;
+  if (!cookieMaxAgeSeconds && !usesCookies && !deviceStorageDisclosureUrl) {
+
+    if (!usesNonCookieAccess) {      
+      logCookieRetention('Non presente')
+      return;
+    } else {
+      logCookieRetention('Non Definita')
+      return;
+
+    }
+  }
+}
+
+const logCookieRetention = (message) => {
+  console.log(`Durata massima di archiviazione: ${message}`);
 }
 
 const snippetLengint = (id) => {

@@ -3,9 +3,7 @@
         position: initial;
 
         .as-oil-content-overlay {
-            overflow: scroll;
-            max-height: 100vh;
-            max-height: var(--vh);
+            overflow: auto;
             position: initial;
 
             &[data-qa="oil-cpc-overlay"] {
@@ -24,7 +22,7 @@
 
         .as-oil__intro-txt {
             max-height: initial;
-            overflow: unset;
+            overflow: auto;
         }
 
         .as-oil-cpc-wrapper {
@@ -35,9 +33,11 @@
         }
 
         .as-oil-cpc__middle {
+            max-height: 33vh;
             max-height: calc(100vh / 3);
             max-height: calc(var(--vh) / 3);
             height: auto;
+            overflow: scroll;
         }
     }
 }

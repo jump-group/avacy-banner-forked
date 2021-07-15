@@ -6,7 +6,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Demo BackendConsent</title>
-    <script type="text/javascript" src="https://polyfill.io/v3/polyfill.min.js?features=Object%2CMap%2CSet%2CURLSearchParams%2CString.prototype.startsWith%2CString.prototype.repeat"></script>
+    <script type="text/javascript" src="https://polyfill.io/v3/polyfill.min.js?features=Object%2CMap%2CSet%2CURLSearchParams%2CString.prototype.startsWith%2CString.prototype.repeat%2CObject.fromEntries"></script>
     <style>
         body {
             margin: 0;
@@ -179,9 +179,9 @@
 
 <body>
     <div class="cpc-button">
-        <button data-qa="show-pref-button" onclick="AS_OIL.showPreferenceCenter('absolute');">Mostra pannello
+        <button data-qa="show-pref-button" onclick="PAPYRI.showPreferenceCenter('absolute');">Mostra pannello
             preferenze</button>
-        <button data-qa="show-pref-button" onclick='(function(){AS_OIL.triggerOptOut(); location.reload();})();'>Ricarica</button>
+        <button data-qa="show-pref-button" onclick='(function(){PAPYRI.triggerOptOut(); location.reload();})();'>Ricarica</button>
         <button class="loginBtn">Login</button>
         <button class="logoutBtn">Logout</button>
         <div id="oil-preference-center"></div>
@@ -192,34 +192,34 @@
         let logoutBtn = document.querySelector('.logoutBtn');
 
         loginBtn && loginBtn.addEventListener('click', () => {
-            AS_OIL.setLoginStatus(true);
+            PAPYRI.setLoginStatus(true);
             doLogin();
         })
         logoutBtn && logoutBtn.addEventListener('click', () => {
-            AS_OIL.setLoginStatus(false)
+            PAPYRI.setLoginStatus(false)
         })
         
         function doLogin() {
             let db_consent = localStorage.getItem('db_consent');
             if (db_consent) {
-                AS_OIL.getOilConsent().then(consent => {
-                    if (!consent.opt_in) {
+                PAPYRI.getOilConsent().then(consent => {
+                    if (!consent.cookie.opt_in) {
                         cookieFromDB = JSON.parse(db_consent);
-                        AS_OIL.setOilCookieBE(cookieFromDB);
+                        PAPYRI.setOilCookieBE(cookieFromDB);
                     }
                 });
             }
 
             window.addEventListener('message', async (event) => {
-            if (event.data === 'oil_optin_done') {
-                AS_OIL.getOilConsent().then(consent =>{
-                    localStorage.setItem('db_consent', JSON.stringify(consent));
-                });
-            }
-        }, false);
+                if (event.data === 'oil_optin_done' && PAPYRI.getLoginStatus()) {
+                    PAPYRI.getOilConsent().then(consent =>{
+                        localStorage.setItem('db_consent', JSON.stringify(consent));
+                    });
+                }
+            }, false);
         }
 
-        if (AS_OIL.getLoginStatus()) {
+        if (PAPYRI.getLoginStatus()) {
             doLogin();
         }
     </script>

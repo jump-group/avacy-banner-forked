@@ -1,6 +1,6 @@
-import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, OIL_POLICY_DEFAULT_VERSION } from './core_constants';
+import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, OIL_GLOBAL_OBJECT_NAME, OIL_POLICY_DEFAULT_VERSION } from './core_constants';
 import { logError, logInfo } from './core_log.js';
-import { getGlobalOilObject, isObject, OilVersion, setGlobalOilObject } from './core_utils';
+import { getGlobalOilObject, isObject, OilVersion, setGlobalOilObject, sendEventToHostSite } from './core_utils';
 
 /**
  * Read configuration of component from JSON script block
@@ -31,6 +31,8 @@ function getConfiguration() {
     if (configurationElement === null) {
       logInfo('Using default config');
     }
+    // let stubConfig = window.STUB_AS_OIL ? window.STUB_AS_OIL.CONFIG : {};
+    // let mergeConfig = Object.assign({}, readConfiguration(configurationElement), stubConfig);
     setGlobalOilObject('CONFIG', readConfiguration(configurationElement));
     setGlobalOilObject('CONFIG_ATTRIBUTES', OIL_CONFIG);
 
@@ -299,6 +301,9 @@ export function getLocale() {
 
 function checkLanguage(list, lang) {
   return Object.keys(list).includes(lang) ? lang : 'en';
+}
+export function getLoginStatus() {
+  return window[OIL_GLOBAL_OBJECT_NAME].login_status;
 }
 
 export function setLocale(localeObject) {

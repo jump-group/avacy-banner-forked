@@ -1,4 +1,5 @@
 import Cookie from 'js-cookie';
+import { logInfo } from './core_log';
 import { isMobileEnvironment, getNativePublisher } from './core_config';
 
 let consentStoreInstance;
@@ -36,13 +37,13 @@ class ConsentStore {
         if (window.CMPWebInterface) {
             // Call Android interface
             if (typeof window.CMPWebInterface.readAll === 'function'){
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
                     window.myResolve = resolve;
                     window.CMPWebInterface.readAll('callbackFunction');
                 }).then(res => {
                     let result = JSON.parse(res);
 
-                    return new Promise((resolve, reject) => {
+                    return new Promise((resolve) => {
                         let cookie;
                         if (cookieName in result) {
                             cookie = JSON.parse(result[cookieName].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent));
@@ -57,7 +58,7 @@ class ConsentStore {
             && window.webkit.messageHandlers
             && window.webkit.messageHandlers.CMPWebInterface) {
             // Call iOS interface
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 let message = {
                     command: 'readAll',
                     callback: 'callbackFunction'
@@ -67,7 +68,7 @@ class ConsentStore {
             }).then(res => {
                 let result = JSON.parse(res);
 
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
                     let cookie;
                     if (cookieName in result) {
                         cookie = JSON.parse(result[cookieName].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent));
@@ -81,7 +82,7 @@ class ConsentStore {
 
         } else {
             // No Android or iOS interface found
-            console.log('No native APIs found. true');
+            logInfo('No native APIs found. true');
         }
     }
 
@@ -89,7 +90,7 @@ class ConsentStore {
         let cookieName = name.toUpperCase();
 
         if(this._isAndroid()) {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 let result = JSON.parse(window.Android.retrieveConsent());
                 //DEVO CONTROLLARE SE ESITE NELLA STRUTTURA DATI RITORNATA UN INDICE CON CHIAVE "name"
                 let cookie;
@@ -117,7 +118,7 @@ class ConsentStore {
                                     }
                                 },
                                 function (error) {
-                                    console.log(error);
+                                    logInfo(error);
                                 }
                             )
                     } else {
@@ -125,7 +126,7 @@ class ConsentStore {
                     }
                 },
                 function (error) {
-                    console.log(error);
+                    logInfo(error);
                 })
         }
 
@@ -152,7 +153,7 @@ class ConsentStore {
             window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
         } else {
             // No Android or iOS interface found
-            console.log('No native APIs found. true');
+            logInfo('No native APIs found. true');
         }
     }
 
@@ -233,7 +234,7 @@ class ConsentStore {
             window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
         } else {
             // No Android or iOS interface found
-            console.log('No native APIs found. true');
+            logInfo('No native APIs found. true');
         }
     }
 
@@ -266,7 +267,7 @@ class ConsentStore {
             window.webkit.messageHandlers.CMPWebInterface.postMessage(message);
         } else {
             // No Android or iOS interface found
-            console.log('No native APIs found. true');
+            logInfo('No native APIs found. true');
         }
     }
 
@@ -334,7 +335,7 @@ class ConsentStore {
         
             default:
                 // QUI SONO WEB DI DEFAULT
-                return new Promise((resolve,reject) => {
+                return new Promise((resolve) => {
                     resolve(Cookie.getJSON(name));
                 })
         }

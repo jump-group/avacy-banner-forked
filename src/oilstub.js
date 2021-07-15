@@ -1,6 +1,4 @@
 import { observer } from './scripts/element-observer/observer';
-import { monkey } from './scripts/element-observer/monkey';
-import { getSoiCookie } from './scripts/core/core_cookies';
 
 if (window.CLIENT_SIDE_BLOCKING && window.CLIENT_SIDE_BLOCKING.active) {
     // Starts the monitoring
@@ -9,12 +7,7 @@ if (window.CLIENT_SIDE_BLOCKING && window.CLIENT_SIDE_BLOCKING.active) {
         childList: true,
         subtree: true
     });
-
-    // getSoiCookie().then(cookie => {
-    //     console.log('oilstub_cookie', cookie)
-    //     monkey(cookie);
-    // })
-  }
+}
 
 const cmpstub = require('didomi-iabtcf-stub');
 cmpstub();

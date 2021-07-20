@@ -1,11 +1,12 @@
 import '../../../styles/cpc_standard.scss';
-import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl } from '../../core/core_config'
+import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl, getLanguageFromConfigObject } from '../../core/core_config'
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../../core/core_constants';
 import { getCustomVendorList, getAdditionalConsentList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay, getStacks, getFullStacks } from '../../core/core_vendor_lists';
 import { getLabel, getLabelWithDefault } from '../userview_config';
 import { OIL_LABELS } from '../userview_constants';
 import { forEach } from '../userview_modal';
 import { BackButton, YesButton } from './components/oil.buttons';
+import moment from 'moment';
 const CLASS_NAME_FOR_ACTIVE_MENU_SECTION = 'as-oil-cpc__category-link--active';
 
 export function oilAdvancedSettingsTemplate() {
@@ -46,7 +47,10 @@ export function attachCpcHandlers() {
     domNode && domNode.addEventListener('change', stacksObjectStatus, false);
   });
   forEach(document.querySelectorAll('.js-legint-info'), (domNode) => {
-    domNode && domNode.addEventListener('click', triggerInfoPanel, false);
+    domNode && domNode.addEventListener('click', legIntInfoPanel, false);
+  });
+  forEach(document.querySelectorAll('.js-disclosure-url'), (domNode) => {
+    domNode && domNode.addEventListener('click', discloseUrlPanel, false);
   });
   forEach(document.querySelectorAll('.js-cpc-category-link'), (domNode) => {
     domNode && domNode.addEventListener('click', switchCpcCategory, false);
@@ -353,9 +357,9 @@ const buildVendorListEntry = (element) => {
                 ${snippetLegalDescription(element.specialPurposes, 'specialPurposes', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_SPECIAL_PURPOSES))}
                 ${snippetLegalDescription(element.features, 'features', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_FEATURES))}
                 ${snippetLegalDescription(element.specialFeatures, 'specialFeatures', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_SPECIAL_FEATURES))}
+                ${cookieRetentionSection(element)}
               </div>
               ${element.legIntPurposes.length > 0 ? snippetLengint(element.id) : ''}
-              ${snippetCookieRetention(element)}
             </div>
           `;
   }
@@ -425,57 +429,61 @@ const snippetLegalDescription = (list, index ,category) => {
   }
 }
 
-const snippetCookieRetention = (element) => {
+const cookieRetentionSection = (element) => {
+  moment.locale(getLanguageFromConfigObject())
   let cookieMaxAgeSeconds = element.cookieMaxAgeSeconds;
   let usesCookies = element.usesCookies;
   let usesNonCookieAccess = element.usesNonCookieAccess;
   let deviceStorageDisclosureUrl = element.deviceStorageDisclosureUrl;
-
+  
   if (cookieMaxAgeSeconds && usesCookies) {
     if (deviceStorageDisclosureUrl) {
       // Se c'è un DisclosureURL
-      logCookieRetention(`fino a ${cookieMaxAgeSeconds} secondi - Maggiori Informazioni`)
-      return
-    }
-
-    if (deviceStorageDisclosureUrl) {
-      // Se c'è un DisclosureURL
-      logCookieRetention(`fino a ${cookieMaxAgeSeconds} secondi - Maggiori Informazioni`)
-      return
+      return cookieRetentionSnippet(`${moment.duration(cookieMaxAgeSeconds, 'seconds').humanize()}`, deviceStorageDisclosureUrl)
     }
 
     if (cookieMaxAgeSeconds <= 3600 ) {
       // Se c'è una durata entro 1 ora 3600 secondi
-      logCookieRetention('fino a 1 ora')
-      return
+      return cookieRetentionSnippet(`${moment.duration(3600, 'seconds').humanize()}`)
     }
 
     // Se c'è una durata
-    logCookieRetention(`fino a ${cookieMaxAgeSeconds} secondi`)
-    return
+    return cookieRetentionSnippet(`${moment.duration(cookieMaxAgeSeconds, 'seconds').humanize()}`)
   } else {
     if (cookieMaxAgeSeconds === 0 ) {
       // Durata di Sessione
-      logCookieRetention('durata della sessione')
-      return
+      return cookieRetentionSnippet('durata della sessione')
     }
   }
 
   if (!cookieMaxAgeSeconds && !usesCookies && !deviceStorageDisclosureUrl) {
 
     if (!usesNonCookieAccess) {      
-      logCookieRetention('Non presente')
-      return;
+      return ''
     } else {
-      logCookieRetention('Non Definita')
-      return;
-
+      return cookieRetentionSnippet('Non Definita')
     }
   }
 }
 
-const logCookieRetention = (message) => {
-  console.log(`Durata massima di archiviazione: ${message}`);
+const cookieRetentionSnippet = (message, disclosureURL = false) => {
+  if (disclosureURL) {
+    return `
+      <div class="CookieMaxDuration as-oil-third-party-category-list">
+        <p>
+          <strong>${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSURE_DURATION_PREFIX)} </strong> ${message} - ${getLabel(OIL_LABELS.ATTR_LABEL_CPC_COOKIE_DISCLOSURE_INFO)} <span class="js-disclosure-url" data-disclosure-url=${disclosureURL} >&#9432;</span>
+        </p>
+      </div>  
+    `;
+  }
+
+  return `
+    <div class="CookieMaxDuration as-oil-third-party-category-list">
+      <p>
+        <strong>${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSURE_DURATION_PREFIX)} </strong> ${message}
+      </p>
+    </div>  
+  `;
 }
 
 const snippetLengint = (id) => {
@@ -617,7 +625,7 @@ export function legintObjectStatus() {
   document.querySelector('.as-js-btn-object-all').checked = Array.prototype.slice.call(elements).some(x => x.checked);
 }
 
-export function triggerInfoPanel() {
+export function triggerInfoPanel(title,content) {
   let panel = document.querySelector('.InfoPanel');
   let wrapper = document.querySelector('.as-oil');
   if (!panel && wrapper) {    
@@ -625,14 +633,56 @@ export function triggerInfoPanel() {
     infobox.className = 'InfoPanel as-oil-content-overlay';
     infobox.innerHTML = `<div class="InfoPanel__Wrapper as-oil-l-wrapper-layout-max-width">
       <span class="InfoPanel__Close js-close-infobox">&times</span>
-      <h1 class="InfoPanel__Title">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGINT_INFOBOX_TITLE)}</h1>
-      <div class="InfoPanel__Content">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGINT_INFOBOX_DESCRIPTION)}</div>
-      
+      <h1 class="InfoPanel__Title">${title}</h1>
+      <div class="InfoPanel__Content">${content}</div>
     </div>`;
     wrapper.appendChild(infobox);
   }
 
   document.querySelector('.js-close-infobox').addEventListener('click', closeInfobox, false)
+}
+
+function legIntInfoPanel() {
+  let title = getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGINT_INFOBOX_TITLE);
+  let content = getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGINT_INFOBOX_DESCRIPTION);
+  triggerInfoPanel(title,content);
+}
+
+function discloseUrlPanel(domNode) {
+  fetch(domNode.target.dataset.disclosureUrl)
+  .then( res => res.json())
+  .then( data => {
+    
+    let title = getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSURE_PANEL_TITLE);
+    let disclosures = data.disclosures;
+    // disclosures &&  forEach(disclosures, (el) => {
+    //   console.log(el)
+    // });
+    let content = disclosures.map(item => {
+      return `
+      <div class="">
+        <span>${item.identifier}</span><br />
+        <span>${item.type}</span><br />
+        <span>${item.domain}</span><br />
+        <span>${item.maxAgeSeconds}</span><br />
+      </div>
+      `;
+    }).join('');
+    triggerInfoPanel(title,content);
+  })
+
+
+  // return list.map(purpose => {
+  //   return PurposeContainerSnippet({
+  //     id: purpose.id,
+  //     header: getLabelWithDefault(`label_cpc_purpose_${formatPurposeId(purpose.id)}_text`, purpose.name || `Error: Missing text for purpose with id ${purpose.id}!`),
+  //     text: getLabelWithDefault(`label_cpc_purpose_${formatPurposeId(purpose.id)}_desc`, purpose.description || ''),
+  //     legalText: getLabelWithDefault(`label_cpc_purpose_${formatPurposeId(purpose.id)}_desc`, purpose.descriptionLegal || ''),
+  //     value: false,
+  //     key: key
+  //   })
+  // }).join('');
+
 }
 
 export function closeInfobox() {

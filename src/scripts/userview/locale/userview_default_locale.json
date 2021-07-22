@@ -38,10 +38,20 @@
     "label_cpc_legint_box_text": "Permetti a questo servizio di trattare i tuoi dati sulla base di un interesse legittimo.",
     "label_cpc_legint_infobox_title": "Legittimo interesse",
     "label_cpc_legint_infobox_description": "Un \"interesse legittimo\" è un interesse che, in base alla legislazione applicabile, giustifica il trattamento di dati personali.<br>I servizi che decidono di fare affidamento su di un interesse legittimo possono processare i tuoi dati a meno che tu non ti opponga a tale trattamento.<br><p><b>Deselezionando questa casella eserciti il tuo diritto di opposizione.</b></p>",
+    "label_cpc_cookie_disclosure_info": "Maggiori informazioni",
+    "label_cpc_disclosure_panel_title": "Informazioni riguardo l’archiviazione e l’accesso sul dispositivo",
+    "label_cpc_disclosure_duration_prefix": "Durata massima di archiviazione",
     "label_additional_consent_heading": "Google Partner",
     "label_cpc_read_more": "Leggi di più...",
     "label_cpc_read_less": "Leggi di meno.",
     "label_cpc_more_stack": "Apri Dettaglio",
-    "label_cpc_less_stack": "Chiudi Dettaglio"
+    "label_cpc_less_stack": "Chiudi Dettaglio",
+    "label_cpc_retention_snippet_session": "durata della sessione",
+    "label_cpc_retention_snippet_undefined": "non definita",
+    "label_cpc_disclose_cookie_identifier": "Identificativo",
+    "label_cpc_disclose_cookie_type": "Modalità di accesso o archiviazione",
+    "label_cpc_disclose_cookie_domain": "Dominio",
+    "label_cpc_disclose_cookie_duration": "Durata",
+    "label_cpc_disclose_cookie_purposes": "Finalità"
   }
 }

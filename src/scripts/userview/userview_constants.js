@@ -37,7 +37,6 @@ export const OIL_LABELS = {
   //OBJECT LEGINT label
   ATTR_LABEL_THIRD_PARTY_OBJECT_LEGINT_BTN: 'label_third_party_object_legint',
 
-
   // CPC labels
   ATTR_LABEL_CPC_SAVE: 'label_cpc_save',
   ATTR_LABEL_CPC_HEADING: 'label_cpc_heading',
@@ -52,6 +51,19 @@ export const OIL_LABELS = {
   ATTR_LABEL_CPC_LEGINT_BOX_TEXT  : 'label_cpc_legint_box_text',
   ATTR_LABEL_CPC_LEGINT_INFOBOX_TITLE  : 'label_cpc_legint_infobox_title',
   ATTR_LABEL_CPC_LEGINT_INFOBOX_DESCRIPTION  : 'label_cpc_legint_infobox_description',
+  ATTR_LABEL_CPC_COOKIE_DISCLOSURE_INFO  : 'label_cpc_cookie_disclosure_info',
+  ATTR_LABEL_CPC_DISCLOSURE_PANEL_TITLE  : 'label_cpc_disclosure_panel_title',
+  ATTR_LABEL_CPC_DISCLOSURE_DURATION_PREFIX  : 'label_cpc_disclosure_duration_prefix',
+
+  ATTR_LABEL_CPC_RETENTION_SNIPPET_SESSION:'label_cpc_retention_snippet_session',
+  ATTR_LABEL_CPC_RETENTION_SNIPPET_UNDEFINED:'label_cpc_retention_snippet_undefined',
+  
+  ATTR_LABEL_CPC_DISCLOSE_COOKIE_IDENTIFIER:'label_cpc_disclose_cookie_identifier',
+  ATTR_LABEL_CPC_DISCLOSE_COOKIE_TYPE:'label_cpc_disclose_cookie_type',
+  ATTR_LABEL_CPC_DISCLOSE_COOKIE_DOMAIN:'label_cpc_disclose_cookie_domain',
+  ATTR_LABEL_CPC_DISCLOSE_COOKIE_DURATION:'label_cpc_disclose_cookie_duration',
+  ATTR_LABEL_CPC_DISCLOSE_COOKIE_PURPOSES:'label_cpc_disclose_cookie_purposes',
+
 
   // CPC LEGAL DESCRIPTION labels
   ATTR_LABEL_CPC_LEGAL_PURPOSE_CONSENT: 'label_cpc_legal_purpose_consent',

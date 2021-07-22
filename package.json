@@ -40,12 +40,13 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "browser-env": "^3.3.0",
+    "consent-string": "1.4.2",
     "didomi-iabtcf-cmpapi": "1.1.4-1",
     "didomi-iabtcf-core": "1.1.4-1",
     "didomi-iabtcf-stub": "1.1.4",
-    "browser-env": "^3.3.0",
-    "consent-string": "1.4.2",
-    "js-cookie": "2.1.4"
+    "js-cookie": "2.1.4",
+    "moment": "^2.29.1"
   },
   "devDependencies": {
     "asciidoctor.js": "1.5.6",

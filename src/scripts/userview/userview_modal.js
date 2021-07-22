@@ -17,6 +17,7 @@ import {
   JS_CLASS_BUTTON_ADVANCED_SETTINGS,
   JS_CLASS_BUTTON_CLOSE_BANNER,
   JS_CLASS_BUTTON_OILBACK,
+  JS_CLASS_BUTTON_REJECT_ALL,
   JS_CLASS_BUTTON_OPTIN,
   OIL_CONFIG_CPC_TYPES,
   PRIVACY_MINIMUM_TRACKING
@@ -388,7 +389,7 @@ function getOilDOMNodes() {
   return {
     oilWrapper: document.querySelectorAll('.as-oil'),
     btnOptIn: document.querySelectorAll(`.${JS_CLASS_BUTTON_OPTIN}`),
-    btnCloseBanner: document.querySelectorAll(`.${JS_CLASS_BUTTON_CLOSE_BANNER}`),
+    btnCloseBanner: document.querySelectorAll(`.${JS_CLASS_BUTTON_CLOSE_BANNER}, .${JS_CLASS_BUTTON_REJECT_ALL}`),
     btnPoiOptIn: document.querySelectorAll('.as-js-optin-poi'),
     companyList: document.querySelectorAll('.as-js-companyList'),
     thirdPartyList: document.querySelectorAll('.as-js-thirdPartyList'),

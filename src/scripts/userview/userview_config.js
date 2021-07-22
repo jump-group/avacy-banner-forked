@@ -28,6 +28,10 @@ export function isCloseWithoutConsentsEnabled() {
   return getConfigValue(OIL_CONFIG.ATTR_CLOSE_WITHOUT_CONSENTS, false);
 }
 
+export function isRejectAllEnabled() {
+  return getConfigValue(OIL_CONFIG.ATTR_REJECT_ALL, false);
+}
+
 export function getTimeOutValue() {
   return getConfigValue(OIL_CONFIG.ATTR_TIMEOUT, defaultTimeoutInSeconds);
 }

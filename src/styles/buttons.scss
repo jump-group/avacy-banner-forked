@@ -74,6 +74,30 @@
         margin-top: 1rem;
         align-items: flex-end;
     }
+
+
+    .Reject & {
+        flex-direction: column;
+
+        .as-oil__btn-primary {
+            width: 100%;
+            max-width: unset;
+        }
+
+        @include media('>=tablet') {
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        @include media('>desktop') {
+            // We are vertically aligning this btn by using margins, which is a bit dirty
+            width: 100%;
+            flex-direction: row;
+            margin-top: 1rem;
+            align-items: flex-end;
+            justify-content: flex-end;
+        }
+    }
 }
 
 .as-oil-back-button {

@@ -5,10 +5,12 @@ DATA_CONTEXT_CANCEL,
 DATA_CONTEXT_PROCEED,
 DATA_CONTEXT_BACK,
 DATA_CONTEXT_ADVANCED_SETTINGS,
+DATA_CONTEXT_REJECT_ALL,
 JS_CLASS_BUTTON_OILBACK,
 JS_CLASS_BUTTON_PROCEED,
 JS_CLASS_BUTTON_CANCEL,
-JS_CLASS_BUTTON_ADVANCED_SETTINGS } from '../../../core/core_constants.js';
+JS_CLASS_BUTTON_ADVANCED_SETTINGS,
+JS_CLASS_BUTTON_REJECT_ALL } from '../../../core/core_constants.js';
 
 export const YesButton = (classes, layer) => {
   if (layer === 'first_layer') {
@@ -67,6 +69,21 @@ export const AdvancedSettingsButton = (advancedSettings, classes) => {
     `
       <button class="${classes} ${JS_CLASS_BUTTON_ADVANCED_SETTINGS}" data-context="${DATA_CONTEXT_ADVANCED_SETTINGS}" data-qa="oil-AdvancedSettingsButton">
         ${getLabel(OIL_LABELS.ATTR_LABEL_BUTTON_ADVANCED_SETTINGS)}
+      </button>
+    `
+  ) : '';
+}
+
+
+/**
+ * OIL Reject All button
+ */
+
+export const RejectAllButton = (isRejectAllEnabled, classes) => {
+  return isRejectAllEnabled === true ? (
+    `
+      <button class="${classes} ${JS_CLASS_BUTTON_REJECT_ALL}" data-context="${DATA_CONTEXT_REJECT_ALL}" data-qa="oil-reject-all-btn">
+        ${getLabel(OIL_LABELS.ATTR_LABEL_BUTTON_REJECT_ALL)}
       </button>
     `
   ) : '';

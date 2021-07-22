@@ -20,6 +20,7 @@ import { TCModel, TCString } from 'didomi-iabtcf-core';
 import { consentStore } from './core_consent_store';
 import { updateTcfApi } from '../core/core_tcf_api';
 import { forEach } from './../userview/userview_modal';
+import { useLegint } from './../userview/userview_config';
 
 const COOKIE_PREVIEW_NAME = 'oil_preview';
 const COOKIE_VERBOSE_NAME = 'oil_verbose';
@@ -169,6 +170,12 @@ export function updateTCModel(privacySettings, tcModel) {
 
   tcModel.consentScreen = 1;
   tcModel.updated();
+
+  if (!useLegint()) {
+    tcModel.unsetAllPurposeLegitimateInterests();
+    tcModel.unsetAllVendorLegitimateInterests();
+  }
+
   return tcModel;
 
 }

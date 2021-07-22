@@ -20,6 +20,10 @@ export function logoUrl() {
   return getConfigValue(OIL_CONFIG.ATTR_LOGO_URL, false);
 }
 
+export function useLegint() {
+  return getConfigValue(OIL_CONFIG.ATTR_USE_LEGINT, false);
+}
+
 export function isCloseWithoutConsentsEnabled() {
   return getConfigValue(OIL_CONFIG.ATTR_CLOSE_WITHOUT_CONSENTS, false);
 }

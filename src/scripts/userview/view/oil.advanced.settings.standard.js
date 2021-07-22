@@ -2,7 +2,7 @@ import '../../../styles/cpc_standard.scss';
 import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl } from '../../core/core_config'
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../../core/core_constants';
 import { getCustomVendorList, getAdditionalConsentList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay, getStacks, getFullStacks } from '../../core/core_vendor_lists';
-import { getLabel, getLabelWithDefault } from '../userview_config';
+import { getLabel, getLabelWithDefault, useLegint } from '../userview_config';
 import { OIL_LABELS } from '../userview_constants';
 import { forEach } from '../userview_modal';
 import { BackButton, YesButton } from './components/oil.buttons';
@@ -183,7 +183,7 @@ const PurposeContainerSnippet = ({ id, header, text, legalText, value, key }) =>
             ${snippetTextMore()}
         </div>
         ${key !== undefined ? `              
-          ${hasLegInt && (key !== 'specialFeature') ? `          
+          ${hasLegInt && useLegint() && (key !== 'specialFeature') ? `          
             ${snippetPurposeLengint(id, key, value)}
           `: ''}
         `: ''}
@@ -230,18 +230,23 @@ const buildIabVendorList = () => {
   ${getLabel(OIL_LABELS.ATTR_LABEL_THIRD_PARTY_DESCRIPTION) === OIL_LABELS.ATTR_LABEL_THIRD_PARTY_DESCRIPTION ? '' : `
     <div class="as-oil-cpc__row-thirdPartiesText">${getLabel(OIL_LABELS.ATTR_LABEL_THIRD_PARTY_DESCRIPTION)}</div>
   `}
-  <div class="as-oil-cpc__object-legint">
-    <div class="LegintRejectPanel">
-      <span class="LegintRejectPanel__Title">
-        ${getLabel(OIL_LABELS.ATTR_LABEL_THIRD_PARTY_OBJECT_LEGINT_BTN)}
-        <span class="LegintRejectPanel__Info js-legint-info">&#9432;</span>
-      </span>
-      <label class="LegintRejectPanel__Switch as-oil-cpc__switch">
-        <input class="as-js-btn-object-all" type="checkbox" name="oil-cpc-object-legint" value="" checked/>
-        <span class="as-oil-cpc__slider"></span>
-      </label>
+  ${
+    useLegint() ? `
+    <div class="as-oil-cpc__object-legint">
+      <div class="LegintRejectPanel">
+        <span class="LegintRejectPanel__Title">
+          ${getLabel(OIL_LABELS.ATTR_LABEL_THIRD_PARTY_OBJECT_LEGINT_BTN)}
+          <span class="LegintRejectPanel__Info js-legint-info">&#9432;</span>
+        </span>
+        <label class="LegintRejectPanel__Switch as-oil-cpc__switch">
+          <input class="as-js-btn-object-all" type="checkbox" name="oil-cpc-object-legint" value="" checked/>
+          <span class="as-oil-cpc__slider"></span>
+        </label>
+      </div>
     </div>
-  </div>
+    ` : ''
+  }
+  
 <div id="as-js-third-parties-list">
   ${buildIabVendorEntries()}
 </div>`
@@ -354,7 +359,7 @@ const buildVendorListEntry = (element) => {
                 ${snippetLegalDescription(element.features, 'features', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_FEATURES))}
                 ${snippetLegalDescription(element.specialFeatures, 'specialFeatures', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_SPECIAL_FEATURES))}
               </div>
-              ${element.legIntPurposes.length > 0 ? snippetLengint(element.id) : ''}
+              ${element.legIntPurposes.length > 0 && useLegint() ? snippetLengint(element.id) : ''}
             </div>
           `;
   }

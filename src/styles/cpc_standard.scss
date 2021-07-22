@@ -526,3 +526,26 @@
     overflow: auto;
   }
 }
+
+.DiscloseVendorCookies {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+
+  &__Row {
+    display: flex;
+  }
+  &__Label {
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+  &__Value {}
+}
+
+.CookieMaxDuration {
+  padding-top: 1rem;
+  &__MoreInfo {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

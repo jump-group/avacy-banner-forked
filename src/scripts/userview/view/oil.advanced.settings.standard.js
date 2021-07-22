@@ -429,6 +429,24 @@ const snippetLegalDescription = (list, index ,category) => {
   }
 }
 
+const convertRetentionTime = (maxAgeSeconds) => {
+  moment.locale(getLanguageFromConfigObject())
+  if (maxAgeSeconds) {
+    if (maxAgeSeconds <= 3600 ) {
+      return moment.duration(3600, 'seconds').humanize();
+    }
+
+    return moment.duration(maxAgeSeconds, 'seconds').humanize();
+
+  } else {
+    if (maxAgeSeconds < 0 ) {
+      return getLabel(OIL_LABELS.ATTR_LABEL_CPC_RETENTION_SNIPPET_SESSION)
+    }
+
+    return getLabel(OIL_LABELS.ATTR_LABEL_CPC_RETENTION_SNIPPET_UNDEFINED)
+  }
+}
+
 const cookieRetentionSection = (element) => {
   moment.locale(getLanguageFromConfigObject())
   let cookieMaxAgeSeconds = element.cookieMaxAgeSeconds;
@@ -450,9 +468,9 @@ const cookieRetentionSection = (element) => {
     // Se c'è una durata
     return cookieRetentionSnippet(`${moment.duration(cookieMaxAgeSeconds, 'seconds').humanize()}`)
   } else {
-    if (cookieMaxAgeSeconds === 0 ) {
+    if (cookieMaxAgeSeconds < 0 ) {
       // Durata di Sessione
-      return cookieRetentionSnippet('durata della sessione')
+      return cookieRetentionSnippet(getLabel(OIL_LABELS.ATTR_LABEL_CPC_RETENTION_SNIPPET_SESSION))
     }
   }
 
@@ -461,7 +479,7 @@ const cookieRetentionSection = (element) => {
     if (!usesNonCookieAccess) {      
       return ''
     } else {
-      return cookieRetentionSnippet('Non Definita')
+      return cookieRetentionSnippet(getLabel(OIL_LABELS.ATTR_LABEL_CPC_RETENTION_SNIPPET_UNDEFINED))
     }
   }
 }
@@ -471,7 +489,7 @@ const cookieRetentionSnippet = (message, disclosureURL = false) => {
     return `
       <div class="CookieMaxDuration as-oil-third-party-category-list">
         <p>
-          <strong>${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSURE_DURATION_PREFIX)} </strong> ${message} - ${getLabel(OIL_LABELS.ATTR_LABEL_CPC_COOKIE_DISCLOSURE_INFO)} <span class="js-disclosure-url" data-disclosure-url=${disclosureURL} >&#9432;</span>
+          <strong>${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSURE_DURATION_PREFIX)}: </strong> ${message} - <span class="CookieMaxDuration__MoreInfo js-disclosure-url" data-disclosure-url=${disclosureURL} >${getLabel(OIL_LABELS.ATTR_LABEL_CPC_COOKIE_DISCLOSURE_INFO)} &#9432;</span>
         </p>
       </div>  
     `;
@@ -480,7 +498,7 @@ const cookieRetentionSnippet = (message, disclosureURL = false) => {
   return `
     <div class="CookieMaxDuration as-oil-third-party-category-list">
       <p>
-        <strong>${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSURE_DURATION_PREFIX)} </strong> ${message}
+        <strong>${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSURE_DURATION_PREFIX)}: </strong> ${message}
       </p>
     </div>  
   `;
@@ -655,34 +673,34 @@ function discloseUrlPanel(domNode) {
     
     let title = getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSURE_PANEL_TITLE);
     let disclosures = data.disclosures;
-    // disclosures &&  forEach(disclosures, (el) => {
-    //   console.log(el)
-    // });
     let content = disclosures.map(item => {
       return `
-      <div class="">
-        <span>${item.identifier}</span><br />
-        <span>${item.type}</span><br />
-        <span>${item.domain}</span><br />
-        <span>${item.maxAgeSeconds}</span><br />
+      <div class="DiscloseVendorCookies">
+        <div class="DiscloseVendorCookies__Row">
+          <span class="DiscloseVendorCookies__Label">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSE_COOKIE_IDENTIFIER)}: </span>
+          <span class="DiscloseVendorCookies__Value">${item.identifier}</span>
+        </div>
+        <div class="DiscloseVendorCookies__Row">
+          <span class="DiscloseVendorCookies__Label">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSE_COOKIE_TYPE)}: </span>
+          <span class="DiscloseVendorCookies__Value">${item.type}</span>
+        </div>
+        <div class="DiscloseVendorCookies__Row">
+          <span class="DiscloseVendorCookies__Label">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSE_COOKIE_DOMAIN)}: </span>
+          <span class="DiscloseVendorCookies__Value">${item.domain}</span>
+        </div>
+        <div class="DiscloseVendorCookies__Row">
+          <span class="DiscloseVendorCookies__Label">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSE_COOKIE_DURATION)}: </span>
+          <span class="DiscloseVendorCookies__Value">${convertRetentionTime(item.maxAgeSeconds)}</span>
+        </div>
+        <div class="DiscloseVendorCookies__Row">
+          <span class="DiscloseVendorCookies__Label">${getLabel(OIL_LABELS.ATTR_LABEL_CPC_DISCLOSE_COOKIE_PURPOSES)}: </span>
+          <span class="DiscloseVendorCookies__Value">${categoryList(item.purposes, 'purposes')}</span>
+        </div>
       </div>
       `;
     }).join('');
     triggerInfoPanel(title,content);
   })
-
-
-  // return list.map(purpose => {
-  //   return PurposeContainerSnippet({
-  //     id: purpose.id,
-  //     header: getLabelWithDefault(`label_cpc_purpose_${formatPurposeId(purpose.id)}_text`, purpose.name || `Error: Missing text for purpose with id ${purpose.id}!`),
-  //     text: getLabelWithDefault(`label_cpc_purpose_${formatPurposeId(purpose.id)}_desc`, purpose.description || ''),
-  //     legalText: getLabelWithDefault(`label_cpc_purpose_${formatPurposeId(purpose.id)}_desc`, purpose.descriptionLegal || ''),
-  //     value: false,
-  //     key: key
-  //   })
-  // }).join('');
-
 }
 
 export function closeInfobox() {

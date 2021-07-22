@@ -55,6 +55,16 @@ export const OIL_LABELS = {
   ATTR_LABEL_CPC_DISCLOSURE_PANEL_TITLE  : 'label_cpc_disclosure_panel_title',
   ATTR_LABEL_CPC_DISCLOSURE_DURATION_PREFIX  : 'label_cpc_disclosure_duration_prefix',
 
+  ATTR_LABEL_CPC_RETENTION_SNIPPET_SESSION:'label_cpc_retention_snippet_session',
+  ATTR_LABEL_CPC_RETENTION_SNIPPET_UNDEFINED:'label_cpc_retention_snippet_undefined',
+  
+  ATTR_LABEL_CPC_DISCLOSE_COOKIE_IDENTIFIER:'label_cpc_disclose_cookie_identifier',
+  ATTR_LABEL_CPC_DISCLOSE_COOKIE_TYPE:'label_cpc_disclose_cookie_type',
+  ATTR_LABEL_CPC_DISCLOSE_COOKIE_DOMAIN:'label_cpc_disclose_cookie_domain',
+  ATTR_LABEL_CPC_DISCLOSE_COOKIE_DURATION:'label_cpc_disclose_cookie_duration',
+  ATTR_LABEL_CPC_DISCLOSE_COOKIE_PURPOSES:'label_cpc_disclose_cookie_purposes',
+
+
   // CPC LEGAL DESCRIPTION labels
   ATTR_LABEL_CPC_LEGAL_PURPOSE_CONSENT: 'label_cpc_legal_purpose_consent',
   ATTR_LABEL_CPC_LEGAL_PURPOSE_LEG_INT: 'label_cpc_legal_purpose_leg_int',

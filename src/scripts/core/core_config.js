@@ -13,9 +13,10 @@ function readConfiguration(configurationElement) {
   try {
     if (configurationElement) {
       if (configurationElement.dataset.uuid) {
-        fetch(REMOTE_CONFIG_BASE_URL + '' + configurationElement.dataset.uuid)
+        fetch(`${REMOTE_CONFIG_BASE_URL+configurationElement.dataset.uuid}`)
         .then(body => body.json())
         .then(data => {
+          logInfo('Get remote config', data);
           parsedConfig = data;
         })
       } else {

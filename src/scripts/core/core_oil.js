@@ -3,7 +3,7 @@ import { handleOptOut } from './core_optout';
 import { logError, logInfo, logPreviewInfo } from './core_log';
 import { checkOptIn } from './core_optin';
 import { getSoiCookie, isBrowserCookieEnabled, isPreviewCookieSet, removePreviewCookie, removeVerboseCookie, setPreviewCookie, setVerboseCookie, setDomainCookie, getOilDomainCookieName } from './core_cookies';
-import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies, gdprApplies, setLoginStatus, getLoginStatus } from './core_config';
+import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies, gdprApplies, setLoginStatus, getLoginStatus, checkMinExpireInDays } from './core_config';
 import { EVENT_NAME_HAS_OPTED_IN, EVENT_NAME_NO_COOKIES_ALLOWED, OIL_GLOBAL_OBJECT_NAME, ADDITIONAL_CONSENT_VERSION } from './core_constants';
 import { updateTcfApi } from './core_tcf_api';
 import { manageDomElementActivation } from './core_tag_management';
@@ -304,7 +304,8 @@ function attachUtilityFunctionsToWindowObject() {
     return getSoiCookie().then(cookie => {
       let created = cookie.consentData.created;
       let lastUpdated = cookie.consentData.lastUpdated;
-      let expires = window[OIL_GLOBAL_OBJECT_NAME].CONFIG.cookie_expires_in_days;
+      let expires = checkMinExpireInDays(window[OIL_GLOBAL_OBJECT_NAME].CONFIG.cookie_expires_in_days);
+
       let expirationDate = new Date( lastUpdated.getTime() + (expires * 1000 * 60 * 60 * 24));
       delete cookie.consentData
 

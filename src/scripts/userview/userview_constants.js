@@ -4,6 +4,7 @@ export const OIL_LABELS = {
   ATTR_LABEL_BUTTON_YES: 'label_button_yes',
   ATTR_LABEL_BUTTON_BACK: 'label_button_back',
   ATTR_LABEL_BUTTON_ADVANCED_SETTINGS: 'label_button_advanced_settings',
+  ATTR_LABEL_BUTTON_REJECT_ALL: 'label_button_reject_all',
   ATTR_LABEL_POI_GROUP_LIST_HEADING: 'label_poi_group_list_heading',
   ATTR_LABEL_POI_GROUP_LIST_TEXT: 'label_poi_group_list_text',
 

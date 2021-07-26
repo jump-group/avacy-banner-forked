@@ -26,6 +26,7 @@ export const OIL_CONFIG = {
   ATTR_POI_GROUP_NAME: 'poi_group_name',
   ATTR_ADVANCED_SETTINGS: 'advanced_settings',
   ATTR_CLOSE_WITHOUT_CONSENTS: 'close_without_consents',
+  ATTR_REJECT_ALL: 'reject_all',
   ATTR_LOGO_URL: 'logo_url',
   ATTR_PERSIST_MINIMUM_TRACKING: 'persist_min_tracking',
   ATTR_LOCALE: 'locale',
@@ -118,6 +119,7 @@ export const JS_CLASS_BUTTON_OILBACK = 'as-js-oilback';
 export const JS_CLASS_BUTTON_PROCEED = 'as-js-proceed';
 export const JS_CLASS_BUTTON_CANCEL = 'as-js-cancel';
 export const JS_CLASS_BUTTON_ADVANCED_SETTINGS = 'as-js-advanced-settings';
+export const JS_CLASS_BUTTON_REJECT_ALL = 'as-js-reject-all';
 
 export const CSS_CLASS_OPTOUT_DIALOG = 'as-oil-optout-confirm';
 
@@ -126,6 +128,7 @@ export const DATA_CONTEXT_YES = 'YES';
 export const DATA_CONTEXT_CANCEL = 'CANCEL';
 export const DATA_CONTEXT_PROCEED = 'PROCEED';
 export const DATA_CONTEXT_ADVANCED_SETTINGS = 'ADVANCEDSETTINGS';
+export const DATA_CONTEXT_REJECT_ALL = 'REJECTALL';
 export const DATA_CONTEXT_BACK = 'BACK';
 
 export const OIL_GLOBAL_OBJECT_NAME = 'AS_OIL';

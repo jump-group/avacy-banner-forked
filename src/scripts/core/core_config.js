@@ -188,7 +188,15 @@ export function getPoiGroupName() {
 }
 
 export function getCookieExpireInDays() {
-  return getConfigValue(OIL_CONFIG.ATTR_COOKIE_EXPIRES_IN_DAYS, 365);
+  return checkMinExpireInDays(getConfigValue(OIL_CONFIG.ATTR_COOKIE_EXPIRES_IN_DAYS), 365);
+}
+
+export function checkMinExpireInDays(days) {
+  if (days < 183) {
+    days = 183;
+  }
+  logInfo('Cookie expires in days:', days);
+  return days;
 }
 
 export function getLocaleVariantName() {

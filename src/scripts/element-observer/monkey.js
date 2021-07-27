@@ -53,7 +53,7 @@ export const monkey = (cookie) => {
                         let data = checkOnBlacklist(scriptElt.src, scriptElt.type)
                         let typeValue = value;
                         if (data[0]) {
-                            if (!hasConsent(scriptElt, cookie, 'monkey_type')) {
+                            if (!hasConsent(scriptElt, cookie)) {
                                 typeValue = TYPE_ATTRIBUTE;
                             }
                         }

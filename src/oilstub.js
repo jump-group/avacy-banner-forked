@@ -11,7 +11,6 @@ if (window.CLIENT_SIDE_BLOCKING && window.CLIENT_SIDE_BLOCKING.active) {
     });
 
     getSoiCookie().then(cookie => {
-        console.log('oilstub_cookie', cookie)
         monkey(cookie);
     })
   }

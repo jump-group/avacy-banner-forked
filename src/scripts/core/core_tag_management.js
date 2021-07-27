@@ -28,8 +28,13 @@ export function manageDomElementActivation() {
 }
 
 function getNecessaryPurposes(element) {
-  let purposesString = element.getAttribute(MANAGED_TAG__ATTRIBUTES.PURPOSES_ATTRIBUTE);
-  return purposesString ? purposesString.split(/,\s*/) : getPurposeIds().concat(getCustomPurposeIds());
+  let dataPurposes = element.hasAttribute(MANAGED_TAG__ATTRIBUTES.PURPOSES_ATTRIBUTE);
+  if (dataPurposes) {    
+    let purposesString = element.getAttribute(MANAGED_TAG__ATTRIBUTES.PURPOSES_ATTRIBUTE);
+    return purposesString ? purposesString.split(/,\s*/) : getPurposeIds().concat(getCustomPurposeIds());
+  }
+
+  return [];
 }
 
 function getNecessaryLegint(element) {
@@ -153,7 +158,7 @@ function manageElementWithoutConsent(element, managedAttribute) {
   }
 }
 
-export function hasConsent(element, cookie, from = 'oil') {
+export function hasConsent(element, cookie) {
   if(gdprApplies() === false) {
     return true;
   }

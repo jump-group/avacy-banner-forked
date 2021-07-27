@@ -311,7 +311,7 @@ function checkLanguage(list, lang) {
   return Object.keys(list).includes(lang) ? lang : 'en';
 }
 export function getLoginStatus() {
-  return window[OIL_GLOBAL_OBJECT_NAME].login_status;
+  return window[OIL_GLOBAL_OBJECT_NAME] ? window[OIL_GLOBAL_OBJECT_NAME].login_status : false;
 }
 
 export function setLocale(localeObject) {

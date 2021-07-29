@@ -56,6 +56,9 @@ export function stopTimeOut() {
  * Utility function for forEach safety
  */
 export function forEach(array, callback, scope) {
+  if(!Array.isArray(array)) {
+    array = Array.from(array)
+  }
   for (let i = 0; i < array.length; i++) {
     callback.call(scope, array[i]);
   }

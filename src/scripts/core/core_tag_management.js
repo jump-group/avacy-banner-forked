@@ -158,11 +158,62 @@ function manageElementWithoutConsent(element, managedAttribute) {
   }
 }
 
+export function monkeyHasConsent(rules, cookie) {
+  if(gdprApplies() === false) {
+    return true;
+  }
+  
+  if (cookie.opt_in) {
+    let necessaryPurposes = rules[MANAGED_TAG__ATTRIBUTES.PURPOSES_ATTRIBUTE] ? rules[MANAGED_TAG__ATTRIBUTES.PURPOSES_ATTRIBUTE] : [];
+    let necessaryLegint = rules[MANAGED_TAG__ATTRIBUTES.LEGINT_ATTRIBUTE] ? rules[MANAGED_TAG__ATTRIBUTES.LEGINT_ATTRIBUTE] : [];
+    let necessarySpecialFeatures = rules[MANAGED_TAG__ATTRIBUTES.SPECIAL_FEATURES_ATTRIBUTE] ? rules[MANAGED_TAG__ATTRIBUTES.SPECIAL_FEATURES_ATTRIBUTE] : [];
+    let necessaryCustomVendors = rules[MANAGED_TAG__ATTRIBUTES.CUSTOM_VENDOR_ATTRIBUTE] ? rules[MANAGED_TAG__ATTRIBUTES.CUSTOM_VENDOR_ATTRIBUTE] : [];
+    let necessaryIabVendors = rules[MANAGED_TAG__ATTRIBUTES.IAB_VENDOR_ATTRIBUTE] ? rules[MANAGED_TAG__ATTRIBUTES.IAB_VENDOR_ATTRIBUTE] : [];
+
+    let allowedPurposes = [];
+    forEach(cookie.consentData.purposeConsents.set_, element => {
+      allowedPurposes.push(element)
+    })
+
+    let allowedLegint = [];
+    forEach(cookie.consentData.purposeLegitimateInterests.set_, element => {
+      allowedLegint.push(element)
+    })
+
+    let allowedSpecialFeature = [];
+    forEach(cookie.consentData.specialFeatureOptins.set_, element => {
+      allowedSpecialFeature.push(element)
+    })
+
+    allowedPurposes = allowedPurposes ? allowedPurposes.concat(cookie.customPurposes) : cookie.customPurposes;
+
+    let allowedCustomVendors = [];
+    forEach(cookie.customVendorList, element => {
+      allowedCustomVendors.push(+element)
+    })
+
+    let allowedIabVendors = [];
+    forEach(cookie.consentData.vendorConsents.set_, element => {
+      allowedIabVendors.push(+element)
+    })
+
+    let purposesResult = arrayContainsArray(allowedPurposes, necessaryPurposes);
+    let legintResult = arrayContainsArray(allowedLegint, necessaryLegint);
+    let specialFeaturesResult = arrayContainsArray(allowedSpecialFeature, necessarySpecialFeatures);
+    let customVendorsResult = arrayContainsArray(allowedCustomVendors, necessaryCustomVendors);
+    let iabVendorsResult = arrayContainsArray(allowedIabVendors, necessaryIabVendors);
+
+    return purposesResult && legintResult && specialFeaturesResult && customVendorsResult && iabVendorsResult;
+  } else {
+    return false;
+  }
+}
+
 export function hasConsent(element, cookie) {
   if(gdprApplies() === false) {
     return true;
   }
-
+  
   if (cookie.opt_in) {
     let necessaryPurposes = getNecessaryPurposes(element);
     let necessaryLegint = getNecessaryLegint(element);

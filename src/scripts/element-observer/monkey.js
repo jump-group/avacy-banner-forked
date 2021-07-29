@@ -1,7 +1,7 @@
 import { TYPE_ATTRIBUTE } from './variables';
 import { checkOnBlacklist } from './checks';
 import { setRules, checkAndSetDataAttribute } from './utils';
-import { hasConsent } from './../core/core_tag_management';
+import { hasConsent, monkeyHasConsent } from './../core/core_tag_management';
 
 export const monkey = (cookie) => {
     const createElementBackup = document.createElement
@@ -32,7 +32,7 @@ export const monkey = (cookie) => {
                         
                         originalDescriptors.src.set.call(this, value);
                         if (data[0]){
-                            if (!hasConsent(scriptElt, cookie)) {
+                            if (!monkeyHasConsent(data[1], cookie)) {
                                 scriptElt.setAttribute('data-managed', TYPE_ATTRIBUTE);
                                 checkAndSetDataAttribute(scriptElt, 'title');
                                 checkAndSetDataAttribute(scriptElt, 'display');
@@ -53,7 +53,7 @@ export const monkey = (cookie) => {
                         let data = checkOnBlacklist(scriptElt.src, scriptElt.type)
                         let typeValue = value;
                         if (data[0]) {
-                            if (!hasConsent(scriptElt, cookie)) {
+                            if (!monkeyHasConsent(data[1], cookie)) {
                                 typeValue = TYPE_ATTRIBUTE;
                             }
                         }

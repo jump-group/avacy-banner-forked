@@ -25,9 +25,11 @@ export function oilDefaultTemplate() {
                         ${RejectAllButton(isRejectAllEnabled(), 'as-oil__btn-primary')}
                     </div>
                 `: ''}
-                <div class="as-oil-l-item as-oil-l-item__advanced-settings">
-                    ${AdvancedSettingsButton(isAdvancedSettings(), 'as-oil__btn-primary')}
-                </div>
+                ${isAdvancedSettings() ? `
+                    <div class="as-oil-l-item as-oil-l-item__advanced-settings">
+                        ${AdvancedSettingsButton(isAdvancedSettings(), 'as-oil__btn-primary')}
+                    </div>
+                `: ''}
             </div>
         </div>
     </div>

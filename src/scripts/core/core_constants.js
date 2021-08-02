@@ -56,7 +56,8 @@ export const OIL_CONFIG = {
   ATTR_DEVICE_ENVIRONMENT: 'deviceEnvironment',
   ATTR_NATIVE_PUBLISHER: 'publisher',
   ATTR_USE_STACKS: 'useStacks',
-  ATTR_USE_LEGINT: 'use_legint'
+  ATTR_USE_LEGINT: 'use_legint',
+  ATTR_AVACY_DEMO_STATUS: 'demo_status'
 };
 
 export const OIL_CONFIG_CPC_TYPES = {

@@ -322,6 +322,10 @@ export function gdprApplies() {
   return getConfigValue(OIL_CONFIG.ATTR_GDPR_APPLIES_GLOBALLY, true) || getConfigValue(OIL_CONFIG.ATTR_GDPR_APPLIES, false);
 }
 
+export function demoActive() {
+  return getConfigValue(OIL_CONFIG.ATTR_AVACY_DEMO_STATUS, false);
+}
+
 export function setGdprApplies(value = true) {
   setConfigValue(OIL_CONFIG.ATTR_GDPR_APPLIES, value);
 }

@@ -3,7 +3,7 @@ import { MANAGED_TAG_IDENTIFIER, MANAGED_TAG_IDENTIFIER_ATTRIBUTE, MANAGED_TAG__
 import { getSoiCookie } from './core_cookies';
 import { arrayContainsArray, sendEventToHostSite } from './core_utils';
 import { getPurposeIds, getSpecialFeatureIds, getLegintIds, getCustomVendorIds } from './core_vendor_lists';
-import { getCustomPurposeIds, gdprApplies } from './core_config';
+import { getCustomPurposeIds, gdprApplies, demoActive } from './core_config';
 import { backupIframes } from './../element-observer/variables';
 import { forEach } from './../userview/userview_modal';
 import { observer } from './../element-observer/observer';
@@ -22,7 +22,7 @@ export function manageDomElementActivation() {
         manageElement(managedElements[i], cookie);
       }
     }
-    // demoPage(cookie);
+    demoPage(cookie);
   });
   
 }
@@ -260,64 +260,67 @@ export function hasConsent(element, cookie) {
   }
 }
 
-// export function demoPage(cookie) {
-//   let purposes = [
-//     {
-//         name: 'Archiviare e/o accedere a informazioni su un dispositivo',
-//         status: false
-//     },
-//     {
-//         name: 'Selezionare annunci basici (basic ads)',
-//         status: false
-//     },
-//     {
-//         name: 'Creare un profilo di annunci personalizzati',
-//         status: false
-//     },
-//     {
-//         name: 'Selezionare annunci personalizzati',
-//         status: false
-//     },
-//     {
-//         name: 'Creare un profilo di contenuto personalizzato',
-//         status: false
-//     },
-//     {
-//         name: 'Selezionare contenuti personalizzati',
-//         status: false
-//     },
-//     {
-//         name: 'Valutare le performance degli annunci',
-//         status: false
-//     },
-//     {
-//         name: 'Valutare le performance dei contenuti',
-//         status: false
-//     },
-//     {
-//         name: 'Applicare ricerche di mercato per generare approfondimenti sul pubblico',
-//         status: false
-//     },
-//     {
-//         name: 'Sviluppare e perfezionare i prodotti',
-//         status: false
-//     }
-//   ];
-//   if (cookie.opt_in === true) {
-//     forEach(cookie.consentData.purposeConsents.set_, element => {
-//       purposes[element-1].status = true;
-//     })
-//   }
-//   setConsentsStatus(purposes);
-//   setScriptsStatus(purposes)
-// }
+export function demoPage(cookie) {
+  if(!demoActive()) {
+    return;
+  }
+  let purposes = [
+    {
+        name: 'Archiviare e/o accedere a informazioni su un dispositivo',
+        status: false
+    },
+    {
+        name: 'Selezionare annunci basici (basic ads)',
+        status: false
+    },
+    {
+        name: 'Creare un profilo di annunci personalizzati',
+        status: false
+    },
+    {
+        name: 'Selezionare annunci personalizzati',
+        status: false
+    },
+    {
+        name: 'Creare un profilo di contenuto personalizzato',
+        status: false
+    },
+    {
+        name: 'Selezionare contenuti personalizzati',
+        status: false
+    },
+    {
+        name: 'Valutare le performance degli annunci',
+        status: false
+    },
+    {
+        name: 'Valutare le performance dei contenuti',
+        status: false
+    },
+    {
+        name: 'Applicare ricerche di mercato per generare approfondimenti sul pubblico',
+        status: false
+    },
+    {
+        name: 'Sviluppare e perfezionare i prodotti',
+        status: false
+    }
+  ];
+  if (cookie.opt_in === true) {
+    forEach(cookie.consentData.purposeConsents.set_, element => {
+      purposes[element-1].status = true;
+    })
+  }
+  setConsentsStatus(purposes);
+  setScriptsStatus(purposes)
+}
 
 function setConsentsStatus(purposes) {
   let consentsListElement = document.querySelector('.ConsentStatus__List');
   if (consentsListElement) {
         consentsListElement.innerHTML = '';
-
-        forEach(purposes, (el, index) => {
+        let index = 0;
+        forEach(purposes, el => {
           let newLi = document.createElement('li');
           let name = el.name;
           let status = !!el.status;
@@ -328,6 +331,7 @@ function setConsentsStatus(purposes) {
           let statusLabel = status ? 'Attivo' : 'Disattivo'
           newLi.innerHTML = index+1 + '. ' + name + '<span class="ConsentStatus__PurposeStatus">'+ statusLabel +'</span>';
           consentsListElement.appendChild(newLi);
+          index += 1;
       })
   }
 }

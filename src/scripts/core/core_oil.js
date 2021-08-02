@@ -6,7 +6,7 @@ import { getSoiCookie, isBrowserCookieEnabled, isPreviewCookieSet, removePreview
 import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies, gdprApplies, setLoginStatus, getLoginStatus, checkMinExpireInDays } from './core_config';
 import { EVENT_NAME_HAS_OPTED_IN, EVENT_NAME_NO_COOKIES_ALLOWED, OIL_GLOBAL_OBJECT_NAME, ADDITIONAL_CONSENT_VERSION } from './core_constants';
 import { updateTcfApi } from './core_tcf_api';
-import { manageDomElementActivation } from './core_tag_management';
+import { manageDomElementActivation, demoPage } from './core_tag_management';
 import { sendConsentInformationToCustomVendors } from './core_custom_vendors';
 import { getPurposes, clearVendorListCache } from './core_vendor_lists';
 import { consentStore } from './core_consent_store';
@@ -84,7 +84,7 @@ export function initOilLayer() {
           .catch((e) => {
             logError('Locale could not be loaded.', e);
           });
-        // demoPage(cookieData);
+        demoPage(cookieData);
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start without found opt-in finished!'));
       }
       if (getQueryStringParam('prefcenter') && getQueryStringParam('prefcenter') === '1') {

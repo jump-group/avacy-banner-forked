@@ -199,7 +199,7 @@ export function getPoiGroupName() {
 }
 
 export function getCookieExpireInDays() {
-  return checkMinExpireInDays(getConfigValue(OIL_CONFIG.ATTR_COOKIE_EXPIRES_IN_DAYS), 365);
+  return checkMinExpireInDays(getConfigValue(OIL_CONFIG.ATTR_COOKIE_EXPIRES_IN_DAYS, 365));
 }
 
 export function checkMinExpireInDays(days) {

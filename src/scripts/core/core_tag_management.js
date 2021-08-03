@@ -261,9 +261,9 @@ export function hasConsent(element, cookie) {
 }
 
 export function demoPage(cookie) {
-  if(!demoActive()) {
-    return;
-  }
+  // if(!demoActive()) {
+  //   return;
+  // }
   let purposes = [
     {
         name: 'Archiviare e/o accedere a informazioni su un dispositivo',

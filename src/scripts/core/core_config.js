@@ -1,4 +1,4 @@
-import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, OIL_GLOBAL_OBJECT_NAME, OIL_POLICY_DEFAULT_VERSION } from './core_constants';
+import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, REMOTE_CONFIG_BASE_URL, OIL_GLOBAL_OBJECT_NAME, OIL_POLICY_DEFAULT_VERSION } from './core_constants';
 import { logError, logInfo } from './core_log.js';
 import { getGlobalOilObject, isObject, OilVersion, setGlobalOilObject, sendEventToHostSite } from './core_utils';
 
@@ -11,9 +11,20 @@ import { getGlobalOilObject, isObject, OilVersion, setGlobalOilObject, sendEvent
 function readConfiguration(configurationElement) {
   let parsedConfig = {};
   try {
-    if (configurationElement && configurationElement.text) {
-      parsedConfig = JSON.parse(configurationElement.text);
-      logInfo('Parsed config', parsedConfig);
+    if (configurationElement) {
+      if (configurationElement.dataset.uuid) {
+        fetch(`${REMOTE_CONFIG_BASE_URL+configurationElement.dataset.uuid}.json`)
+        .then(body => body.json())
+        .then(data => {
+          logInfo('Get remote config', data);
+          parsedConfig = data;
+        })
+      } else {
+        if (configurationElement.text) {
+          parsedConfig = JSON.parse(configurationElement.text);
+          logInfo('Parsed config', parsedConfig);
+        }
+      }
     }
   } catch (errorDetails) {
     logError('Error config', errorDetails);

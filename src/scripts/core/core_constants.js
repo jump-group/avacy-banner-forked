@@ -9,7 +9,7 @@ export const OIL_SPEC = {
 };
 
 export const ADDITIONAL_CONSENT_VERSION = '1~';
-
+export const REMOTE_CONFIG_BASE_URL = 'https://avacy-storage-vapor.s3.eu-south-1.amazonaws.com/'
 
 export const OIL_CONFIG = {
   ATTR_CONFIG_VERSION: 'config_version',

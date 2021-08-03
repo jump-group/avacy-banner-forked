@@ -8,12 +8,12 @@ import { getGlobalOilObject, isObject, OilVersion, setGlobalOilObject, sendEvent
  * @returns {{}} extracted configuration as JSON
  * @function
  */
-function readConfiguration(configurationElement) {
+async function readConfiguration(configurationElement) {
   let parsedConfig = {};
   try {
     if (configurationElement) {
       if (configurationElement.dataset.uuid) {
-        fetch(`${REMOTE_CONFIG_BASE_URL+configurationElement.dataset.uuid}.json`)
+        await fetch(`${REMOTE_CONFIG_BASE_URL+configurationElement.dataset.uuid}.json`)
         .then(body => body.json())
         .then(data => {
           logInfo('Get remote config', data);

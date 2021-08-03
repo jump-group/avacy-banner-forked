@@ -330,9 +330,9 @@ module.exports = {
   }, {
     filename: 'demos/demo-page-block.html',
     template: path.resolve(sourcePath, 'demos', 'demo-page-block.html'),
-    chunks: ['oilstub', 'oil'],
+    chunks: [],
     chunksSortMode: 'dependency',
-    inject: 'head'
+    inject: false
   },{
     filename: 'demos/demo-page-form.html',
     template: path.resolve(sourcePath, 'demos', 'demo-page-form.html'),

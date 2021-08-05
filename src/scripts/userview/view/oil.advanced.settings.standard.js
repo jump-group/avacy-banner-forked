@@ -645,7 +645,12 @@ export function stacksObjectStatus() {
 
 export function legintObjectStatus() {
   let elements = document.querySelectorAll('.as-js-vendor-legint-slider');
-  document.querySelector('.as-js-btn-object-all').checked = Array.prototype.slice.call(elements).some(x => x.checked);
+  let objectAllLegint = document.querySelector('.as-js-btn-object-all');
+  if (elements) {
+    if (objectAllLegint) {
+      objectAllLegint.checked = Array.prototype.slice.call(elements).some(x => x.checked);
+    }
+  }
 }
 
 export function triggerInfoPanel(title,content) {

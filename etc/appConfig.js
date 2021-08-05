@@ -346,6 +346,12 @@ module.exports = {
     chunksSortMode: 'dependency',
     inject: 'head'
   },{
+    filename: 'demos/demo-page-gtm.html',
+    template: path.resolve(sourcePath, 'demos', 'demo-page-gtm.html'),
+    chunks: [],
+    chunksSortMode: 'dependency',
+    inject: false
+  },{
     filename: 'demos/demo-backend-consent.html',
     template: path.resolve(sourcePath, 'demos', 'demo-backend-consent.html'),
     chunks: ['oilstub', 'oil'],

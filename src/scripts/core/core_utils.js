@@ -3,6 +3,7 @@
 import { logInfo } from './core_log';
 import { OIL_GLOBAL_OBJECT_NAME } from './core_constants';
 import { getLocale } from './core_config';
+import { forEach } from './../userview/userview_modal';
 
 /**
  * Check if environment is set to production
@@ -60,6 +61,46 @@ export function sendEventToHostSite(eventName) {
     }
   );
   logInfo(`Sent postmessage event: ${eventName}`);
+}
+
+export function tealiumTagManagerEvents(optin, cookieData) {
+  if (optin === true) {
+    window.utag.link({
+        event: 'avacy_consent_given'
+    });
+  } else if (optin === false) {
+    window.utag.link({
+          event: 'avacy_consent_rejected'
+      });
+  }
+  let cookiePurposes = Object.entries(cookieData.consentData.purposeConsents.set_); 
+  if (cookiePurposes) {
+      forEach(cookieData.consentData.purposeConsents.set_, element => {
+        window.utag.link({
+          event: 'avacy_consent_given_purpose_' + element
+        });
+      })
+  }
+}
+
+export function googleTagManagerEvents(optin, cookieData) {
+  if (optin === true) {
+    window.dataLayer.push({
+        event: 'avacy_consent_given'
+    });
+  } else if (optin === false) {
+      window.dataLayer.push({
+          event: 'avacy_consent_rejected'
+      });
+  }
+  let cookiePurposes = Object.entries(cookieData.consentData.purposeConsents.set_); 
+  if (cookiePurposes) {
+      forEach(cookieData.consentData.purposeConsents.set_, element => {
+        window.dataLayer.push({
+          event: 'avacy_consent_given_purpose_' + element
+        });
+      })
+  }
 }
 
 // Create IE + others compatible event handler

@@ -346,6 +346,12 @@ module.exports = {
     chunksSortMode: 'dependency',
     inject: 'head'
   },{
+    filename: 'demos/demo-page-remote-config.html',
+    template: path.resolve(sourcePath, 'demos', 'demo-page-remote-config.html'),
+    chunks: [],
+    chunksSortMode: 'dependency',
+    inject: false
+  },{
     filename: 'demos/demo-page-gtm.html',
     template: path.resolve(sourcePath, 'demos', 'demo-page-gtm.html'),
     chunks: [],

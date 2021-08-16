@@ -1,4 +1,4 @@
-import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, REMOTE_CONFIG_BASE_URL, OIL_GLOBAL_OBJECT_NAME, OIL_POLICY_DEFAULT_VERSION } from './core_constants';
+import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, OIL_GLOBAL_OBJECT_NAME, OIL_POLICY_DEFAULT_VERSION } from './core_constants';
 import { logError, logInfo } from './core_log.js';
 import { getGlobalOilObject, isObject, OilVersion, setGlobalOilObject, sendEventToHostSite } from './core_utils';
 
@@ -12,18 +12,9 @@ function readConfiguration(configurationElement) {
   let parsedConfig = {};
   try {
     if (configurationElement) {
-      if (configurationElement.dataset.uuid) {
-        fetch(`${REMOTE_CONFIG_BASE_URL+configurationElement.dataset.uuid}.json`)
-        .then(body => body.json())
-        .then(data => {
-          logInfo('Get remote config', data);
-          parsedConfig = data;
-        })
-      } else {
-        if (configurationElement.text) {
-          parsedConfig = JSON.parse(configurationElement.text);
-          logInfo('Parsed config', parsedConfig);
-        }
+      if (configurationElement.text) {
+        parsedConfig = JSON.parse(configurationElement.text);
+        logInfo('Parsed config', parsedConfig);
       }
     }
   } catch (errorDetails) {
@@ -42,8 +33,7 @@ function getConfiguration() {
     if (configurationElement === null) {
       logInfo('Using default config');
     }
-    // let stubConfig = window.STUB_AS_OIL ? window.STUB_AS_OIL.CONFIG : {};
-    // let mergeConfig = Object.assign({}, readConfiguration(configurationElement), stubConfig);
+
     setGlobalOilObject('CONFIG', readConfiguration(configurationElement));
     setGlobalOilObject('CONFIG_ATTRIBUTES', OIL_CONFIG);
 

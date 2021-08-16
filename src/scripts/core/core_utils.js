@@ -63,44 +63,44 @@ export function sendEventToHostSite(eventName) {
   logInfo(`Sent postmessage event: ${eventName}`);
 }
 
-export function tealiumTagManagerEvents(optin, cookieData) {
-  if (optin === true) {
-    window.utag.link({
-        event: 'avacy_consent_given'
-    });
-  } else if (optin === false) {
-    window.utag.link({
-          event: 'avacy_consent_rejected'
-      });
-  }
-  let cookiePurposes = Object.entries(cookieData.consentData.purposeConsents.set_); 
-  if (cookiePurposes) {
-      forEach(cookieData.consentData.purposeConsents.set_, element => {
-        window.utag.link({
-          event: 'avacy_consent_given_purpose_' + element
-        });
-      })
-  }
-}
+export function tagManagerEvents(optin, cookieData) {
+  let allowedPurposes = [];
+  let allowedLegints = [];
+  let allowedSpecialFeatures = [];
+  let allowedCustomVendors = [];
+  let allowedIabVendors = [];
 
-export function googleTagManagerEvents(optin, cookieData) {
-  if (optin === true) {
-    window.dataLayer.push({
-        event: 'avacy_consent_given'
-    });
-  } else if (optin === false) {
-      window.dataLayer.push({
-          event: 'avacy_consent_rejected'
-      });
-  }
-  let cookiePurposes = Object.entries(cookieData.consentData.purposeConsents.set_); 
-  if (cookiePurposes) {
-      forEach(cookieData.consentData.purposeConsents.set_, element => {
-        window.dataLayer.push({
-          event: 'avacy_consent_given_purpose_' + element
-        });
-      })
-  }
+  cookieData.consentData.purposeConsents && forEach(cookieData.consentData.purposeConsents.set_, element => {
+    allowedPurposes.push(element)
+  })
+
+  cookieData.consentData.purposeLegitimateInterests && forEach(cookieData.consentData.purposeLegitimateInterests.set_, element => {
+    allowedLegints.push(element)
+  })
+  
+  cookieData.consentData.specialFeatureOptins && forEach(cookieData.consentData.specialFeatureOptins.set_, element => {
+    allowedSpecialFeatures.push(element)
+  })
+
+  cookieData.customVendorList && forEach(cookieData.customVendorList, element => {
+    allowedCustomVendors.push(element)
+  })
+
+  cookieData.consentData.vendorConsents && forEach(cookieData.consentData.vendorConsents.set_, element => {
+    allowedIabVendors.push(element)
+  })
+
+  const event = new CustomEvent('avacy_consent', { 
+    detail: {
+      optin: optin, 
+      purposes: allowedPurposes,
+      legitimateInterests: allowedLegints,
+      specialFeatures: allowedSpecialFeatures,
+      customVendors: allowedCustomVendors,
+      iabVendors: allowedIabVendors
+    }
+  });
+  window.dispatchEvent(event);
 }
 
 // Create IE + others compatible event handler

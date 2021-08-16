@@ -1,4 +1,4 @@
-import { OilVersion, sendEventToHostSite, setGlobalOilObject, googleTagManagerEvents, tealiumTagManagerEvents } from './core_utils';
+import { OilVersion, sendEventToHostSite, setGlobalOilObject, googleTagManagerEvents, tealiumTagManagerEvents, tagManagerEvents } from './core_utils';
 import { handleOptOut } from './core_optout';
 import { logError, logInfo, logPreviewInfo } from './core_log';
 import { checkOptIn } from './core_optin';
@@ -57,16 +57,8 @@ export function initOilLayer() {
     checkOptIn().then((result) => {
       let optin = result[0];
       let cookieData = result[1];
-      
-      if (window.dataLayer) {
-        logInfo('Using dataLayer Push');
-        googleTagManagerEvents(optin, cookieData);
-      }
-      
-      if (window.utag) {
-        logInfo('Using utag Link');
-        tealiumTagManagerEvents(optin, cookieData);
-      }
+
+      tagManagerEvents(optin, cookieData);
 
       if (optin) {
         /**

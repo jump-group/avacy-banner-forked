@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Demo Home - Privacy Solution</title>
+    <script type="text/javascript" src="https://polyfill.io/v3/polyfill.min.js?features=Object%2CMap%2CSet%2CURLSearchParams%2CString.prototype.startsWith%2CString.prototype.repeat%2CObject.fromEntries%2CArray.isArray%2CArray.from"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .cpc-button {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            padding: 30px 0;
+            box-sizing: border-box;
+        }
+
+        .has-big-bad-background {
+            width: 100%;
+            height: 2400px;
+            background: var(--home-demo-bg) top center no-repeat;
+            background-size: contain;
+        }
+    </style>
+
+    <script id="oil-configuration" type="application/configuration" data-remote-config="https://cdn.jumpgroup.it/assets/configurations/my-config.json"></script>
+    <script src="http://localhost:5000/oilstub.bundle.js"></script>
+    <script src="http://localhost:5000/oil.bundle.js"></script>
+</head>
+
+<body>
+    <div class="cpc-button">
+        <button data-qa="show-pref-button" onclick="AS_OIL.showPreferenceCenter('absolute');">Mostra pannello
+            preferenze</button>
+        <button data-qa="show-pref-button"
+            onclick='(function(){AS_OIL.triggerOptOut(); location.reload();})();'>Ricarica</button>
+        <div id="oil-preference-center"></div>
+    </div>
+    <div class="has-big-bad-background"></div>
+</body>
+
+</html>

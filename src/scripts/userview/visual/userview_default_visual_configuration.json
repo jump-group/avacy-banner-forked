@@ -1,13 +1,13 @@
 {
     "colors": {
-        "text_color_primary": "#f5f5f5",
+        "text_color_primary": "#80888c",
         "text_color_secondary": "#262628",
-        "background_color": "#262626",
+        "background_color": "#f9f9f9",
         "secondary_background_color": "#dedede",
-        "accent_primary": "#0099f2",
+        "accent_primary": "#ed9078",
         "accent_secondary": null,
-        "btn_primary_background": "#3f7edf",
-        "btn_primary_background_hover": "#1CA5F1",
+        "btn_primary_background": "#ed9078",
+        "btn_primary_background_hover": "#e09784",
         "btn_primary_text_color": "#ffffff",
         "btn_secondary_background": null,
         "btn_secondary_background_hover": null,
@@ -24,5 +24,5 @@
     "banner_position": "PositionBottom",
     "font_base_scale": 1,
     "banner_animation": "FadeIn",
-    "font_family": "Impact"
+    "font_family": "Arial"
 }

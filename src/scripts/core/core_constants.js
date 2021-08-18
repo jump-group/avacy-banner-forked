@@ -1,4 +1,5 @@
 //REVIEW: changes in todo comments @tcf2
+export const DEFAULT_LANG = 'it';
 
 export const OIL_SPEC = {
   CMP_ID: 297,

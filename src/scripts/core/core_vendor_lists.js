@@ -63,7 +63,7 @@ export function loadVendorListAndCustomVendorList() {
 
 }
 
-function loadCustomVendorList() {
+export function loadCustomVendorList() {
   return new Promise(resolve => {
     let customVendorListUrl = getCustomVendorListUrl();
     if (!customVendorListUrl) {

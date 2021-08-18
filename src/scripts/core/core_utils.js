@@ -3,6 +3,7 @@
 import { logInfo } from './core_log';
 import { OIL_GLOBAL_OBJECT_NAME } from './core_constants';
 import { getLocale } from './core_config';
+import { loadCustomVendorList, cachedCustomVendorList } from './core_vendor_lists';
 import { forEach } from './../userview/userview_modal';
 
 /**
@@ -69,38 +70,66 @@ export function tagManagerEvents(optin, cookieData) {
   let allowedSpecialFeatures = [];
   let allowedCustomVendors = [];
   let allowedIabVendors = [];
+  let iabVendorsWithConsent = [];
+  let customVendorsWithConsent = [];
 
-  cookieData.consentData.purposeConsents && forEach(cookieData.consentData.purposeConsents.set_, element => {
-    allowedPurposes.push(element)
-  })
-
-  cookieData.consentData.purposeLegitimateInterests && forEach(cookieData.consentData.purposeLegitimateInterests.set_, element => {
-    allowedLegints.push(element)
-  })
+  Promise.all([loadCustomVendorList(), cookieData.consentData.gvl.readyPromise]).then( () => {
+    cookieData.consentData.purposeConsents && forEach(cookieData.consentData.purposeConsents.set_, element => {
+      allowedPurposes.push(element)
+    })
   
-  cookieData.consentData.specialFeatureOptins && forEach(cookieData.consentData.specialFeatureOptins.set_, element => {
-    allowedSpecialFeatures.push(element)
-  })
+    cookieData.consentData.purposeLegitimateInterests && forEach(cookieData.consentData.purposeLegitimateInterests.set_, element => {
+      allowedLegints.push(element)
+    })
+    
+    cookieData.consentData.specialFeatureOptins && forEach(cookieData.consentData.specialFeatureOptins.set_, element => {
+      allowedSpecialFeatures.push(element)
+    })
+  
+    cookieData.customVendorList && forEach(cookieData.customVendorList, element => {
+      allowedCustomVendors.push(element)
+    })
+  
+    cookieData.customVendorList && forEach(cookieData.customVendorList, element => {
+      let hasPurposes = cachedCustomVendorList.vendors[element].purposes.every(r => allowedPurposes.includes(r));
+      if (hasPurposes) {
+        customVendorsWithConsent.push({
+          name: cachedCustomVendorList.vendors[element].name,
+          id: cachedCustomVendorList.vendors[element].id
+        })
+      }
+    })
+  
+    cookieData.consentData.vendorConsents && forEach(cookieData.consentData.vendorConsents.set_, element => {
+      allowedIabVendors.push(element)
+    })
+  
+    cookieData.consentData.vendorConsents && forEach(cookieData.consentData.vendorConsents.set_, element => {
+      let hasPurposes = cookieData.consentData.gvl.vendors[element].purposes.every(r => allowedPurposes.includes(r));
+      if (hasPurposes) {
+        iabVendorsWithConsent.push({
+          name: cookieData.consentData.gvl.vendors[element].name,
+          id: cookieData.consentData.gvl.vendors[element].id
+        })
+      }
+    })
+  
+    const event = new CustomEvent('avacy_consent', { 
+      detail: {
+        optin: optin, 
+        purposes: allowedPurposes,
+        legitimateInterests: allowedLegints,
+        specialFeatures: allowedSpecialFeatures,
+        customVendors: allowedCustomVendors,
+        iabVendors: allowedIabVendors,
+        iabVendorsWithConsent: iabVendorsWithConsent,
+        customVendorsWithConsent: customVendorsWithConsent
+      }
+    });
 
-  cookieData.customVendorList && forEach(cookieData.customVendorList, element => {
-    allowedCustomVendors.push(element)
-  })
+    window.dispatchEvent(event);
+  });  
 
-  cookieData.consentData.vendorConsents && forEach(cookieData.consentData.vendorConsents.set_, element => {
-    allowedIabVendors.push(element)
-  })
-
-  const event = new CustomEvent('avacy_consent', { 
-    detail: {
-      optin: optin, 
-      purposes: allowedPurposes,
-      legitimateInterests: allowedLegints,
-      specialFeatures: allowedSpecialFeatures,
-      customVendors: allowedCustomVendors,
-      iabVendors: allowedIabVendors
-    }
-  });
-  window.dispatchEvent(event);
 }
 
 // Create IE + others compatible event handler

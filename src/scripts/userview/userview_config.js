@@ -13,7 +13,7 @@ export function isPersistMinimumTracking() {
 
 // FIXME bad name - isAdvancedSettingsEnabled
 export function isAdvancedSettings() {
-  return getConfigValue(OIL_CONFIG.ATTR_ADVANCED_SETTINGS, false);
+  return getConfigValue(OIL_CONFIG.ATTR_ADVANCED_SETTINGS, true);
 }
 
 export function logoUrl() {

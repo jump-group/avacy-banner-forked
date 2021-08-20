@@ -14,7 +14,6 @@
     "label_cpc_deactivate_all": "Deactivate all",
     "label_third_party": "IAB 3rd Parties",
     "label_custom_thirdparty_heading": "Publisher 3rd Parties",
-    "label_cpc_purpose_desc": "Purpose",
     "label_cpc_purpose_optout_confirm_heading": "Are you really sure?",
     "label_cpc_purpose_optout_confirm_text": "This setting will significantly affect your experience on our website.",
     "label_cpc_purpose_optout_confirm_proceed": "Continue",
@@ -35,7 +34,6 @@
     "label_cpc_legal_features": "Features",
     "label_cpc_legal_special_features": "Special Features",
     "label_cpc_save": "Save",
-    "label_cpc_legint_rejectbox_text": "Legittimo interesse per i fornitori",
     "label_cpc_legint_box_text": "Permetti a questo servizio di trattare i tuoi dati sulla base di un interesse legittimo.",
     "label_cpc_legint_infobox_title": "Legittimo interesse",
     "label_cpc_legint_infobox_description": "Un \"interesse legittimo\" è un interesse che, in base alla legislazione applicabile, giustifica il trattamento di dati personali.<br>I servizi che decidono di fare affidamento su di un interesse legittimo possono processare i tuoi dati a meno che tu non ti opponga a tale trattamento.<br><p><b>Deselezionando questa casella eserciti il tuo diritto di opposizione.</b></p>",
@@ -45,14 +43,16 @@
     "label_additional_consent_heading": "Google Partner",
     "label_cpc_read_more": "Leggi di più...",
     "label_cpc_read_less": "Leggi di meno.",
-    "label_cpc_more_stack": "Apri Dettaglio",
-    "label_cpc_less_stack": "Chiudi Dettaglio",
+    "label_cpc_more_stack": "Mostra Dettaglio",
+    "label_cpc_less_stack": "Nascondi Dettaglio",
     "label_cpc_retention_snippet_session": "durata della sessione",
     "label_cpc_retention_snippet_undefined": "non definita",
     "label_cpc_disclose_cookie_identifier": "Identificativo",
     "label_cpc_disclose_cookie_type": "Modalità di accesso o archiviazione",
     "label_cpc_disclose_cookie_domain": "Dominio",
     "label_cpc_disclose_cookie_duration": "Durata",
-    "label_cpc_disclose_cookie_purposes": "Finalità"
+    "label_cpc_disclose_cookie_purposes": "Finalità",
+    "label_third_party_description": "Questi servizi aderiscono al <a target=\"_blank\" href=\"https://iabeurope.eu/transparency-consent-framework/\">IAB Transparency and Consent Framework (TCF)</a>.",
+    "label_third_party_object_legint": "Legittimo interesse per i fornitori"
   }
 }

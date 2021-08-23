@@ -89,16 +89,18 @@ export function tagManagerEvents(optin, cookieData) {
     cookieData.customVendorList && forEach(cookieData.customVendorList, element => {
       allowedCustomVendors.push(element)
     })
-  
-    cookieData.customVendorList && forEach(cookieData.customVendorList, element => {
-      let hasPurposes = cachedCustomVendorList.vendors[element].purposes.every(r => allowedPurposes.includes(r));
-      if (hasPurposes) {
-        customVendorsWithConsent.push({
-          name: cachedCustomVendorList.vendors[element].name,
-          id: cachedCustomVendorList.vendors[element].id
-        })
-      }
-    })
+
+    if (cookieData.customVendorList && cachedCustomVendorList.vendors.length) {      
+      forEach(cookieData.customVendorList, element => {
+        let hasPurposes = cachedCustomVendorList.vendors[element].purposes.every(r => allowedPurposes.includes(r));
+        if (hasPurposes) {
+          customVendorsWithConsent.push({
+            name: cachedCustomVendorList.vendors[element].name,
+            id: cachedCustomVendorList.vendors[element].id
+          })
+        }
+      })
+    }
   
     cookieData.consentData.vendorConsents && forEach(cookieData.consentData.vendorConsents.set_, element => {
       allowedIabVendors.push(element)

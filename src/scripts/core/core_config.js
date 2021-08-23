@@ -1,7 +1,7 @@
-import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, OIL_GLOBAL_OBJECT_NAME, OIL_POLICY_DEFAULT_VERSION } from './core_constants';
+import { OIL_CONFIG, OIL_CONFIG_DEFAULT_VERSION, OIL_GLOBAL_OBJECT_NAME, OIL_POLICY_DEFAULT_VERSION, DEFAULT_LANG } from './core_constants';
 import { logError, logInfo } from './core_log.js';
 import { getGlobalOilObject, isObject, OilVersion, setGlobalOilObject, sendEventToHostSite } from './core_utils';
-
+import DEFAULT_LOCALE from './../userview/locale/userview_default_locale.json';
 /**
  * Read configuration of component from JSON script block
  * @param configurationElement - DOM config element
@@ -74,7 +74,7 @@ function verifyLocaleObject() {
     if (!locale.localeId) {
       logError('Your configuration is faulty - "locale" object misses "localeId" property. See the oil.js documentation for details.');
     }
-    if (!locale.version) {
+    if (!locale.version && locale.version !== 0) {
       logError('Your configuration is faulty - "locale" object misses "version" property. See the oil.js documentation for details.');
     }
   }
@@ -229,7 +229,7 @@ export function getLanguage() {
   return getLanguageFromLocale(getLocaleVariantName());
 }
 
-export function getLanguageFromLocale(localeVariantName = 'en') {
+export function getLanguageFromLocale(localeVariantName = DEFAULT_LANG) {
   return localeVariantName.substring(0, 2);
 }
 
@@ -239,7 +239,7 @@ export function getLanguageFromConfigObject() {
     }
 
     let languages_list = getConfigValue(OIL_CONFIG.ATTR_LANGUAGES_LIST, undefined);
-    let lang = getConfigValue(OIL_CONFIG.ATTR_LANGUAGE, 'en')
+    let lang = getConfigValue(OIL_CONFIG.ATTR_LANGUAGE, DEFAULT_LANG)
 
     return checkLanguage(languages_list, lang);
 }
@@ -305,11 +305,16 @@ export function getLocale() {
     setConfigValue(OIL_CONFIG.ATTR_LOCALE, languages_list[lang]);
   }
 
-  return getConfigValue(OIL_CONFIG.ATTR_LOCALE, undefined);
+  return getConfigValue(OIL_CONFIG.ATTR_LOCALE, DEFAULT_LOCALE);
 }
 
 function checkLanguage(list, lang) {
-  return Object.keys(list).includes(lang) ? lang : 'en';
+
+  if (list) {
+    return Object.keys(list).includes(lang) ? lang : DEFAULT_LANG;
+  }
+
+  return DEFAULT_LANG;
 }
 export function getLoginStatus() {
   return window[OIL_GLOBAL_OBJECT_NAME] ? window[OIL_GLOBAL_OBJECT_NAME].login_status : false;

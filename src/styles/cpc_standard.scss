@@ -521,9 +521,17 @@
     cursor: pointer;
   }
 
+  &__Version {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+  }
+
   &__Content {
     max-height: 60vh;
     overflow: auto;
+    margin-bottom: 2rem;
   }
 }
 

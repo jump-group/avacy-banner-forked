@@ -3,7 +3,7 @@ import { getConfigValue, getLocale } from '../core/core_config.js';
 import DEFAULT_VISUAL from './visual/userview_default_visual_configuration';
 
 // tag::config-timeout[]
-const defaultTimeoutInSeconds = 60;
+const defaultTimeoutInSeconds = -1;
 // end::config-timeout[]
 
 // FIXME bad name - isPersistOptOut or similiar
@@ -13,7 +13,7 @@ export function isPersistMinimumTracking() {
 
 // FIXME bad name - isAdvancedSettingsEnabled
 export function isAdvancedSettings() {
-  return getConfigValue(OIL_CONFIG.ATTR_ADVANCED_SETTINGS, false);
+  return getConfigValue(OIL_CONFIG.ATTR_ADVANCED_SETTINGS, true);
 }
 
 export function logoUrl() {

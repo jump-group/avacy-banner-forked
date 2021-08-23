@@ -272,10 +272,11 @@ function attachUtilityFunctionsToWindowObject() {
   setGlobalOilObject('getLegalText', (legalText = 'cookie') => {
     return new Promise((resolve, reject) => {
       //TODO: Check if config object exist
-      if (legalText && window.AS_OIL.CONFIG.locale[legalText + '_policy']) {
+      if (legalText && window.AS_OIL.CONFIG.locale.texts[legalText + '_policy']) {
           resolve({
-              text: window.AS_OIL.CONFIG.locale[`${legalText}_policy`],
-              version: window.AS_OIL.CONFIG.locale[`${legalText}_policy_version`]
+              text: window.AS_OIL.CONFIG.locale.texts[`${legalText}_policy`],
+              title: window.AS_OIL.CONFIG.locale.texts[`${legalText}_policy_title`],
+              version: window.AS_OIL.CONFIG.locale.texts[`${legalText}_policy_version`]
           });
       } else {
           reject(`Cannot find legal text ${legalText}_policy`);

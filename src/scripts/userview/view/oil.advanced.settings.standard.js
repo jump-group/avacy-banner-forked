@@ -55,6 +55,12 @@ export function attachCpcHandlers() {
   forEach(document.querySelectorAll('.js-cpc-category-link'), (domNode) => {
     domNode && domNode.addEventListener('click', switchCpcCategory, false);
   });
+  forEach(document.querySelectorAll('a[href="#privacy-policy"]'), (domNode) => {
+    domNode && domNode.addEventListener('click', privacyPolicyInfoPanel, false);
+  });
+  forEach(document.querySelectorAll('a[href="#cookie-policy"]'), (domNode) => {
+    domNode && domNode.addEventListener('click', cookiePolicyInfoPanel, false);
+  });
 }
 
 
@@ -653,7 +659,7 @@ export function legintObjectStatus() {
   }
 }
 
-export function triggerInfoPanel(title,content) {
+export function triggerInfoPanel(title,content, version = undefined) {
   let panel = document.querySelector('.InfoPanel');
   let wrapper = document.querySelector('.as-oil');
   if (!panel && wrapper) {    
@@ -663,11 +669,26 @@ export function triggerInfoPanel(title,content) {
       <span class="InfoPanel__Close js-close-infobox">&times</span>
       <h1 class="InfoPanel__Title">${title}</h1>
       <div class="InfoPanel__Content">${content}</div>
+      ${version ? `
+        <span class="InfoPanel__Version">v${version}</span>
+      ` : ''}
     </div>`;
     wrapper.appendChild(infobox);
   }
 
   document.querySelector('.js-close-infobox').addEventListener('click', closeInfobox, false)
+}
+
+function privacyPolicyInfoPanel() {
+  window[OIL_GLOBAL_OBJECT_NAME].getLegalText('privacy').then( res => {
+    triggerInfoPanel(res.title, res.text, res.version);
+  } )
+}
+
+function cookiePolicyInfoPanel() {
+  window[OIL_GLOBAL_OBJECT_NAME].getLegalText().then( res => {
+    triggerInfoPanel(res.title, res.text, res.version);
+  } )
 }
 
 function legIntInfoPanel() {

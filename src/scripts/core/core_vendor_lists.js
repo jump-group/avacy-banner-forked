@@ -66,20 +66,26 @@ export function loadVendorListAndCustomVendorList() {
 export function loadCustomVendorList() {
   return new Promise(resolve => {
     let customVendorListUrl = getCustomVendorListUrl();
-    if (!customVendorListUrl) {
-      cachedCustomVendorList = DEFAULT_CUSTOM_VENDOR_LIST;
+    let avacyBlocking = document.querySelector('#avacy-blocking');
+    if (avacyBlocking) {
+      cachedCustomVendorList = window.myCustomVendorlist;
       resolve();
     } else {
-      fetchJsonData(customVendorListUrl)
-        .then(response => {
-          cachedCustomVendorList = response;
-          resolve();
-        })
-        .catch(error => {
-          cachedCustomVendorList = DEFAULT_CUSTOM_VENDOR_LIST;
-          logError(`OIL getCustomVendorList failed and returned error: ${error}. Falling back to default custom vendor list!`);
-          resolve();
-        });
+      if (!customVendorListUrl) {
+        cachedCustomVendorList = DEFAULT_CUSTOM_VENDOR_LIST;
+        resolve();
+      } else {
+        fetchJsonData(customVendorListUrl)
+          .then(response => {
+            cachedCustomVendorList = response;
+            resolve();
+          })
+          .catch(error => {
+            cachedCustomVendorList = DEFAULT_CUSTOM_VENDOR_LIST;
+            logError(`OIL getCustomVendorList failed and returned error: ${error}. Falling back to default custom vendor list!`);
+            resolve();
+          });
+      }
     }
   });
 }

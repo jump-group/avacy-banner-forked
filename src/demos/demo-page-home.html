@@ -30,6 +30,14 @@
             background-size: contain;
         }
     </style>
+    <script>
+        CLIENT_SIDE_BLOCKING = {
+            active: true,
+            blacklist: []
+        }
+    </script>
+    <script id="avacy-blocking" src="https://cdn.jumpgroup.it/assets/configurations/test/custom-vendor-list.js"></script>
+
     <script id="oil-configuration" type="application/configuration">
         {
             "config_version": 1,
@@ -41,6 +49,7 @@
             "close_without_consents": true,
             "reject_all": false,
             "poi_group_name": "GroupCookieName",
+            "customVendorListUrl": "https://cdn.jumpgroup.it/assets/configurations/test/custom-vendor-list.json",
             "poi_hub_origin": "https://demo-cookiebuster.jumpgroup.it",
             "poi_hub_path": "/hub.html",
             "atpWhitelist": [70, 89, 108, 171, 184, 211, 326, 453, 494, 587, 981, 1033, 1092, 1097, 1107, 1205, 1558, 1842, 2213, 2316, 2440, 2510, 2642, 2677, 2770, 2847, 2949, 2973, 2981, 3009, 3128],
@@ -124,6 +133,20 @@
                 "font_family": "Helvetica,Arial"
             }
         }
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script type="text/javascript">
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '836944033164609');
+        fbq('track', 'PageView');
     </script>
 </head>
 

@@ -188,6 +188,10 @@ export function getPoiGroupName() {
   return getConfigValue(OIL_CONFIG.ATTR_POI_GROUP_NAME, 'default');
 }
 
+export function getTcfPurposeOneTreatment() {
+  return getConfigValue(OIL_CONFIG.ATTR_TCF_PURPOSE_ONE_TREATMENT, false);
+}
+
 export function getCookieExpireInDays() {
   return checkMinExpireInDays(getConfigValue(OIL_CONFIG.ATTR_COOKIE_EXPIRES_IN_DAYS, 365));
 }

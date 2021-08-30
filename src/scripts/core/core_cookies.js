@@ -9,7 +9,8 @@ import {
   isInfoBannerOnly,
   getLocaleVariantName,
   getIabVendorWhitelist,
-  getLoginStatus
+  getLoginStatus,
+  getTcfPurposeOneTreatment
 } from './core_config';
 import { getAllPreferences } from './core_consents';
 import { getLocaleVariantVersion } from './core_utils';
@@ -174,6 +175,10 @@ export function updateTCModel(privacySettings, tcModel) {
   if (!useLegint()) {
     tcModel.unsetAllPurposeLegitimateInterests();
     tcModel.unsetAllVendorLegitimateInterests();
+  }
+
+  if (!getTcfPurposeOneTreatment()) {
+    tcModel.purposeConsents.set_.delete(1)
   }
 
   return tcModel;
@@ -365,7 +370,7 @@ export function getDefaultTCModel() {
   consentData.publisherCountryCode = 'IT';
   consentData.cmpVersion = OIL_SPEC.CMP_VERSION;
   consentData.isServiceSpecific = OIL_SPEC.IS_SERVICE_SPECIFIC;
-  consentData.purposeOneTreatment = true;
+  consentData.purposeOneTreatment = getTcfPurposeOneTreatment();
   consentData.supportOOB = false;
   consentData.consentScreen = 1;
 

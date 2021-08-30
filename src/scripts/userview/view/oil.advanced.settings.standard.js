@@ -1,5 +1,5 @@
 import '../../../styles/cpc_standard.scss';
-import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl, getLanguageFromConfigObject } from '../../core/core_config'
+import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl, getLanguageFromConfigObject, getTcfPurposeOneTreatment } from '../../core/core_config'
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../../core/core_constants';
 import { getCustomVendorList, getAdditionalConsentList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay, getStacks, getFullStacks } from '../../core/core_vendor_lists';
 import { getLabel, getLabelWithDefault, useLegint } from '../userview_config';
@@ -576,6 +576,9 @@ const buildPurposeEntries = (list, key = undefined) => {
   }
 
   return list.map(purpose => {
+    if ( key==='purpose' && !getTcfPurposeOneTreatment() && purpose.id === 1) {
+      return
+    }
     return PurposeContainerSnippet({
       id: purpose.id,
       header: getLabelWithDefault(`label_cpc_purpose_${formatPurposeId(purpose.id)}_text`, purpose.name || `Error: Missing text for purpose with id ${purpose.id}!`),

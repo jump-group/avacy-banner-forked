@@ -177,7 +177,7 @@ export function updateTCModel(privacySettings, tcModel) {
     tcModel.unsetAllVendorLegitimateInterests();
   }
 
-  if (!getTcfPurposeOneTreatment()) {
+  if (getTcfPurposeOneTreatment()) {
     tcModel.purposeConsents.set_.delete(1)
   }
 

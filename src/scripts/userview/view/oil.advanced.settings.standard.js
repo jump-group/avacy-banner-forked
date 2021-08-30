@@ -576,7 +576,7 @@ const buildPurposeEntries = (list, key = undefined) => {
   }
 
   return list.map(purpose => {
-    if ( key==='purpose' && !getTcfPurposeOneTreatment() && purpose.id === 1) {
+    if ( key==='purpose' && getTcfPurposeOneTreatment() && purpose.id === 1) {
       return
     }
     return PurposeContainerSnippet({

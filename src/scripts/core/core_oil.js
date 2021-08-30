@@ -276,7 +276,7 @@ function attachUtilityFunctionsToWindowObject() {
           resolve({
               text: window.AS_OIL.CONFIG.locale.texts[`${legalText}_policy`],
               title: window.AS_OIL.CONFIG.locale.texts[`${legalText}_policy_title`],
-              version: window.AS_OIL.CONFIG.locale.texts[`${legalText}_policy_version`]
+              version: window.AS_OIL.CONFIG.locale[`${legalText}_policy_version`]
           });
       } else {
           reject(`Cannot find legal text ${legalText}_policy`);

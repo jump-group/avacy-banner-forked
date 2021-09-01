@@ -8,7 +8,7 @@ import { logInfo } from './scripts/core/core_log.js';
 (function () {
   let configurationElement = document.querySelector('script[type="application/configuration"]#oil-configuration');
 
-  if (configurationElement.dataset.remoteConfig) {
+  if (configurationElement && configurationElement.dataset.remoteConfig) {
     fetch(`${configurationElement.dataset.remoteConfig}`)
     .then(body => body.json())
     .then(data => {

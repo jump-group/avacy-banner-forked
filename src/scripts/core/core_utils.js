@@ -87,10 +87,10 @@ export function tagManagerEvents(optin, cookieData) {
     })
   
     cookieData.customVendorList && forEach(cookieData.customVendorList, element => {
-      allowedCustomVendors.push(element)
+      allowedCustomVendors.push(+element)
     })
 
-    if (cookieData.customVendorList && cachedCustomVendorList.vendors.length) {      
+    if (cookieData.customVendorList && cachedCustomVendorList.vendors) {      
       forEach(cookieData.customVendorList, element => {
         let hasPurposes = cachedCustomVendorList.vendors[element].purposes.every(r => allowedPurposes.includes(r));
         if (hasPurposes) {

@@ -682,13 +682,15 @@ export function triggerInfoPanel(title,content, version = undefined) {
   document.querySelector('.js-close-infobox').addEventListener('click', closeInfobox, false)
 }
 
-function privacyPolicyInfoPanel() {
+function privacyPolicyInfoPanel(ev) {
+  ev.preventDefault();
   window[OIL_GLOBAL_OBJECT_NAME].getLegalText('privacy').then( res => {
     triggerInfoPanel(res.title, res.text, res.version);
   } )
 }
 
-function cookiePolicyInfoPanel() {
+function cookiePolicyInfoPanel(ev) {
+  ev.preventDefault();
   window[OIL_GLOBAL_OBJECT_NAME].getLegalText().then( res => {
     triggerInfoPanel(res.title, res.text, res.version);
   } )

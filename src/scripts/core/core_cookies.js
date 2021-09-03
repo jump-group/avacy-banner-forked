@@ -13,7 +13,7 @@ import {
   getTcfPurposeOneTreatment
 } from './core_config';
 import { getAllPreferences } from './core_consents';
-import { getLocaleVariantVersion } from './core_utils';
+import { getLocaleVariantVersion, tagManagerEvents } from './core_utils';
 import { ADDITIONAL_CONSENT_VERSION, OIL_SPEC } from './core_constants';
 import { getCustomVendorListVersion, getCustomVendorList, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders } from './core_vendor_lists';
 import { OilVersion } from './core_utils';
@@ -227,7 +227,7 @@ export function setSoiCookie(privacySettings) {
       updateTcfApi(cookie, false, cookie.addtlConsent);
       setDomainCookie(cookieAccordingToLoginStatus(), cookie, getCookieExpireInDays());
       consentStore().writeDecodedRaiConsentSDK(getAllPreferences(consentData, cookie.addtlConsent, cookie.customVendor));
-
+      tagManagerEvents(cookie.optin, cookie, 'consent_update', consentData);
       resolve(cookie);
     }).catch(error => reject(error));
   });

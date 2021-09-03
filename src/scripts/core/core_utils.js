@@ -64,7 +64,11 @@ export function sendEventToHostSite(eventName) {
   logInfo(`Sent postmessage event: ${eventName}`);
 }
 
-export function tagManagerEvents(optin, cookieData) {
+export function tagManagerEvents(optin, cookieData, trigger = 'page_load', consentData = undefined) {
+  if (consentData) {
+    cookieData.consentData = consentData;
+  }
+
   let allowedPurposes = [];
   let allowedLegints = [];
   let allowedSpecialFeatures = [];
@@ -118,6 +122,7 @@ export function tagManagerEvents(optin, cookieData) {
   
     const event = new CustomEvent('avacy_consent', { 
       detail: {
+        trigger: trigger,
         optin: optin, 
         purposes: allowedPurposes,
         legitimateInterests: allowedLegints,
@@ -128,6 +133,8 @@ export function tagManagerEvents(optin, cookieData) {
         customVendorsWithConsent: customVendorsWithConsent
       }
     });
+
+    logInfo(`Sending event.detail at ${trigger}`, event.detail)
 
     window.dispatchEvent(event);
   });  

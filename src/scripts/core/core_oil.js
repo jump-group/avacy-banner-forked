@@ -58,7 +58,7 @@ export function initOilLayer() {
       let optin = result[0];
       let cookieData = result[1];
 
-      tagManagerEvents(optin, cookieData);
+      tagManagerEvents(optin, cookieData, 'page_load');
 
       if (optin) {
         /**

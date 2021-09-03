@@ -227,7 +227,7 @@ export function setSoiCookie(privacySettings) {
       updateTcfApi(cookie, false, cookie.addtlConsent);
       setDomainCookie(cookieAccordingToLoginStatus(), cookie, getCookieExpireInDays());
       consentStore().writeDecodedRaiConsentSDK(getAllPreferences(consentData, cookie.addtlConsent, cookie.customVendor));
-      tagManagerEvents(cookie.optin, cookie, 'consent_update', consentData);
+      tagManagerEvents(cookie.opt_in, cookie, 'consent_update', consentData);
       resolve(cookie);
     }).catch(error => reject(error));
   });

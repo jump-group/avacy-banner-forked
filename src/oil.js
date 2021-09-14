@@ -11,6 +11,7 @@ import { mergeDeep } from './scripts/core/core_utils.js';
   let queryStringRemoteConfig = getQueryStringParam('remoteConfig');
   if (configurationElement && (configurationElement.dataset.remoteConfig || queryStringRemoteConfig )) {
     let remoteUrl = queryStringRemoteConfig ? queryStringRemoteConfig : configurationElement.dataset.remoteConfig;
+    
     fetch(`${remoteUrl}`)
     .then(body => body.json())
     .then(data => {

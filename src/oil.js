@@ -2,15 +2,16 @@ import './scripts/element-observer/observer';
 // import './scripts/element-observer/monkey';
 import './public_path.js'
 import './polyfill.js';
-import { initOilLayer } from './scripts/core/core_oil.js';
+import { initOilLayer, getQueryStringParam } from './scripts/core/core_oil.js';
 import { logInfo } from './scripts/core/core_log.js';
 import { mergeDeep } from './scripts/core/core_utils.js';
 
 (function () {
   let configurationElement = document.querySelector('script[type="application/configuration"]#oil-configuration');
-
-  if (configurationElement && configurationElement.dataset.remoteConfig) {
-    fetch(`${configurationElement.dataset.remoteConfig}`)
+  let queryStringRemoteConfig = getQueryStringParam('remoteConfig');
+  if (configurationElement && (configurationElement.dataset.remoteConfig || queryStringRemoteConfig )) {
+    let remoteUrl = queryStringRemoteConfig ? queryStringRemoteConfig : configurationElement.dataset.remoteConfig;
+    fetch(`${remoteUrl}`)
     .then(body => body.json())
     .then(data => {
       let newInnerConfig;

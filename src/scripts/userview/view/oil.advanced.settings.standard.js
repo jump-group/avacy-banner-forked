@@ -102,8 +102,8 @@ const ContentSnippet = () => {
       <div class="as-oil-cpc__row-title" id="as-oil-cpc-purposes">
       ${getLabel(OIL_LABELS.ATTR_LABEL_CPC_PURPOSE_TITLE)}
       </div>
-      ${getFullStacks() ? buildStackEntries(getFullStacks(), 'stack') : ''}
       ${buildPurposeEntries(getPurposes(), 'purpose')}
+      ${getFullStacks() ? buildStackEntries(getFullStacks(), 'stack') : ''}
       ` : ''}
 
       ${getSpecialPurposes() ? `

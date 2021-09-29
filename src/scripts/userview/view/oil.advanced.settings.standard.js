@@ -364,7 +364,7 @@ const buildVendorListEntry = (element) => {
               <div class='as-oil-third-party-toggle-part' style='display: none;'>
                 <a class='as-oil-third-party-link' href='${element.policyUrl}'>${element.policyUrl}</a>  
                 ${snippetLegalDescription(element.purposes, 'purposes', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_CONSENT))}
-                ${snippetLegalDescription(element.legIntPurposes, 'purposes', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_LEG_INT))}
+                ${useLegint() === true ? snippetLegalDescription(element.legIntPurposes, 'purposes', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_LEG_INT)) : ''}
                 ${snippetLegalDescription(element.specialPurposes, 'specialPurposes', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_SPECIAL_PURPOSES))}
                 ${snippetLegalDescription(element.features, 'features', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_FEATURES))}
                 ${snippetLegalDescription(element.specialFeatures, 'specialFeatures', getLabel(OIL_LABELS.ATTR_LABEL_CPC_LEGAL_PURPOSE_SPECIAL_FEATURES))}

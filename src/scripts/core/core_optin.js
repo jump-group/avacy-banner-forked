@@ -58,7 +58,7 @@ export function checkOptIn() {
   });
 }
 
-function isCookieStillValid(cookie) {
+export function isCookieStillValid(cookie) {
   return isCookieVersionOk(cookie) && isCmpIdValid(cookie) && isOOBValid(cookie) && isServiceSpecificValid(cookie);
 }
 

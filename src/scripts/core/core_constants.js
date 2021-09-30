@@ -58,7 +58,8 @@ export const OIL_CONFIG = {
   ATTR_USE_STACKS: 'useStacks',
   ATTR_USE_LEGINT: 'use_legint',
   ATTR_AVACY_DEMO_STATUS: 'demo_status',
-  ATTR_TCF_PURPOSE_ONE_TREATMENT: 'tcf_purpose_one_treatment'
+  ATTR_TCF_PURPOSE_ONE_TREATMENT: 'tcf_purpose_one_treatment',
+  ATTR_CLEAR_ON_VERSION_UPDATE: 'clear_consents_on_version_update'
 };
 
 export const OIL_CONFIG_CPC_TYPES = {

@@ -10,7 +10,8 @@ import {
   getLocaleVariantName,
   getIabVendorWhitelist,
   getLoginStatus,
-  getTcfPurposeOneTreatment
+  getTcfPurposeOneTreatment,
+  getClearOnVersionUpdate
 } from './core_config';
 import { getAllPreferences } from './core_consents';
 import { getLocaleVariantVersion, tagManagerEvents } from './core_utils';
@@ -22,6 +23,7 @@ import { consentStore } from './core_consent_store';
 import { updateTcfApi } from '../core/core_tcf_api';
 import { forEach } from './../userview/userview_modal';
 import { useLegint } from './../userview/userview_config';
+import { isCookieStillValid } from './core_optin';
 
 const COOKIE_PREVIEW_NAME = 'oil_preview';
 const COOKIE_VERBOSE_NAME = 'oil_verbose';
@@ -69,6 +71,16 @@ export function getSoiCookie() {
       } else {
         cookie = cookieConfig.defaultCookieContent;
       }
+      console.log('COOKIE', cookie)
+      console.log('isCookieStillValid(cookie)', isCookieStillValid(cookie))
+
+      if (getClearOnVersionUpdate() && !isCookieStillValid(cookie)) {
+        console.log('cookieConfig.defaultCookieContent',cookieConfig)
+        return cookieConfig.defaultCookieContent;
+      }
+
+      
+
       return cookie;
     })
   });
@@ -177,10 +189,7 @@ export function updateTCModel(privacySettings, tcModel) {
     tcModel.unsetAllVendorLegitimateInterests();
   }
 
-  if (getTcfPurposeOneTreatment()) {
-    tcModel.purposeConsents.set_.delete(1)
-  }
-
+  tcModel.purposeOneTreatment = getTcfPurposeOneTreatment();
   return tcModel;
 
 }
@@ -394,7 +403,7 @@ function getOilCookieConfig() {
       consentData = getDefaultTCModel();
       consentString = consentData.gvl.isReady ? TCString.encode(consentData) : ''; 
     }
-  
+    console.log('consentString', consentString);
     return {
       name: cookieAccordingToLoginStatus(),
       expires: getCookieExpireInDays(),

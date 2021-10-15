@@ -192,6 +192,10 @@ export function getTcfPurposeOneTreatment() {
   return getConfigValue(OIL_CONFIG.ATTR_TCF_PURPOSE_ONE_TREATMENT, false);
 }
 
+export function getClearOnVersionUpdate() {
+  return getConfigValue(OIL_CONFIG.ATTR_CLEAR_ON_VERSION_UPDATE, false);
+}
+
 export function getCookieExpireInDays() {
   return checkMinExpireInDays(getConfigValue(OIL_CONFIG.ATTR_COOKIE_EXPIRES_IN_DAYS, 365));
 }

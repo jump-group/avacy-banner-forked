@@ -189,10 +189,7 @@ export function updateTCModel(privacySettings, tcModel) {
     tcModel.unsetAllVendorLegitimateInterests();
   }
 
-  if (getTcfPurposeOneTreatment()) {
-    tcModel.purposeConsents.set_.delete(1)
-  }
-
+  tcModel.purposeOneTreatment = getTcfPurposeOneTreatment();
   return tcModel;
 
 }

@@ -18,7 +18,7 @@ import { logError, logInfo } from '../core/core_log';
 import { getConfigVersion, getPolicyVersion, getCookieExpireInDays } from '../core/core_config';
 import { getDefaultTCModel, setDomainCookie } from '../core/core_cookies';
 import Cookie from 'js-cookie';
-import { TCString } from 'didomi-iabtcf-core';
+import { TCString } from '@iabtcf/core';
 
 const OIL_HUB_DOMAIN_COOKIE_NAME = 'oil_data';
 const OIL_HUB_UNKNOWN_VALUE = 'unknown';

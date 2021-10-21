@@ -5,7 +5,7 @@ import { verifyPowerOptIn } from './core_poi';
 import { getPolicyVersion } from './core_config';
 import { OIL_SPEC } from './core_constants.js';
 import { sendEventToHostSite } from './core_utils.js';
-import { TCString } from 'didomi-iabtcf-core';
+import { TCString } from '@iabtcf/core';
 
 /**
  * Log Helper function for checkOptIn

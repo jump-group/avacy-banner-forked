@@ -2,7 +2,7 @@
 import { getCustomVendorListUrl, getAdditionalConsentListUrl, getIabVendorBlacklist, getIabVendorListDomain, getIabVendorWhitelist, getShowLimitedVendors, getLanguageFromConfigObject, getAtpWhitelist, getRequiredStacks } from './core_config';
 import { logError, logInfo } from './core_log';
 import { fetchJsonData } from './core_utils';
-import { GVL } from 'didomi-iabtcf-core';
+import { GVL } from '@iabtcf/core';
 import { forEach } from '../userview/userview_modal';
 
 export const DEFAULT_VENDOR_LIST = {

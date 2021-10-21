@@ -1,4 +1,4 @@
-import { CmpApi } from 'didomi-iabtcf-cmpapi';
+import { CmpApi } from '@iabtcf/cmpapi';
 import { OIL_SPEC, ADDITIONAL_CONSENT_VERSION } from './core_constants';
 
 let tcfCmpApi = null;

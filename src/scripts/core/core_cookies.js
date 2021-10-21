@@ -71,11 +71,8 @@ export function getSoiCookie() {
       } else {
         cookie = cookieConfig.defaultCookieContent;
       }
-      console.log('COOKIE', cookie)
-      console.log('isCookieStillValid(cookie)', isCookieStillValid(cookie))
 
       if (getClearOnVersionUpdate() && !isCookieStillValid(cookie)) {
-        console.log('cookieConfig.defaultCookieContent',cookieConfig)
         return cookieConfig.defaultCookieContent;
       }
 
@@ -201,6 +198,16 @@ export function buildSoiCookie(privacySettings) {
 
       logInfo('creating TCModel with this settings:', privacySettings);
       let consentData = updateTCModel(privacySettings, cookieConfig.defaultCookieContent.consentData);
+
+      logInfo('useLegint:', useLegint());
+      if (!useLegint()) {        
+        for (let i = 1; i <= 10; i++) {
+          const purposeRestriction = new PurposeRestriction();
+          purposeRestriction.purposeId = i;
+          purposeRestriction.restrictionType = RestrictionType.REQUIRE_CONSENT;
+          consentData.publisherRestrictions.restrictPurposeToLegalBasis(purposeRestriction);
+        }
+      }
 
       logInfo('privacySettings', privacySettings);
       logInfo('new TCModel', consentData);
@@ -403,7 +410,7 @@ function getOilCookieConfig() {
       consentData = getDefaultTCModel();
       consentString = consentData.gvl.isReady ? TCString.encode(consentData) : ''; 
     }
-    console.log('consentString', consentString);
+
     return {
       name: cookieAccordingToLoginStatus(),
       expires: getCookieExpireInDays(),

@@ -30,5 +30,5 @@ if (window.CLIENT_SIDE_BLOCKING && window.CLIENT_SIDE_BLOCKING.active) {
     })
   }
 
-const cmpstub = require('didomi-iabtcf-stub');
+const cmpstub = require('@iabtcf/stub');
 cmpstub();

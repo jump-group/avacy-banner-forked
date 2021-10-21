@@ -18,7 +18,7 @@ import { getLocaleVariantVersion, tagManagerEvents } from './core_utils';
 import { ADDITIONAL_CONSENT_VERSION, OIL_SPEC } from './core_constants';
 import { getCustomVendorListVersion, getCustomVendorList, getPurposes, getVendorList, loadVendorListAndCustomVendorList, getAllAdditionalConsentProviders } from './core_vendor_lists';
 import { OilVersion } from './core_utils';
-import { TCModel, TCString } from 'didomi-iabtcf-core';
+import { TCModel, TCString, RestrictionType, PurposeRestriction } from '@iabtcf/core';
 import { consentStore } from './core_consent_store';
 import { updateTcfApi } from '../core/core_tcf_api';
 import { forEach } from './../userview/userview_modal';

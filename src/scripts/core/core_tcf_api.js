@@ -9,13 +9,35 @@ function loadTcfApi() {
         tcfCmpApi = new CmpApi(OIL_SPEC.CMP_ID, OIL_SPEC.CMP_VERSION, true, {
             'getTCData': (next, tcData, success) => {
                 // tcData will be constructed via the TC string and can be added to here
-                tcData.addtlConsent = acm;
+                if (success) {
+                    tcData.addtlConsent = acm;
+                }
                 // pass data along
                 next(tcData, success);
             },
             'getInAppTCData': (next, appTCData, success) => {
                 // tcData will be constructed via the TC string and can be added to here
-                appTCData.addtlConsent = acm;
+                if (success) {
+                    tcData.addtlConsent = acm;
+                }
+                // pass data along
+                next(appTCData, success);
+            }
+        });
+        tcfCmpApi = new CmpApi(OIL_SPEC.CMP_ID, OIL_SPEC.CMP_VERSION, true, {
+            'getTCData': (next, tcData, success) => {
+                // tcData will be constructed via the TC string and can be added to here
+                if (success) {
+                    tcData.addtlConsent = acm;
+                }
+                // pass data along
+                next(tcData, success);
+            },
+            'getInAppTCData': (next, appTCData, success) => {
+                // tcData will be constructed via the TC string and can be added to here
+                if (success) {
+                    tcData.addtlConsent = acm;
+                }
                 // pass data along
                 next(appTCData, success);
             }

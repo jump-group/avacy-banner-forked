@@ -110,15 +110,17 @@ export function tagManagerEvents(optin, cookieData, trigger = 'page_load', conse
       allowedIabVendors.push(element)
     })
   
-    cookieData.consentData.vendorConsents && forEach(cookieData.consentData.vendorConsents.set_, element => {
-      let hasPurposes = cookieData.consentData.gvl.vendors[element].purposes.every(r => allowedPurposes.includes(r));
-      if (hasPurposes) {
-        iabVendorsWithConsent.push({
-          name: cookieData.consentData.gvl.vendors[element].name,
-          id: cookieData.consentData.gvl.vendors[element].id
-        })
-      }
-    })
+    if (cookieData.consentData.vendorConsents && cookieData.consentData.gvl.isReady) {      
+      forEach(cookieData.consentData.vendorConsents.set_, element => {
+        let hasPurposes = cookieData.consentData.gvl.vendors[element].purposes.every(r => allowedPurposes.includes(r));
+        if (hasPurposes) {
+          iabVendorsWithConsent.push({
+            name: cookieData.consentData.gvl.vendors[element].name,
+            id: cookieData.consentData.gvl.vendors[element].id
+          })
+        }
+      })
+    }
   
     const event = new CustomEvent('avacy_consent', { 
       detail: {

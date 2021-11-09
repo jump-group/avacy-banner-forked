@@ -288,7 +288,9 @@ class ConsentStore {
         let tcData;
         //@ts-ignore
         window.__tcfapi('getInAppTCData', 2, (appTCData, success) => {
-            tcData=appTCData;
+            if (success) {
+                tcData=appTCData;
+            }
         });
 
         return {

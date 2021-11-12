@@ -61,6 +61,9 @@ export function attachCpcHandlers() {
   forEach(document.querySelectorAll('a[href="#cookie-policy"]'), (domNode) => {
     domNode && domNode.addEventListener('click', cookiePolicyInfoPanel, false);
   });
+  forEach(document.querySelectorAll('input[type="checkbox"][name^="oil-cpc"]'), (domNode) => {
+    domNode && domNode.addEventListener('change', changeState, false);
+  });
 }
 
 
@@ -642,6 +645,19 @@ export function stacksToggles(domNode) {
   forEach(purposesInStack, element => {
     element.checked = domNode.srcElement.checked ? true : false;
   });
+}
+
+function changeState(domNode) {
+  domNode.target.value = domNode.target.checked;
+  
+  if (domNode.target.checked) {
+    domNode.target.classList.remove('disabled');
+    domNode.target.classList.add('enabled');
+  } else {
+    domNode.target.classList.add('disabled');
+    domNode.target.classList.remove('enabled');
+  }
+
 }
 
 export function stacksObjectStatus() {

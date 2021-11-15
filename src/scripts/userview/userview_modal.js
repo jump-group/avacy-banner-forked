@@ -161,6 +161,7 @@ export function handleOptIn( no_settings = false) {
     (handleSoiOptIn(no_settings)).then(onOptInComplete);
   }
   animateOptInButton();
+  animateBanner();
 }
 
 function onOptInComplete() {
@@ -445,6 +446,16 @@ function animateOptInButton() {
     optInButton.className += ' as-oil__btn-optin-clicked';
     window.setTimeout(() => {
       optInButton.className = optInButton.className.replace(' as-js-clicked', '');
+    }, 1200);
+  }
+}
+
+function animateBanner() {
+  let banner = document.querySelector('.as-oil');
+  if (banner) {
+    banner.classList.add('as-oil--optin');
+    window.setTimeout(() => {
+      banner.classList.remove('as-oil--optin');
     }, 1200);
   }
 }

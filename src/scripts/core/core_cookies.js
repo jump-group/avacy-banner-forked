@@ -1,4 +1,5 @@
 import Cookie from 'js-cookie';
+import {gzip} from 'node-gzip';
 import { logInfo } from './core_log';
 import {
   getConfigVersion,
@@ -11,7 +12,10 @@ import {
   getIabVendorWhitelist,
   getLoginStatus,
   getTcfPurposeOneTreatment,
-  getClearOnVersionUpdate
+  getClearOnVersionUpdate,
+  isPoiActive,
+  getPoiGroupName,
+  getConsentSolutionUrl
 } from './core_config';
 import { getAllPreferences } from './core_consents';
 import { getLocaleVariantVersion, tagManagerEvents } from './core_utils';
@@ -193,7 +197,7 @@ export function updateTCModel(privacySettings, tcModel) {
 
 export function buildSoiCookie(privacySettings) {
   return new Promise((resolve, reject) => {
-    Promise.all([loadVendorListAndCustomVendorList(),getOilCookieConfig()]).then( results => {
+    Promise.all([loadVendorListAndCustomVendorList(),getOilCookieConfig()]).then( async results => {
       let cookieConfig = results[1];
 
       logInfo('creating TCModel with this settings:', privacySettings);
@@ -227,8 +231,65 @@ export function buildSoiCookie(privacySettings) {
         addtlConsent: getAdditionalConsentWithSettings(privacySettings)
       };
 
-      // TODO: inizialmente risolvevo solo outputCookie, ma per poter lanciare la sendDecodedConsent ho bisogno del TCmodel, ovvero consentData
-      resolve([outputCookie, consentData]);
+      // DA QUI INIZIO
+      if (getConsentSolutionUrl()) {
+        let consentJson = {
+          opt_in: true,
+          version: cookieConfig.defaultCookieContent.version,
+          localeVariantName: cookieConfig.defaultCookieContent.localeVariantName,
+          localeVariantVersion: cookieConfig.defaultCookieContent.localeVariantVersion,
+          customVendorListVersion: getCustomVendorListVersion(),
+          customVendorList: getCustomVendorsWithConsent(privacySettings),
+          customPurposes: getCustomPurposesWithConsent(privacySettings),
+          consentString: !isInfoBannerOnly() ? TCString.encode(consentData) : '',
+          configVersion: cookieConfig.defaultCookieContent.configVersion,
+          policyVersion: cookieConfig.defaultCookieContent.policyVersion,
+          addtlConsent: getAdditionalConsentWithSettings(privacySettings)
+        }
+  
+        let html = await gzip(window.avacy_consent_html_print);
+        let layer = +window.avacy_consent_layer;
+        let timestamp = (new Date()).toISOString();
+        let powerOptin = isPoiActive() ? getPoiGroupName() : undefined;
+        let consentButton = window.avacy_consent_btn;
+        let expiry = getCookieExpireInDays();
+  
+        let body_data = {
+          'html': html,
+          'layer': layer,
+          'consent_json': consentJson,
+          'timestamp': timestamp,
+          'consentButton': consentButton,
+          'expiry': expiry
+        };
+  
+        if (powerOptin) {
+          body_data['powerOptin'] = powerOptin
+        }
+
+        logInfo('Consent Solution URL', getConsentSolutionUrl());
+        logInfo('Body sent to Consent Solution', body_data);
+  
+        fetch(getConsentSolutionUrl(), {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body_data)
+        })
+        .then(res =>{
+          if (res.ok) {
+            resolve([outputCookie, consentData]);
+          } else {
+            resolve(false)
+          }
+        })
+      } else {        
+        // TODO: inizialmente risolvevo solo outputCookie, ma per poter lanciare la sendDecodedConsent ho bisogno del TCmodel, ovvero consentData
+        resolve([outputCookie, consentData]);
+      }
+
     }).catch(error => reject(error));
   });
 }
@@ -237,14 +298,17 @@ export function setSoiCookie(privacySettings) {
 
   return new Promise((resolve, reject) => {
     buildSoiCookie(privacySettings).then( results => {
-      let cookie = results[0];
-      let consentData = results[1];
-      //TODO: da rivedere, ma ho bisogno di fare l'update prima di settare il cookie.
-      updateTcfApi(cookie, false, cookie.addtlConsent);
-      setDomainCookie(cookieAccordingToLoginStatus(), cookie, getCookieExpireInDays());
-      consentStore().writeDecodedRaiConsentSDK(getAllPreferences(consentData, cookie.addtlConsent, cookie.customVendor));
-      tagManagerEvents(cookie.opt_in, cookie, 'consent_update', consentData);
-      resolve(cookie);
+      if (results !== false) {        
+        let cookie = results[0];
+        let consentData = results[1];
+        updateTcfApi(cookie, false, cookie.addtlConsent);
+        setDomainCookie(cookieAccordingToLoginStatus(), cookie, getCookieExpireInDays());
+        consentStore().writeDecodedRaiConsentSDK(getAllPreferences(consentData, cookie.addtlConsent, cookie.customVendor));
+        tagManagerEvents(cookie.opt_in, cookie, 'consent_update', consentData);
+        resolve(cookie);
+      } 
+
+      resolve(false)
     }).catch(error => reject(error));
   });
 }

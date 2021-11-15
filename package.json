@@ -46,7 +46,8 @@
     "browser-env": "^3.3.0",
     "consent-string": "1.4.2",
     "js-cookie": "2.1.4",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "node-gzip": "^1.1.2"
   },
   "devDependencies": {
     "asciidoctor.js": "1.5.6",

@@ -1,6 +1,6 @@
 import Cookie from 'js-cookie';
-import {gzip} from 'node-gzip';
-import pako from 'pako';
+// import {gzip} from 'node-gzip';
+// import pako from 'pako';
 import { logInfo } from './core_log';
 import {
   getConfigVersion,
@@ -248,12 +248,6 @@ export function buildSoiCookie(privacySettings) {
           addtlConsent: getAdditionalConsentWithSettings(privacySettings)
         }
         
-        // let html = pako.deflate(window.avacy_consent_html_print);
-        // let encoder = new TextEncoder();
-        // let html2 = encoder.encode(window.avacy_consent_html_print);
-        // console.log('html', html2);
-        // let utf8decoder = new TextDecoder();
-        // console.log('html', utf8decoder.decode(html2));
         let html = window.avacy_consent_html_print;
         let layer = +window.avacy_consent_layer;
         let timestamp = (new Date()).toISOString();
@@ -285,13 +279,14 @@ export function buildSoiCookie(privacySettings) {
           },
           body: JSON.stringify(body_data)
         })
-        .then(res =>{
-          if (res.ok) {
-            resolve([outputCookie, consentData]);
-          } else {
-            resolve(false)
-          }
-        })
+        // .then(res =>{
+        //   if (res.ok) {
+        //     resolve([outputCookie, consentData]);
+        //   } else {
+        //     resolve(false)
+        //   }
+        // })
+        resolve([outputCookie, consentData]);
       } else {        
         // TODO: inizialmente risolvevo solo outputCookie, ma per poter lanciare la sendDecodedConsent ho bisogno del TCmodel, ovvero consentData
         resolve([outputCookie, consentData]);

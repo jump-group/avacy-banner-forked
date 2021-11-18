@@ -144,7 +144,9 @@ function handleOptInBtn(domNode) {
   if (getConsentSolutionUrl()) {    
     window.avacy_consent_btn = domNode.target.dataset.optinMode;
     window.avacy_consent_layer = domNode.target.dataset.optinLayer;
-    // window.avacy_consent_html_print = document.querySelector('.as-oil').outerHTML;
+    if (domNode.target.dataset.optinLayer === '1') {
+      window.avacy_consent_html_print = document.querySelector('.as-oil').outerHTML;
+    }
   }
   sendEventToHostSite(EVENT_NAME_OPT_IN_BUTTON_CLICKED);
   handleOptIn();

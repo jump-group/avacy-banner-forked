@@ -1,5 +1,6 @@
 import Cookie from 'js-cookie';
 import {gzip} from 'node-gzip';
+import pako from 'pako';
 import { logInfo } from './core_log';
 import {
   getConfigVersion,
@@ -246,8 +247,14 @@ export function buildSoiCookie(privacySettings) {
           policyVersion: cookieConfig.defaultCookieContent.policyVersion,
           addtlConsent: getAdditionalConsentWithSettings(privacySettings)
         }
-  
-        let html = await gzip(window.avacy_consent_html_print);
+        
+        // let html = pako.deflate(window.avacy_consent_html_print);
+        // let encoder = new TextEncoder();
+        // let html2 = encoder.encode(window.avacy_consent_html_print);
+        // console.log('html', html2);
+        // let utf8decoder = new TextDecoder();
+        // console.log('html', utf8decoder.decode(html2));
+        let html = window.avacy_consent_html_print;
         let layer = +window.avacy_consent_layer;
         let timestamp = (new Date()).toISOString();
         let powerOptin = isPoiActive() ? getPoiGroupName() : undefined;

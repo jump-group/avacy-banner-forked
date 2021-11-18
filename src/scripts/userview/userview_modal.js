@@ -144,7 +144,7 @@ function handleOptInBtn(domNode) {
   if (getConsentSolutionUrl()) {    
     window.avacy_consent_btn = domNode.target.dataset.optinMode;
     window.avacy_consent_layer = domNode.target.dataset.optinLayer;
-    window.avacy_consent_html_print = document.querySelector('.as-oil').outerHTML;
+    // window.avacy_consent_html_print = document.querySelector('.as-oil').outerHTML;
   }
   sendEventToHostSite(EVENT_NAME_OPT_IN_BUTTON_CLICKED);
   handleOptIn();
@@ -420,6 +420,7 @@ function handleBackToMainDialog() {
 }
 
 function handleAdvancedSettings() {
+  window.avacy_consent_html_print = document.querySelector('.as-oil').outerHTML;
   logInfo('Handling Show Advanced Settings');
   stopTimeOut();
   oilShowPreferenceCenter();
@@ -456,7 +457,7 @@ function animateBanner() {
     banner.classList.add('as-oil--optin');
     window.setTimeout(() => {
       banner.classList.remove('as-oil--optin');
-    }, 1200);
+    }, 3000);
   }
 }
 

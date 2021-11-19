@@ -1,6 +1,6 @@
 import Cookie from 'js-cookie';
-// import {gzip} from 'node-gzip';
-// import pako from 'pako';
+import pako from 'pako';
+import * as base64 from 'base64-js';
 import { logInfo } from './core_log';
 import {
   getConfigVersion,
@@ -254,9 +254,14 @@ export function buildSoiCookie(privacySettings) {
         let powerOptin = isPoiActive() ? getPoiGroupName() : undefined;
         let consentButton = window.avacy_consent_btn;
         let expiry = getCookieExpireInDays();
+
+        let minified_html = minify_html(html);        
+        let compressed_uint8Arry = pako.deflate(minified_html, {to: 'string'});
+        let array_to_b64 = base64.fromByteArray(compressed_uint8Arry);        
+        
   
         let body_data = {
-          'html': html,
+          'html': array_to_b64,
           'layer': layer,
           'consent_json': consentJson,
           'timestamp': timestamp,
@@ -294,6 +299,10 @@ export function buildSoiCookie(privacySettings) {
 
     }).catch(error => reject(error));
   });
+}
+
+function minify_html(html) {
+  return html.replace(/\s+/g, ' ').replace(/> </g, '><').replace(/\s*</g, '<').replace(/>\s*/g,'>');
 }
 
 export function setSoiCookie(privacySettings) {

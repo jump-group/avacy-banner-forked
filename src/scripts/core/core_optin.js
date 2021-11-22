@@ -63,7 +63,7 @@ export function isCookieStillValid(cookie) {
 }
 
 function isCookieVersionOk(cookie) {
-  if (cookie.policyVersion === getPolicyVersion()) {
+  if (cookie.policyVersion >= getPolicyVersion()) {
     return true;
   }
   return false

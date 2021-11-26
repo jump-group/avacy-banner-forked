@@ -89,7 +89,9 @@ export function initOilLayer() {
         demoPage(cookieData);
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start without found opt-in finished!'));
       }
-      if (getQueryStringParam('prefcenter') && getQueryStringParam('prefcenter') === '1') {
+      if (getQueryStringParam('avacy-rejectall') && getQueryStringParam('avacy-rejectall') === '1' && !optin) {
+        window.AVACY.triggerOptIn(true);
+      } else if (getQueryStringParam('prefcenter') && getQueryStringParam('prefcenter') === '1') {
         consentStore().showPanel();
         window.PAPYRI.showPreferenceCenter('absolute');
       } else if (optin) {
@@ -184,9 +186,9 @@ function attachUtilityFunctionsToWindowObject() {
     });
   });
 
-  setGlobalOilObject('triggerOptIn', () => {
+  setGlobalOilObject('triggerOptIn', (no_settings = false) => {
     loadLocale(userview_modal => {
-      userview_modal.handleOptIn();
+      userview_modal.handleOptIn(no_settings);
     });
   });
 

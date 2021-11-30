@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie';
-import pako from 'pako';
+import pako from 'pako/dist/pako.es5';
 import * as base64 from 'base64-js';
 import { logInfo } from './core_log';
 import {
@@ -33,6 +33,7 @@ import { isCookieStillValid } from './core_optin';
 const COOKIE_PREVIEW_NAME = 'oil_preview';
 const COOKIE_VERBOSE_NAME = 'oil_verbose';
 const OIL_DOMAIN_COOKIE_NAME = 'oil_data';
+export const OIL_RETRY_NAME = 'OIL_DATA_RETRY';
 
 const OIL_SESSION_COOKIE_NAME = 'oil_data_session';
 
@@ -233,7 +234,7 @@ export function buildSoiCookie(privacySettings) {
       };
 
       // DA QUI INIZIO
-      if (getConsentSolutionUrl()) {
+      if (getConsentSolutionUrl() && !getLoginStatus()) {
         let consentJson = {
           opt_in: true,
           version: cookieConfig.defaultCookieContent.version,
@@ -275,22 +276,15 @@ export function buildSoiCookie(privacySettings) {
 
         logInfo('Consent Solution URL', getConsentSolutionUrl());
         logInfo('Body sent to Consent Solution', body_data);
+
+        let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+        let theUrl = getConsentSolutionUrl();
+        xmlhttp.open('POST', theUrl);
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xmlhttp.onreadystatechange = (evt) => {transferStatus(evt,body_data)};
+        xmlhttp.send(JSON.stringify(body_data));
+        
   
-        fetch(getConsentSolutionUrl(), {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(body_data)
-        })
-        // .then(res =>{
-        //   if (res.ok) {
-        //     resolve([outputCookie, consentData]);
-        //   } else {
-        //     resolve(false)
-        //   }
-        // })
         resolve([outputCookie, consentData]);
       } else {        
         // TODO: inizialmente risolvevo solo outputCookie, ma per poter lanciare la sendDecodedConsent ho bisogno del TCmodel, ovvero consentData
@@ -299,6 +293,14 @@ export function buildSoiCookie(privacySettings) {
 
     }).catch(error => reject(error));
   });
+}
+
+export function transferStatus(evt, body_data) {
+  if (evt.currentTarget.status === 200) {
+      consentStore().eraseLocaleStorage(OIL_RETRY_NAME);
+    } else if(body_data){
+      consentStore().writeLocaleStorage(OIL_RETRY_NAME, body_data);
+    }
 }
 
 function minify_html(html) {
@@ -507,6 +509,6 @@ function getOilCookieConfig() {
 
 }
 
-function cookieAccordingToLoginStatus() {
+export function cookieAccordingToLoginStatus() {
   return (!getLoginStatus() || getLoginStatus() === false || getLoginStatus() === undefined || getLoginStatus() === null) ? OIL_DOMAIN_COOKIE_NAME : 'oil_data_be';
 }

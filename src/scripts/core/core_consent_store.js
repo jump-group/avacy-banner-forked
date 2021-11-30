@@ -10,6 +10,7 @@ class ConsentStore {
         this.publisher = getNativePublisher();
         this.osEnv = isMobileEnvironment() ? 'native' : 'web';
         this.cookieJsonPromise;
+        this.localeStoragePromise;
     }
 
     //Getters
@@ -34,6 +35,7 @@ class ConsentStore {
     // PRIVATE PUBLISHER METHODS
     _readAvacySDK(name) {
         let cookieName = name.toUpperCase();
+        let now_ISO = (new Date()).toISOString();
         if (window.CMPWebInterface) {
             // Call Android interface
             if (typeof window.CMPWebInterface.readAll === 'function'){
@@ -45,8 +47,12 @@ class ConsentStore {
 
                     return new Promise((resolve) => {
                         let cookie;
-                        if (cookieName in result) {
+                        if (cookieName in result && cookieName+'_EXPIRY' in result) {
                             cookie = JSON.parse(result[cookieName].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent));
+
+                            if (now_ISO > result[cookieName+'_EXPIRY']) {
+                                cookie = undefined;
+                            }
                         } else {
                             cookie = undefined;
                         }
@@ -70,8 +76,13 @@ class ConsentStore {
 
                 return new Promise((resolve) => {
                     let cookie;
-                    if (cookieName in result) {
+                    if (cookieName in result && cookieName+'_EXPIRY' in result) {
                         cookie = JSON.parse(result[cookieName].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent));
+
+                        if (now_ISO > result[cookieName+'_EXPIRY']) {
+                            cookie = undefined;
+                        }
+                        
                     } else {
                         cookie = undefined;
                     }
@@ -88,14 +99,20 @@ class ConsentStore {
 
     _readRaiSDK(name) {
         let cookieName = name.toUpperCase();
+        let now_ISO = (new Date()).toISOString();
 
         if(this._isAndroid()) {
             return new Promise((resolve) => {
                 let result = JSON.parse(window.Android.retrieveConsent());
                 //DEVO CONTROLLARE SE ESITE NELLA STRUTTURA DATI RITORNATA UN INDICE CON CHIAVE "name"
                 let cookie;
-                if (cookieName in result) {
+
+                if (cookieName in result && cookieName+'_EXPIRY' in result) {
                     cookie = JSON.parse(result[cookieName].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent));
+
+                    if (now_ISO > result[cookieName+'_EXPIRY']) {
+                        cookie = undefined;
+                    }
                 } else {
                     cookie = undefined;
                 }
@@ -110,8 +127,13 @@ class ConsentStore {
                         return retrieveConsent().then(
                                 function (returnValue) {
                                     let result = JSON.parse(returnValue);
-                                    if (cookieName in result) {
+                                    if (cookieName in result && cookieName+'_EXPIRY' in result) {
                                         let cookie = result[cookieName].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
+                                        
+                                        if (now_ISO > result[cookieName+'_EXPIRY']) {
+                                            return undefined;
+                                        }
+                                        
                                         return JSON.parse(cookie);
                                     } else {
                                         return undefined;
@@ -129,12 +151,54 @@ class ConsentStore {
                     logInfo(error);
                 })
         }
-
-
     }
 
-    _writeAvacySDK(name, value) {
-        let objToWrite = this._buildObjectToWrite(name, value);
+    _readRaiLocaleStorage(name) {
+        if(this._isAndroid()) {
+            return new Promise((resolve) => {
+                let result = JSON.parse(window.Android.retrieveConsent());
+                //DEVO CONTROLLARE SE ESITE NELLA STRUTTURA DATI RITORNATA UN INDICE CON CHIAVE "name"
+                let data_retry;
+                
+                if (name in result) {
+                    data_retry = result[name] ? JSON.parse(result[name].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent)) : undefined;
+                } else {
+                    data_retry = undefined;
+                }
+
+                resolve(data_retry)
+            })
+
+        }else{
+            return checkConsent().then(
+                function (hasConsent) {
+                    if (hasConsent) {
+                        return retrieveConsent().then(
+                                function (returnValue) {
+                                    let result = JSON.parse(returnValue);
+                                    if (name in result) {
+                                        let data_retry = result[name].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
+                                        return JSON.parse(data_retry);
+                                    } else {
+                                        return undefined;
+                                    }
+                                },
+                                function (error) {
+                                    logInfo(error);
+                                }
+                            )
+                    } else {
+                        return undefined
+                    }
+                },
+                function (error) {
+                    logInfo(error);
+                })
+        }
+    }
+
+    _writeAvacySDK(name, value, expiry = 183) {
+        let objToWrite = this._buildObjectToWrite(name, value, expiry);
         
         if (window.CMPWebInterface) {
             // Call Android interface
@@ -157,13 +221,37 @@ class ConsentStore {
         }
     }
 
-    _writeRaiSDK(name, value) {
-        let objToWrite = this._buildObjectToWrite(name, value);
+    _writeRaiSDK(name, value, expiry = 183) {
+        let objToWrite = this._buildObjectToWrite(name, value, expiry);
         
         if(this._isAndroid()) {
             window.Android.sendConsent(JSON.stringify(objToWrite));
         }else{
             sendConsent(objToWrite).then(
+                function (returnValue) {
+
+                },
+                function (error) {
+                }
+            )
+        }
+    }
+
+    _writeRaiLocaleStorage(name, value) {
+        let encodedValue;
+        if(value) {
+            encodedValue = this._encodingValue(value);
+        } else {
+            encodedValue = '';
+        }
+        let valueToWrite = {
+            [name.toUpperCase()] : encodedValue
+        }
+
+        if(this._isAndroid()) {
+            window.Android.sendConsent(JSON.stringify(valueToWrite));
+        }else{
+            sendConsent(valueToWrite).then(
                 function (returnValue) {
 
                 },
@@ -189,13 +277,10 @@ class ConsentStore {
         }
     } 
 
-    _buildObjectToWrite(name, value) {
-        let objectToWrite = {}
-
-        // ASSEGNO A objectToWrite IL COOKIE OIL_DATA STRINGIFIZZATO
+    _encodingValue(value) {
         let encodedValue;
+        
         // CONTROLLO PERCHE' su ANDROID NON USO LA LIBRERIA DI ENCODING
-
         if (this._publisher === 'papyri') {
             if (this._isAndroid()) {
                 encodedValue = JSON.stringify(value);
@@ -206,8 +291,25 @@ class ConsentStore {
             encodedValue = encodeURIComponent(JSON.stringify(value)).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent);
         }
 
+        return encodedValue;
+    }
 
-        Object.assign(objectToWrite, { [name.toUpperCase()] : encodedValue })
+    _buildObjectToWrite(name, value, expiry) {
+        let objectToWrite = {}
+
+        // ASSEGNO A objectToWrite IL COOKIE OIL_DATA STRINGIFIZZATO
+        let encodedValue = this._encodingValue(value);
+
+        let data_expiry = new Date();
+        data_expiry.setDate(data_expiry.getDate() + expiry)
+        let data_expiry_ISO = (new Date(data_expiry)).toISOString();
+        // SCOMMENTARE PER TEST 5 minuti
+        // let data_expiry_ISO = (addMinutes(data_expiry, 5)).toISOString();
+
+        Object.assign(objectToWrite, { 
+            [name.toUpperCase()] : encodedValue,
+            [name.toUpperCase() + '_EXPIRY'] : data_expiry_ISO
+        })
         
         // MI PRENDO I VALORI IAB DA SALVARE
         let iabValues = this._IABValues();
@@ -317,6 +419,25 @@ class ConsentStore {
     }
 
     // NEW PUBLIC METHODS
+    readLocaleStorage(name) {
+        if (this.localeStoragePromise) {
+            return this.localeStoragePromise;
+        }
+        switch (this._osEnv) {
+            case 'native':
+                if (this._publisher === 'papyri') {
+                    // SE SONO UN PUBLISHER PARTICOLARE
+                    this.localeStoragePromise = this._readRaiLocaleStorage(name);
+                }
+                return this.localeStoragePromise;
+            default:
+                // QUI SONO WEB DI DEFAULT
+                return new Promise((resolve) => {
+                    resolve(JSON.parse(localStorage.getItem(name)));
+                });
+        }
+    }
+
     readConsent(name) {
         if (this.cookieJsonPromise) {
             return this.cookieJsonPromise;
@@ -343,6 +464,37 @@ class ConsentStore {
         }
     }
 
+    writeLocaleStorage(name, value) {
+        switch (this._osEnv) {
+            case 'native':
+                if (this._publisher === 'papyri') {
+                    // SE SONO UN PUBLISHER PARTICOLARE
+                    this._writeRaiLocaleStorage(name, value);
+                }
+                break;
+            default:
+                // QUI SONO WEB DI DEFAULT
+                localStorage.setItem(name, JSON.stringify(value));
+            break;
+        }
+    }
+
+    eraseLocaleStorage(name) {
+        switch (this._osEnv) {
+            case 'native':
+                if (this._publisher === 'papyri') {
+                    console.log('STO ELIMINANDO')
+                    // SE SONO UN PUBLISHER PARTICOLARE
+                    this._writeRaiLocaleStorage(name, undefined);
+                }
+                break;
+            default:
+                // QUI SONO WEB DI DEFAULT
+                localStorage.removeItem(name);
+            break;
+        }
+    }
+
     writeConsent(name, value, options = undefined) {
         switch (this._osEnv) {
             case 'native':
@@ -350,10 +502,10 @@ class ConsentStore {
 
                 if (this._publisher === 'papyri') {
                     // SE SONO UN PUBLISHER PARTICOLARE
-                    this._writeRaiSDK(name, value);
+                    this._writeRaiSDK(name, value, options.expires);
                 } else {
                     // SE SONO AVACY DI FALLBACK / DEFAULT
-                    this._writeAvacySDK(name, value);
+                    this._writeAvacySDK(name, value, options.expires);
                 }
 
                 break;
@@ -420,4 +572,8 @@ export const consentStore = () => {
 
 window.callbackFunction = (result) => {
     window.myResolve(result);
+}
+
+const addMinutes = (date, minutes) => {
+    return new Date(date.getTime() + minutes*60000);
 }

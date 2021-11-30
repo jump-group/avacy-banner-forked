@@ -112,15 +112,14 @@ function loadAdditionalConsentList() {
 }
 
 function getGlobalVendorList() {
-  if (!gvlPromise) {
+  if(!cachedGVL) {
     GVL.baseUrl = getIabVendorListDomain();
     cachedGVL = new GVL();
-    gvlPromise = cachedGVL.readyPromise.then(() => {
-      return cachedGVL
+    cachedGVL.readyPromise.then( () => {
+      return cachedGVL;
     });
   }
-
-  return gvlPromise;
+  return cachedGVL;
 }
 
 async function getGlobalVendorListPromise() {

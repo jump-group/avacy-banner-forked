@@ -30,7 +30,7 @@ import * as AdvancedSettingsStandard from './view/oil.advanced.settings.standard
 import * as AdvancedSettingsTabs from './view/oil.advanced.settings.tabs';
 import { logError, logInfo } from '../core/core_log';
 import { getCpcType, getTimeOutValue, isOptoutConfirmRequired, isPersistMinimumTracking, getBannerPosition, getBannerAnimation } from './userview_config';
-import { gdprApplies, getAdvancedSettingsPurposesDefault, isInfoBannerOnly, isPoiActive, isMobileEnvironment } from '../core/core_config';
+import { gdprApplies, getAdvancedSettingsPurposesDefault, isInfoBannerOnly, isPoiActive, isMobileEnvironment, getConsentSolutionUrl, getLoginStatus} from '../core/core_config';
 import { applyPrivacySettings, getPrivacySettings, applyAdditionalConsent } from './userview_privacy';
 import { activateOptoutConfirm } from './userview_optout_confirm';
 import { getPurposeIds, loadVendorListAndCustomVendorList} from '../core/core_vendor_lists';
@@ -131,11 +131,23 @@ export function getCurrentPrivacySettings(cookie) {
 }
 
 function handleCloseBannerBtn() {
+  if (getConsentSolutionUrl() && !getLoginStatus()) {    
+    window.avacy_consent_btn = 'reject-all';
+    window.avacy_consent_layer = '1';
+    window.avacy_consent_html_print = document.querySelector('.as-oil').outerHTML;
+  }
   sendEventToHostSite(EVENT_NAME_CLOSE_BANNER_BUTTON_CLICKED);
   handleOptIn(true);
 }
 
-function handleOptInBtn() {
+function handleOptInBtn(domNode) {
+  if (getConsentSolutionUrl() && !getLoginStatus()) {    
+    window.avacy_consent_btn = domNode.target.dataset.optinMode;
+    window.avacy_consent_layer = domNode.target.dataset.optinLayer;
+    window.avacy_consent_html_print = document.querySelector('.as-oil').outerHTML;
+    if (domNode.target.dataset.optinLayer === '1') {
+    }
+  }
   sendEventToHostSite(EVENT_NAME_OPT_IN_BUTTON_CLICKED);
   handleOptIn();
 }
@@ -151,6 +163,7 @@ export function handleOptIn( no_settings = false) {
     (handleSoiOptIn(no_settings)).then(onOptInComplete);
   }
   animateOptInButton();
+  animateBanner();
 }
 
 function onOptInComplete() {
@@ -409,6 +422,7 @@ function handleBackToMainDialog() {
 }
 
 function handleAdvancedSettings() {
+  // window.avacy_consent_html_print = document.querySelector('.as-oil').outerHTML;
   logInfo('Handling Show Advanced Settings');
   stopTimeOut();
   oilShowPreferenceCenter();
@@ -436,6 +450,16 @@ function animateOptInButton() {
     window.setTimeout(() => {
       optInButton.className = optInButton.className.replace(' as-js-clicked', '');
     }, 1200);
+  }
+}
+
+function animateBanner() {
+  let banner = document.querySelector('.as-oil');
+  if (banner) {
+    banner.classList.add('as-oil--optin');
+    window.setTimeout(() => {
+      banner.classList.remove('as-oil--optin');
+    }, 3000);
   }
 }
 

@@ -2,8 +2,8 @@ import { OilVersion, sendEventToHostSite, setGlobalOilObject, googleTagManagerEv
 import { handleOptOut } from './core_optout';
 import { logError, logInfo, logPreviewInfo } from './core_log';
 import { checkOptIn } from './core_optin';
-import { getSoiCookie, isBrowserCookieEnabled, isPreviewCookieSet, removePreviewCookie, removeVerboseCookie, setPreviewCookie, setVerboseCookie, setDomainCookie, getOilDomainCookieName } from './core_cookies';
-import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies, gdprApplies, setLoginStatus, getLoginStatus, checkMinExpireInDays } from './core_config';
+import { getSoiCookie, isBrowserCookieEnabled, isPreviewCookieSet, removePreviewCookie, removeVerboseCookie, setPreviewCookie, setVerboseCookie, setDomainCookie, getOilDomainCookieName, transferStatus, OIL_RETRY_NAME } from './core_cookies';
+import { getLocale, isAmpModeActivated, isPreviewMode, resetConfiguration, setGdprApplies, gdprApplies, getConsentSolutionUrl, getLoginStatus, checkMinExpireInDays } from './core_config';
 import { EVENT_NAME_HAS_OPTED_IN, EVENT_NAME_NO_COOKIES_ALLOWED, OIL_GLOBAL_OBJECT_NAME, ADDITIONAL_CONSENT_VERSION } from './core_constants';
 import { updateTcfApi } from './core_tcf_api';
 import { manageDomElementActivation, demoPage } from './core_tag_management';
@@ -69,6 +69,22 @@ export function initOilLayer() {
         if(window.AS_OIL.isInCollection('oil-dom-loaded')) {
           manageDomElementActivation();
         }
+
+        if (getConsentSolutionUrl() && !getLoginStatus()) {
+          consentStore().readLocaleStorage(OIL_RETRY_NAME)
+          .then( retryItem => {
+            if (retryItem) {
+              retryItem.consentButton = retryItem.consentButton+':retry';
+              let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+              let theUrl = getConsentSolutionUrl();
+              xmlhttp.open('POST', theUrl);
+              xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+              xmlhttp.onreadystatechange = (evt) => {transferStatus(evt)};
+              xmlhttp.send(JSON.stringify(retryItem));
+            }
+          })
+        }
+
 
         sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start with found opt-in finished!'));
       } else {

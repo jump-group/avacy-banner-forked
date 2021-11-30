@@ -1,4 +1,6 @@
 import Cookie from 'js-cookie';
+import pako from 'pako/dist/pako.es5';
+import * as base64 from 'base64-js';
 import { logInfo } from './core_log';
 import {
   getConfigVersion,
@@ -11,7 +13,10 @@ import {
   getIabVendorWhitelist,
   getLoginStatus,
   getTcfPurposeOneTreatment,
-  getClearOnVersionUpdate
+  getClearOnVersionUpdate,
+  isPoiActive,
+  getPoiGroupName,
+  getConsentSolutionUrl
 } from './core_config';
 import { getAllPreferences } from './core_consents';
 import { getLocaleVariantVersion, tagManagerEvents } from './core_utils';
@@ -28,6 +33,7 @@ import { isCookieStillValid } from './core_optin';
 const COOKIE_PREVIEW_NAME = 'oil_preview';
 const COOKIE_VERBOSE_NAME = 'oil_verbose';
 const OIL_DOMAIN_COOKIE_NAME = 'oil_data';
+export const OIL_RETRY_NAME = 'OIL_DATA_RETRY';
 
 const OIL_SESSION_COOKIE_NAME = 'oil_data_session';
 
@@ -193,7 +199,7 @@ export function updateTCModel(privacySettings, tcModel) {
 
 export function buildSoiCookie(privacySettings) {
   return new Promise((resolve, reject) => {
-    Promise.all([loadVendorListAndCustomVendorList(),getOilCookieConfig()]).then( results => {
+    Promise.all([loadVendorListAndCustomVendorList(),getOilCookieConfig()]).then( async results => {
       let cookieConfig = results[1];
 
       logInfo('creating TCModel with this settings:', privacySettings);
@@ -227,24 +233,95 @@ export function buildSoiCookie(privacySettings) {
         addtlConsent: getAdditionalConsentWithSettings(privacySettings)
       };
 
-      // TODO: inizialmente risolvevo solo outputCookie, ma per poter lanciare la sendDecodedConsent ho bisogno del TCmodel, ovvero consentData
-      resolve([outputCookie, consentData]);
+      // DA QUI INIZIO
+      if (getConsentSolutionUrl() && !getLoginStatus()) {
+        let consentJson = {
+          opt_in: true,
+          version: cookieConfig.defaultCookieContent.version,
+          localeVariantName: cookieConfig.defaultCookieContent.localeVariantName,
+          localeVariantVersion: cookieConfig.defaultCookieContent.localeVariantVersion,
+          customVendorListVersion: getCustomVendorListVersion(),
+          customVendorList: getCustomVendorsWithConsent(privacySettings),
+          customPurposes: getCustomPurposesWithConsent(privacySettings),
+          consentString: !isInfoBannerOnly() ? TCString.encode(consentData) : '',
+          configVersion: cookieConfig.defaultCookieContent.configVersion,
+          policyVersion: cookieConfig.defaultCookieContent.policyVersion,
+          addtlConsent: getAdditionalConsentWithSettings(privacySettings)
+        }
+        
+        let html = window.avacy_consent_html_print;
+        let layer = +window.avacy_consent_layer;
+        let timestamp = (new Date()).toISOString();
+        let powerOptin = isPoiActive() ? getPoiGroupName() : undefined;
+        let consentButton = window.avacy_consent_btn;
+        let expiry = getCookieExpireInDays();
+
+        let minified_html = minify_html(html);        
+        let compressed_uint8Arry = pako.deflate(minified_html, {to: 'string'});
+        let array_to_b64 = base64.fromByteArray(compressed_uint8Arry);        
+        
+  
+        let body_data = {
+          'html': array_to_b64,
+          'layer': layer,
+          'consent_json': consentJson,
+          'timestamp': timestamp,
+          'consentButton': consentButton,
+          'expiry': expiry
+        };
+  
+        if (powerOptin) {
+          body_data['powerOptin'] = powerOptin
+        }
+
+        logInfo('Consent Solution URL', getConsentSolutionUrl());
+        logInfo('Body sent to Consent Solution', body_data);
+
+        let xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+        let theUrl = getConsentSolutionUrl();
+        xmlhttp.open('POST', theUrl);
+        xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xmlhttp.onreadystatechange = (evt) => {transferStatus(evt,body_data)};
+        xmlhttp.send(JSON.stringify(body_data));
+        
+  
+        resolve([outputCookie, consentData]);
+      } else {        
+        // TODO: inizialmente risolvevo solo outputCookie, ma per poter lanciare la sendDecodedConsent ho bisogno del TCmodel, ovvero consentData
+        resolve([outputCookie, consentData]);
+      }
+
     }).catch(error => reject(error));
   });
+}
+
+export function transferStatus(evt, body_data) {
+  if (evt.currentTarget.status === 200) {
+      consentStore().eraseLocaleStorage(OIL_RETRY_NAME);
+    } else if(body_data){
+      consentStore().writeLocaleStorage(OIL_RETRY_NAME, body_data);
+    }
+}
+
+function minify_html(html) {
+  return html.replace(/\s+/g, ' ').replace(/> </g, '><').replace(/\s*</g, '<').replace(/>\s*/g,'>');
 }
 
 export function setSoiCookie(privacySettings) {
 
   return new Promise((resolve, reject) => {
     buildSoiCookie(privacySettings).then( results => {
-      let cookie = results[0];
-      let consentData = results[1];
-      //TODO: da rivedere, ma ho bisogno di fare l'update prima di settare il cookie.
-      updateTcfApi(cookie, false, cookie.addtlConsent);
-      setDomainCookie(cookieAccordingToLoginStatus(), cookie, getCookieExpireInDays());
-      consentStore().writeDecodedRaiConsentSDK(getAllPreferences(consentData, cookie.addtlConsent, cookie.customVendor));
-      tagManagerEvents(cookie.opt_in, cookie, 'consent_update', consentData);
-      resolve(cookie);
+      if (results !== false) {        
+        let cookie = results[0];
+        let consentData = results[1];
+        updateTcfApi(cookie, false, cookie.addtlConsent);
+        setDomainCookie(cookieAccordingToLoginStatus(), cookie, getCookieExpireInDays());
+        consentStore().writeDecodedRaiConsentSDK(getAllPreferences(consentData, cookie.addtlConsent, cookie.customVendor));
+        tagManagerEvents(cookie.opt_in, cookie, 'consent_update', consentData);
+        resolve(cookie);
+      } 
+
+      resolve(false)
     }).catch(error => reject(error));
   });
 }
@@ -432,6 +509,6 @@ function getOilCookieConfig() {
 
 }
 
-function cookieAccordingToLoginStatus() {
+export function cookieAccordingToLoginStatus() {
   return (!getLoginStatus() || getLoginStatus() === false || getLoginStatus() === undefined || getLoginStatus() === null) ? OIL_DOMAIN_COOKIE_NAME : 'oil_data_be';
 }

@@ -15,12 +15,12 @@ JS_CLASS_BUTTON_REJECT_ALL } from '../../../core/core_constants.js';
 export const YesButton = (classes, layer) => {
   if (layer === 'first_layer') {
     return `
-    <button class="${classes}" data-context="${DATA_CONTEXT_YES}" data-qa="oil-YesButton">
+    <button class="${classes}" data-optin-mode="consent-all" data-optin-layer="1" data-context="${DATA_CONTEXT_YES}" data-qa="oil-YesButton">
         ${getLabel(OIL_LABELS.ATTR_LABEL_BUTTON_YES)}
     </button>`
   } else {
     return `
-    <button class="${classes}" data-context="${DATA_CONTEXT_YES}" data-qa="oil-YesButton">
+    <button class="${classes}" data-optin-mode="save-preferences" data-optin-layer="2" data-context="${DATA_CONTEXT_YES}" data-qa="oil-YesButton">
         ${getLabel(OIL_LABELS.ATTR_LABEL_CPC_SAVE)}
     </button>`
   }

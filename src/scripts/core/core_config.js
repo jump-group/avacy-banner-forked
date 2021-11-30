@@ -360,4 +360,8 @@ export function isAmpModeActivated() {
   return isInfoBannerOnly() && suppressCookies();
 }
 
+export function getConsentSolutionUrl() {
+  return getConfigValue(OIL_CONFIG.ATTR_CONSENT_SOLUTION_URL, undefined);
+}
+
 

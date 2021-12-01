@@ -161,6 +161,13 @@ export function handleOptIn( no_settings = false) {
     });
   } else {
     (handleSoiOptIn(no_settings)).then(onOptInComplete);
+    if (no_settings) {
+      if (getConsentSolutionUrl() && !getLoginStatus()) {    
+        window.avacy_consent_btn = 'reject-all';
+        window.avacy_consent_layer = '1';
+        window.avacy_consent_html_print = document.querySelector('.as-oil').outerHTML;
+      }
+    }
   }
   animateOptInButton();
   animateBanner();

@@ -91,23 +91,26 @@ export function initOilLayer() {
         /**
          * Any other case, when the user didn't decide before and oil needs to be shown:
          */
-        import('../userview/locale/userview_oil.js')
-          .then(userview_modal => {
-            userview_modal.locale(uv_m => uv_m.renderOil({ optIn: false }));
-            if (gdprApplies()) {
-              updateTcfApi(cookieData, true, ADDITIONAL_CONSENT_VERSION);
-              consentStore().showPanel();
-            }
-          })
-          .catch((e) => {
-            logError('Locale could not be loaded.', e);
-          });
-        demoPage(cookieData);
-        sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start without found opt-in finished!'));
+        if (getQueryStringParam('avacy-rejectall') && getQueryStringParam('avacy-rejectall') === '1') {
+          window.AVACY.triggerOptIn(true);
+        } else {
+          import('../userview/locale/userview_oil.js')
+            .then(userview_modal => {
+              userview_modal.locale(uv_m => uv_m.renderOil({ optIn: false }));
+              if (gdprApplies()) {
+                updateTcfApi(cookieData, true, ADDITIONAL_CONSENT_VERSION);
+                consentStore().showPanel();
+              }
+            })
+            .catch((e) => {
+              logError('Locale could not be loaded.', e);
+            });
+          demoPage(cookieData);
+          sendConsentInformationToCustomVendors().then(() => logInfo('Consent information sending to custom vendors after OIL start without found opt-in finished!'));
+        }
       }
-      if (getQueryStringParam('avacy-rejectall') && getQueryStringParam('avacy-rejectall') === '1' && !optin) {
-        window.AVACY.triggerOptIn(true);
-      } else if (getQueryStringParam('prefcenter') && getQueryStringParam('prefcenter') === '1') {
+      
+      if (getQueryStringParam('prefcenter') && getQueryStringParam('prefcenter') === '1') {
         consentStore().showPanel();
         window.PAPYRI.showPreferenceCenter('absolute');
       } else if (optin) {

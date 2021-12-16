@@ -43,8 +43,8 @@ export function loadVendorListAndCustomVendorList() {
     pendingVendorListPromise = new Promise(function (resolve) {
       getGlobalVendorListPromise()
         .then(response => {
-          cachedVendorList = response;
-          Promise.all([loadCustomVendorList(), loadAdditionalConsentList()]).then(() => {
+          Promise.all([response, loadCustomVendorList(), loadAdditionalConsentList()]).then(() => {
+            cachedVendorList = response;
             pendingVendorListPromise = null;
             resolve();
           });
@@ -123,13 +123,14 @@ function getGlobalVendorList() {
 }
 
 async function getGlobalVendorListPromise() {
-
   let iabGvl = await getGlobalVendorList();
-
+  
   let newLang = getLanguageFromConfigObject();
-  return iabGvl.changeLanguage(newLang).then(() => {
-    return iabGvl;
-  });
+  return iabGvl.readyPromise.then(() => {
+    return iabGvl.changeLanguage(newLang).then(() => {
+      return iabGvl;
+    });
+  })
 
 }
 

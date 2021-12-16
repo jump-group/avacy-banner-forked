@@ -424,9 +424,9 @@ export function getAdditionalConsentWithSettings(privacySettings) {
   return privacySettings !== 1 ? privacySettings.addtlConsent : ADDITIONAL_CONSENT_VERSION+getAllAdditionalConsentProviders();
 }
 
-function getAllowedStandardPurposesDefault() {
-  return getDefaultToOptin() ? getPurposes().map(({ id }) => id) : [];
-}
+// function getAllowedStandardPurposesDefault() {
+//   return getDefaultToOptin() ? getPurposes().map(({ id }) => id) : [];
+// }
 
 function getAllowedCustomPurposesDefault() {
   return getCustomPurposesWithConsent(getDefaultToOptin() ? 1 : 0);

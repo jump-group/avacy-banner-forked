@@ -1,5 +1,5 @@
 import '../../../styles/cpc_standard.scss';
-import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl, getLanguageFromConfigObject, getTcfPurposeOneTreatment } from '../../core/core_config'
+import { getCustomPurposes, getCustomVendorListUrl, getAdditionalConsentListUrl, getLanguageFromConfigObject, getTcfPurposeOneTreatment, getVendorOnLegalScope } from '../../core/core_config'
 import { JS_CLASS_BUTTON_OPTIN, OIL_GLOBAL_OBJECT_NAME } from '../../core/core_constants';
 import { getCustomVendorList, getAdditionalConsentList, getFeatures, getPurposes, getSpecialFeatures, getSpecialPurposes, getVendorList, getVendorsToDisplay, getStacks, getFullStacks } from '../../core/core_vendor_lists';
 import { getLabel, getLabelWithDefault, useLegint } from '../userview_config';
@@ -7,6 +7,7 @@ import { OIL_LABELS } from '../userview_constants';
 import { forEach } from '../userview_modal';
 import { BackButton, YesButton } from './components/oil.buttons';
 import moment from 'moment';
+import { logInfo } from '../../core/core_log';
 const CLASS_NAME_FOR_ACTIVE_MENU_SECTION = 'as-oil-cpc__category-link--active';
 
 export function oilAdvancedSettingsTemplate() {
@@ -64,6 +65,33 @@ export function attachCpcHandlers() {
   forEach(document.querySelectorAll('input[type="checkbox"][name^="oil-cpc"]'), (domNode) => {
     domNode && domNode.addEventListener('change', changeState, false);
   });
+
+  if (getVendorOnLegalScope()) {
+    logInfo('Activate Vendors on legal scope selections:', getVendorOnLegalScope())
+    forEach(document.querySelectorAll('.as-js-purpose-slider'), (domNode) => {
+      domNode && domNode.addEventListener('change', ev => {
+        activateVendorOnLegalSelect(ev.target, 'purposes')
+      }, false);
+    });
+    forEach(document.querySelectorAll('.as-js-specialFeature-slider'), (domNode) => {
+      domNode && domNode.addEventListener('change', ev => {
+        activateVendorOnLegalSelect(ev.target, 'specialFeatures')
+      }, false);
+    });
+    forEach(document.querySelectorAll('.js-stack'), (domNode) => {
+      domNode.querySelector('.as-js-stack-slider').addEventListener('change', ev => {
+        if (ev.target.checked) {
+          forEach(domNode.querySelectorAll('.as-js-purpose-slider'), (item) => {
+            let filteredIabVendor = filteredVendorList(getVendorsToDisplay(), 'purposes', item.dataset.id)  
+            forEach(filteredIabVendor, (vendor) => {
+              activateVendorToggle(vendor, 'vendor')
+            });
+          });
+        }
+      })
+    });
+  }
+
 }
 
 
@@ -658,6 +686,37 @@ function changeState(domNode) {
     domNode.target.classList.remove('enabled');
   }
 
+}
+
+export function activateVendorOnLegalSelect(el, legal_scope) {
+  if (el.checked) {
+    let filteredIabVendor = filteredVendorList(getVendorsToDisplay(), legal_scope, el.dataset.id)  
+    forEach(filteredIabVendor, (vendor) => {
+      activateVendorToggle(vendor, 'vendor')
+    });
+
+    let filteredCustomVendor = filteredVendorList(Object.entries(getCustomVendorList().vendors).map(item => item[1]), legal_scope, el.dataset.id)
+    forEach(filteredCustomVendor, (vendor) => {
+      activateVendorToggle(vendor, 'custom-vendor')
+    });
+  }
+}
+
+function filteredVendorList(list, legal_scope, id) {
+  return list.filter(vendor => {
+    return vendorHasLegalValue(vendor, legal_scope, id);
+  })    
+}
+
+function vendorHasLegalValue(vendor, scope, value) {
+  return vendor[scope].includes(+value);
+}
+
+export function activateVendorToggle(vendor, type) {
+  let vendorEl = document.querySelector(`#as-js-${type}-slider-${vendor.id}`);
+  if (!vendorEl.checked) {
+    vendorEl.checked =  true;
+  }
 }
 
 export function stacksObjectStatus() {

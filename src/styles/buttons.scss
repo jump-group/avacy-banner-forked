@@ -81,7 +81,7 @@
 
         .as-oil__btn-primary {
             width: 100%;
-            max-width: unset;
+            max-width: none;
         }
 
         @include media('>=tablet') {

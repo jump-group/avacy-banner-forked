@@ -483,7 +483,6 @@ class ConsentStore {
         switch (this._osEnv) {
             case 'native':
                 if (this._publisher === 'papyri') {
-                    console.log('STO ELIMINANDO')
                     // SE SONO UN PUBLISHER PARTICOLARE
                     this._writeRaiLocaleStorage(name, undefined);
                 }

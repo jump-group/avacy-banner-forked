@@ -60,7 +60,8 @@ export const OIL_CONFIG = {
   ATTR_AVACY_DEMO_STATUS: 'demo_status',
   ATTR_TCF_PURPOSE_ONE_TREATMENT: 'tcf_purpose_one_treatment',
   ATTR_CLEAR_ON_VERSION_UPDATE: 'clear_consents_on_version_update',
-  ATTR_CONSENT_SOLUTION_URL: 'consent_solution_url'
+  ATTR_CONSENT_SOLUTION_URL: 'consent_solution_url',
+  ATTR_VENDOR_ON_LEGAL_SCOPE: 'activate_vendors_on_legal_scope_selections'
 };
 
 export const OIL_CONFIG_CPC_TYPES = {

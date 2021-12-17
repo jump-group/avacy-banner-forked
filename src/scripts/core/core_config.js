@@ -172,6 +172,10 @@ export function getRequiredStacks() {
   return getConfigValue(OIL_CONFIG.ATTR_USE_STACKS, undefined);
 }
 
+export function getVendorOnLegalScope() {
+  return getConfigValue(OIL_CONFIG.ATTR_VENDOR_ON_LEGAL_SCOPE, false);
+}
+
 export function getIabVendorWhitelist() {
   return getConfigValue(OIL_CONFIG.ATTR_IAB_VENDOR_WHITELIST, undefined);
 }
